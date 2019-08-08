@@ -284,9 +284,9 @@ public class ItemsController {
     @ResponseBody
     @RequestMapping("/updateItem")
     public String updateItemByName(@RequestParam(value = "picFiles")MultipartFile[] multipartFiles, HttpSession session, Integer[] delPicId, Item item, Model model, HttpServletRequest request ){
-        System.out.println("item是否为null:"+ IsEmpty.checkIsNull(item));
+        System.out.println("item是不是空的:"+ IsEmpty.checkIsNull(item));
         System.out.println("+++" + multipartFiles.length);
-        System.out.println("-----" +delPicId);
+//        System.out.println("-----" +delPicId);
         String truejson="{\"result\": true }";
         String falsejson="{\"result\":false}";
         //先判断是否有管理员登陆，在进行更新
@@ -331,7 +331,10 @@ public class ItemsController {
                     }
             } else {
 //            System.out.println(delPicId+"------"+multipartFiles);
-                boolean updateData=itemsService.updateItemsInfo(item);
+                boolean updateData=true;
+                if (!IsEmpty.checkIsNull(item)){
+                   updateData =itemsService.updateItemsInfo(item);
+                }
                 //上传图片
                 String path = request.getServletContext().getRealPath("/static/upload/images") + File.separator;
                 Upload.upLoads(multipartFiles, session, path);
