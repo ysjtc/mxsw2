@@ -1,0 +1,6 @@
+[INFO ] 2019-07-24 15:28:36,197 org.springframework.beans.factory.config.PropertiesFactoryBean     - Loading properties file from class path resource [alipay.properties]
+[INFO ] 2019-07-24 15:34:00,569 org.springframework.beans.factory.config.PropertiesFactoryBean     - Loading properties file from class path resource [alipay.properties]
+[INFO ] 2019-07-24 15:34:50,385 org.springframework.beans.factory.config.PropertiesFactoryBean     - Loading properties file from class path resource [alipay.properties]
+[INFO ] 2019-07-24 16:14:08,805 org.springframework.beans.factory.config.PropertiesFactoryBean     - Loading properties file from class path resource [alipay.properties]
+[INFO ] 2019-07-24 18:38:11,459 org.springframework.beans.factory.config.PropertiesFactoryBean     - Loading properties file from class path resource [alipay.properties]
+[INFO ] 2019-07-24 18:38:28,250 org.springframework.beans.factory.config.PropertiesFactoryBean     - Loading properties file from class path resource [alipay.properties]

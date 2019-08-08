@@ -1,0 +1,82 @@
+package com.mx.pojo;
+
+import java.io.Serializable;
+/**
+ *
+ * 地址表实体类
+ *
+ */
+public class Address implements Serializable {
+
+    private Integer addId;
+
+    private Integer uId;
+
+    private String tel;
+
+    private String postcode;
+
+    private String name;
+
+    private String addr;
+
+    private String province;
+
+    private static final long serialVersionUID = 1L;
+
+    public Integer getAddId() {
+        return addId;
+    }
+
+    public void setAddId(Integer addId) {
+        this.addId = addId;
+    }
+
+    public Integer getuId() {
+        return uId;
+    }
+
+    public void setuId(Integer uId) {
+        this.uId = uId;
+    }
+
+    public String getTel() {
+        return tel;
+    }
+
+    public void setTel(String tel) {
+        this.tel = tel == null ? null : tel.trim();
+    }
+
+    public String getPostcode() {
+        return postcode;
+    }
+
+    public void setPostcode(String postcode) {
+        this.postcode = postcode == null ? null : postcode.trim();
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name == null ? null : name.trim();
+    }
+
+    public String getAddr() {
+        return addr;
+    }
+
+    public void setAddr(String addr) {
+        this.addr = addr == null ? null : addr.trim();
+    }
+
+    public String getProvince() {
+        return province;
+    }
+
+    public void setProvince(String province) {
+        this.province = province == null ? null : province.trim();
+    }
+}

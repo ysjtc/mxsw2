@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mx.mapper.Order_DetailMapper">
+  <resultMap id="BaseResultMap" type="com.mx.pojo.Order_Detail">
+    <result column="o_id" jdbcType="INTEGER" property="oId" />
+    <result column="item_id" jdbcType="INTEGER" property="itemId" />
+    <result column="count" jdbcType="INTEGER" property="count" />
+    <result column="total_price" jdbcType="REAL" property="totalPrice" />
+  </resultMap>
+  <insert id="insert" parameterType="com.mx.pojo.Order_Detail">
+    insert into order_detail (o_id, item_id, count, 
+      total_price)
+    values (#{oId,jdbcType=INTEGER}, #{itemId,jdbcType=INTEGER}, #{count,jdbcType=INTEGER}, 
+      #{totalPrice,jdbcType=REAL})
+  </insert>
+  <insert id="insertSelective" parameterType="com.mx.pojo.Order_Detail">
+    insert into order_detail
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="oId != null">
+        o_id,
+      </if>
+      <if test="itemId != null">
+        item_id,
+      </if>
+      <if test="count != null">
+        count,
+      </if>
+      <if test="totalPrice != null">
+        total_price,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="oId != null">
+        #{oId,jdbcType=INTEGER},
+      </if>
+      <if test="itemId != null">
+        #{itemId,jdbcType=INTEGER},
+      </if>
+      <if test="count != null">
+        #{count,jdbcType=INTEGER},
+      </if>
+      <if test="totalPrice != null">
+        #{totalPrice,jdbcType=REAL},
+      </if>
+    </trim>
+  </insert>
+</mapper>
