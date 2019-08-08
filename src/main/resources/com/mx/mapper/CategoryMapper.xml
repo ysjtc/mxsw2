@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mx.mapper.CategoryMapper">
+  <resultMap id="BaseResultMap" type="com.mx.pojo.Category">
+    <result column="c_id" jdbcType="INTEGER" property="cId" />
+    <result column="catename" jdbcType="VARCHAR" property="CateName" />
+  </resultMap>
+  <select id="queryCid" resultType="Integer">
+    select c_id from category
+  </select>
+  <select id="queryAllCategory" resultType="com.mx.pojo.Category">
+    select * from category
+  </select>
+  <insert id="insert" parameterType="com.mx.pojo.Category">
+    insert into category (c_id, name)
+    values (#{cId,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.mx.pojo.Category">
+    insert into category
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="cId != null">
+        c_id,
+      </if>
+      <if test="name != null">
+        name,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="cId != null">
+        #{cId,jdbcType=INTEGER},
+      </if>
+      <if test="name != null">
+        #{name,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+</mapper>

@@ -1,0 +1,6 @@
+[DEBUG] 2019-07-04 10:26:24,176 org.mybatis.generator.logging.LogFactory     - Logging initialized using 'org.mybatis.generator.logging.slf4j.Slf4jLoggingLogFactory@4493d195' adapter.
+[DEBUG] 2019-07-04 10:26:24,186 org.mybatis.generator.internal.db.DatabaseIntrospector     - Retrieving column information for table "userinfo"
+[DEBUG] 2019-07-04 10:28:59,851 org.mybatis.generator.logging.LogFactory     - Logging initialized using 'org.mybatis.generator.logging.slf4j.Slf4jLoggingLogFactory@4493d195' adapter.
+[DEBUG] 2019-07-04 10:28:59,851 org.mybatis.generator.internal.db.DatabaseIntrospector     - Retrieving column information for table "userinfo"
+[DEBUG] 2019-07-04 10:29:57,635 org.mybatis.generator.logging.LogFactory     - Logging initialized using 'org.mybatis.generator.logging.slf4j.Slf4jLoggingLogFactory@4493d195' adapter.
+[DEBUG] 2019-07-04 10:29:57,645 org.mybatis.generator.internal.db.DatabaseIntrospector     - Retrieving column information for table "userinfo"

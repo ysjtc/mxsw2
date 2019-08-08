@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mx.mapper.ArticleMapper">
+  <resultMap id="BaseResultMap" type="com.mx.pojo.Article">
+    <result column="a_id" jdbcType="INTEGER" property="aId" />
+    <result column="title" jdbcType="VARCHAR" property="title" />
+    <result column="page_view" jdbcType="INTEGER" property="pageView" />
+    <result column="u_id" jdbcType="INTEGER" property="uId" />
+    <result column="publish_time" jdbcType="VARCHAR" property="publishTime" />
+    <result column="praise_count" jdbcType="INTEGER" property="praiseCount" />
+    <result column="ac_id" jdbcType="INTEGER" property="acId" />
+  </resultMap>
+  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.mx.pojo.Article">
+    <result column="content" jdbcType="LONGVARCHAR" property="content" />
+  </resultMap>
+  <sql id="Blob_Column_List">
+    content
+  </sql>
+  <insert id="insert" parameterType="com.mx.pojo.Article">
+    insert into article (a_id, title, page_view, 
+      u_id, publish_time, praise_count, 
+      ac_id, content)
+    values (#{aId,jdbcType=INTEGER}, #{title,jdbcType=VARCHAR}, #{pageView,jdbcType=INTEGER}, 
+      #{uId,jdbcType=INTEGER}, #{publishTime,jdbcType=VARCHAR}, #{praiseCount,jdbcType=INTEGER}, 
+      #{acId,jdbcType=INTEGER}, #{content,jdbcType=LONGVARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.mx.pojo.Article">
+    insert into article
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="aId != null">
+        a_id,
+      </if>
+      <if test="title != null">
+        title,
+      </if>
+      <if test="pageView != null">
+        page_view,
+      </if>
+      <if test="uId != null">
+        u_id,
+      </if>
+      <if test="publishTime != null">
+        publish_time,
+      </if>
+      <if test="praiseCount != null">
+        praise_count,
+      </if>
+      <if test="acId != null">
+        ac_id,
+      </if>
+      <if test="content != null">
+        content,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="aId != null">
+        #{aId,jdbcType=INTEGER},
+      </if>
+      <if test="title != null">
+        #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="pageView != null">
+        #{pageView,jdbcType=INTEGER},
+      </if>
+      <if test="uId != null">
+        #{uId,jdbcType=INTEGER},
+      </if>
+      <if test="publishTime != null">
+        #{publishTime,jdbcType=VARCHAR},
+      </if>
+      <if test="praiseCount != null">
+        #{praiseCount,jdbcType=INTEGER},
+      </if>
+      <if test="acId != null">
+        #{acId,jdbcType=INTEGER},
+      </if>
+      <if test="content != null">
+        #{content,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+</mapper>

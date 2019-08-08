@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mx.mapper.Article_CommentMapper">
+  <resultMap id="BaseResultMap" type="com.mx.pojo.Article_Comment">
+    <result column="aco_id" jdbcType="INTEGER" property="acoId" />
+    <result column="content" jdbcType="VARCHAR" property="content" />
+    <result column="u_id" jdbcType="INTEGER" property="uId" />
+    <result column="a_id" jdbcType="INTEGER" property="aId" />
+  </resultMap>
+  <insert id="insert" parameterType="com.mx.pojo.Article_Comment">
+    insert into article_comment (aco_id, content, u_id, 
+      a_id)
+    values (#{acoId,jdbcType=INTEGER}, #{content,jdbcType=VARCHAR}, #{uId,jdbcType=INTEGER}, 
+      #{aId,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.mx.pojo.Article_Comment">
+    insert into article_comment
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="acoId != null">
+        aco_id,
+      </if>
+      <if test="content != null">
+        content,
+      </if>
+      <if test="uId != null">
+        u_id,
+      </if>
+      <if test="aId != null">
+        a_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="acoId != null">
+        #{acoId,jdbcType=INTEGER},
+      </if>
+      <if test="content != null">
+        #{content,jdbcType=VARCHAR},
+      </if>
+      <if test="uId != null">
+        #{uId,jdbcType=INTEGER},
+      </if>
+      <if test="aId != null">
+        #{aId,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+</mapper>
