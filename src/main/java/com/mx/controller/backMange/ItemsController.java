@@ -1,4 +1,4 @@
-package com.mx.controller;
+package com.mx.controller.backMange;
 
 import com.mx.pojo.Category;
 import com.mx.pojo.Item;
@@ -9,6 +9,7 @@ import com.mx.service.ItemsService;
 import com.mx.service.SuperAdminService;
 import com.mx.utils.ConvertJson.JsonToJsonObject;
 import com.mx.utils.UpLoad.Upload;
+import com.mx.utils.Validators.IsEmpty;
 import com.mx.utils.Validators.Validator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -27,16 +28,10 @@ import java.util.List;
 @Controller
 @RequestMapping("/Items")
 public class ItemsController {
-    //我刚刚试了，很多后台高级功能的路由能在无登录情况下访问，需要做登录判断
-    //最好直接拦截Item路径下的请求，做登录判断
-    //这个是后台模块，其控制器专门服务于后台管理模块，不要想着前台展示模块可以复用而选择性的拦截某些请求
-    //虽然有一定冗余，但是可以保证你不会混乱（越权漏洞就是你这样来的）
-    //这个项目的结构真的不行，你们的控制器，最好分模块，起码分个前台和后台管理两个
-
 
     //自动注入items
     @Autowired
-    private  ItemsService itemsService;
+    private ItemsService itemsService;
 
     //自动注入superadmin
     @Autowired
@@ -61,7 +56,7 @@ public class ItemsController {
     //添加商品
     @ResponseBody
     @RequestMapping("/ToAdd")
-    public String add(@RequestParam(value = "itemPic")MultipartFile[] multipartFiles, @Valid Item item, BindingResult result, HttpSession session, HttpServletRequest request, Category itemCate,Model model){
+    public String add(@RequestParam(value = "itemPic")MultipartFile[] multipartFiles, @Valid Item item, BindingResult result, HttpSession session, HttpServletRequest request, Category itemCate, Model model){
         item.setCateId(itemCate);
         System.out.println(multipartFiles.length);
 //        System.out.println(itemCate);
@@ -288,10 +283,10 @@ public class ItemsController {
     //通过id修改商品信息
     @ResponseBody
     @RequestMapping("/updateItem")
-    public String updateItemByName(@RequestParam(value = "picFiles")MultipartFile[] multipartFiles,HttpSession session,Integer delPicId,Item item,Model model,HttpServletRequest request ){
-//        System.out.println("item是否为null:"+IsEmpty.checkIsNull(item));
+    public String updateItemByName(@RequestParam(value = "picFiles")MultipartFile[] multipartFiles, HttpSession session, Integer[] delPicId, Item item, Model model, HttpServletRequest request ){
+        System.out.println("item是不是空的:"+ IsEmpty.checkIsNull(item));
         System.out.println("+++" + multipartFiles.length);
-        System.out.println("-----" +delPicId);
+//        System.out.println("-----" +delPicId);
         String truejson="{\"result\": true }";
         String falsejson="{\"result\":false}";
         //先判断是否有管理员登陆，在进行更新
@@ -304,22 +299,42 @@ public class ItemsController {
         }else {
             if (multipartFiles.length == 0) {
                 if (delPicId==null){
-                    boolean updateData = itemsService.updateItemsInfo(item);
-                    if (updateData){
-                        return truejson;
-                    }else
+                    if (IsEmpty.checkIsNull(item)){
                         return falsejson;
+                    }else {
+                        boolean updateData = itemsService.updateItemsInfo(item);
+                        if (updateData) {
+                            return truejson;
+                        } else
+                            return falsejson;
+                    }
                 }else {
-                    boolean deletepic=itemPicService.deletePic(delPicId);
-                    boolean updateData = itemsService.updateItemsInfo(item);
-                    if (updateData&&deletepic){
-                        return truejson;
-                    }else
-                        return falsejson;
-                }
+                    boolean deletepic=false;
+                    if (IsEmpty.checkIsNull(item)) {
+                        for(int i=0;i<delPicId.length;i++){
+                            deletepic=itemPicService.deletePic(delPicId[i]);
+                        }
+                        if (deletepic) {
+                            return truejson;
+                        } else
+                            return falsejson;
+                    } else {
+                        for(int i=0;i<delPicId.length;i++){
+                            deletepic=itemPicService.deletePic(delPicId[i]);
+                        }
+                            boolean updateData = itemsService.updateItemsInfo(item);
+                            if (updateData && deletepic) {
+                                return truejson;
+                            } else
+                                return falsejson;
+                        }
+                    }
             } else {
 //            System.out.println(delPicId+"------"+multipartFiles);
-                boolean updateData = itemsService.updateItemsInfo(item);
+                boolean updateData=true;
+                if (!IsEmpty.checkIsNull(item)){
+                   updateData =itemsService.updateItemsInfo(item);
+                }
                 //上传图片
                 String path = request.getServletContext().getRealPath("/static/upload/images") + File.separator;
                 Upload.upLoads(multipartFiles, session, path);
@@ -344,7 +359,7 @@ public class ItemsController {
                     //存入数据库
                     addItemPic = itemPicService.addItemsPic(ipic);
                 }
-                if (updateData && addItemPic) {
+                if (updateData&&addItemPic) {
                     model.addAttribute("deleteinfo", "更新成功!");
                     return truejson;
                 } else {

@@ -1,4 +1,4 @@
-package com.mx.controller;
+package com.mx.controller.backMange;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
