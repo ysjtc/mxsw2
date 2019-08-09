@@ -281,7 +281,7 @@
 
 /*设置价格过滤按钮的样式*/
 
-.right-filter-item form button {
+.right-filter-item button {
     float: right;
     margin-top: 10px;
     height: 33px;
@@ -295,7 +295,7 @@
     transition: 0.3s;
 }
 
-.right-filter-item form button:hover {
+.right-filter-item button:hover {
     background: #2f2f2f;
 }
 
