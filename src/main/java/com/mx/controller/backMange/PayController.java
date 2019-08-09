@@ -14,9 +14,11 @@ import javax.servlet.http.HttpServletRequest;
 import java.io.UnsupportedEncodingException;
 
 @Controller
-@RequestMapping("/AliPay")
-public class AliPayTestController {
+@RequestMapping("/Pay")
+public class PayController {
 
+
+    //支付宝支付，微信支付写后面
     @Autowired
     private AliPayService aliPayService;
 
@@ -31,7 +33,7 @@ public class AliPayTestController {
      * @throws AlipayApiException
      */
     @ResponseBody
-    @RequestMapping(value = {"/Pay"},method = RequestMethod.POST)
+    @RequestMapping(value = {"/AliPay"},method = RequestMethod.POST)
     public String alipay(String out_trade_no, String subject, String total_amount, String body) throws AlipayApiException {
 //        System.out.println(out_trade_no+subject+total_amount+body);
         AliPay pay=new AliPay();
@@ -53,7 +55,6 @@ public class AliPayTestController {
      * @throws UnsupportedEncodingException
      */
 
-//    @PostMapping("/notify_url")
     @ResponseBody
     @RequestMapping(value = {"/notify_url"},method = RequestMethod.POST)
     public String notify_url(HttpServletRequest request) throws UnsupportedEncodingException {
