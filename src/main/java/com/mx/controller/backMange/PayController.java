@@ -18,7 +18,7 @@ import java.io.UnsupportedEncodingException;
 public class PayController {
 
 
-    //支付宝支付，微信支付写后面
+    //支付宝支付，微信支付写后面.
     @Autowired
     private AliPayService aliPayService;
 
