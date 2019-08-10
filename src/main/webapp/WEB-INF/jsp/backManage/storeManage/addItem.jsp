@@ -31,7 +31,31 @@
     <!-- 主要内容开始 -->
     <div class="right-content">
         <div class="right-content-wrap">
-
+			
+			<!--添加商品类型-->
+			<div class="panel panel-default addItem-main">
+                <div class="panel-heading">
+                    <h3 class="panel-title">
+                    <span class="glyphicon glyphicon-plus"></span>
+                    商品类型添加
+                    </h3>
+                </div>
+                <div class="panel-body">
+                    
+                    <form action="dasd/adsad" method="POST" class="form-horizontal">
+                        <div class="form-group">
+                            <label style="float: left;margin-left:30px" for="cateName" class="control-label">分类名</label>
+                            <div class="col-sm-4">
+                                <input name="cateName" type="text" class="form-control" placeholder="请输入分类名">
+                            </div>
+                            <div class="col-sm-2">
+                                <button type="submit" class="btn btn-default">提交</button>
+                            </div>
+                        </div> 
+                    </form>
+               
+                </div>
+            </div>
 
             <!--将上传图片部分放在面板里-->
             <div class="panel panel-default addItem-main">
