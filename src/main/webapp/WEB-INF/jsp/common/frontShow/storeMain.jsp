@@ -83,27 +83,27 @@
                         </h4>
                         <!--具体的标签项-->
                         <ul>
-                            <li>
-                                <a href="">成色好</a>
-                            </li>
-                            <li>
-                                <a href="">价格低</a>
-                            </li>
-                            <li>
-                                <a href="">稀有</a>
-                            </li>
-                            <li>
-                                <a href="">性价比高</a>
-                            </li>
-                            <li>
-                                <a href="">全新书籍</a>
-                            </li>
-                            <li>
-                                <a href="">有收藏价值</a>
-                            </li>
-                            <li>
-                                <a href="">破烂书</a>
-                            </li>
+							<li>
+								<a class="lableTag" lableId='0' href="javascript:void(-1);">成色好</a>
+							</li>
+							<li>
+								<a class="lableTag" lableId='1' href="javascript:void(-1);">价格低</a>
+							</li>
+							<li>
+								<a class="lableTag" lableId='2' href="javascript:void(-1);">稀有</a>
+							</li>
+							<li>
+								<a class="lableTag" lableId='3' href="javascript:void(-1);">性价比高</a>
+							</li>
+							<li>
+								<a class="lableTag" lableId='4' href="javascript:void(-1);">全新书籍</a>
+							</li>
+							<li>
+								<a class="lableTag" lableId='5' href="javascript:void(-1);">有收藏价值</a>
+							</li>
+							<li>
+								<a class="lableTag" lableId='6' href="javascript:void(-1);">破烂书</a>
+							</li>
                         </ul>
                     </div>
                 </div>

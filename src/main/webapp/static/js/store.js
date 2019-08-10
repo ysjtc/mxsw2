@@ -53,18 +53,18 @@ $(document).ready(function() {
     //处理商展页的数据显示
     //X0首次访问时
     //首先请求分类信息
-     $.ajax({
+    $.ajax({
         url : 'http:www.baidu.com',
         success : function(data) {
             var cateJsonData=JSON.parse(data);
-            // data={
+            // cateJsonData={
             //     "1":["安卓开发",23],
             //     "2":["区块链",22],
             //     "3":["人工智能",33]
             // };
-            $("#addedCate").remove();
+            
             if(cateJsonData['result']){
-                //<li><a cateId='1' href='javascript:void(-1);'>计算机与网络<span>(6)</span></a></li>
+                $("#addedCate").remove();
                 $.each(cateJsonData,function(key,value){
                     var cateTag="<li><a class='addedCate' cateId='"+key+"' href='javascript:void(-1);'>"+value[0]+"<span>("+value[1]+")</span></a></li>";
                     $("#addCateTag").append(cateTag);
@@ -80,7 +80,7 @@ $(document).ready(function() {
 
 
     //一个处理商品数据的函数，包括分页等功能
-    function showItemInfo(queryData="",pageSize=5,offset=0,sort="item_id",sortOrder="asc",priceRange){
+    function showItemInfo(queryData="",pageSize=5,offset=0,sort="item_id",sortOrder="asc",priceRange,cateId,labelId){
         var firstQuery={};
         firstQuery['pageSize']=pageSize;
         firstQuery['offset']=offset;
@@ -88,14 +88,16 @@ $(document).ready(function() {
         firstQuery['sortOrder']=sortOrder;
         firstQuery['queryData']=queryData;
         firstQuery['priceRange']=priceRange;
+        firstQuery['cateId']=cateId;
+        firstQuery['labelId']=labelId;
         $.ajax({
             url : 'http:www.baidu.com',
             data : firstQuery,
             type : 'POST',
             success : function(data) {
-                // data={"total":26,"rows":[{"item_id":1,"name":"1","cateName":"2","price":"3","count":"4","author":"5","ISBN":"6","old_level":"7","compare":"8","publish_time":"9","publish":"10","place":"11","label":"12","item_pic":"13"},{"item_id":1,"name":"1","cateName":"2","price":"3","count":"4","author":"5","ISBN":"6","old_level":"7","compare":"8","publish_time":"9","publish":"10","place":"11","label":"12","item_pic":"13"},{"item_id":1,"name":"1","cateName":"2","price":"3","count":"4","author":"5","ISBN":"6","old_level":"7","compare":"8","publish_time":"9","publish":"10","place":"11","label":"12","item_pic":"13"},{"item_id":1,"name":"1","cateName":"2","price":"3","count":"4","author":"5","ISBN":"6","old_level":"7","compare":"8","publish_time":"9","publish":"10","place":"11","label":"12","item_pic":"13"},{"item_id":1,"name":"1","cateName":"2","price":"3","count":"4","author":"5","ISBN":"6","old_level":"7","compare":"8","publish_time":"9","publish":"10","place":"11","label":"12","item_pic":"13"}]};
+                //data={"total":26,"rows":[{"item_id":1,"name":"1","cateName":"2","price":"3","count":"4","author":"5","ISBN":"6","old_level":"7","compare":"8","publish_time":"9","publish":"10","place":"11","label":"12","item_pic":"13"},{"item_id":1,"name":"1","cateName":"2","price":"3","count":"4","author":"5","ISBN":"6","old_level":"7","compare":"8","publish_time":"9","publish":"10","place":"11","label":"12","item_pic":"13"},{"item_id":1,"name":"1","cateName":"2","price":"3","count":"4","author":"5","ISBN":"6","old_level":"7","compare":"8","publish_time":"9","publish":"10","place":"11","label":"12","item_pic":"13"},{"item_id":1,"name":"1","cateName":"2","price":"3","count":"4","author":"5","ISBN":"6","old_level":"7","compare":"8","publish_time":"9","publish":"10","place":"11","label":"12","item_pic":"13"},{"item_id":1,"name":"1","cateName":"2","price":"3","count":"4","author":"5","ISBN":"6","old_level":"7","compare":"8","publish_time":"9","publish":"10","place":"11","label":"12","item_pic":"13"}]};
                 var itemsJsonData=JSON.parse(data);
-                if(data['result']){
+                if(itemsJsonData['result']){
                     // console.log(data);
                     var total=itemsJsonData['total'];
                     //设置商展页的总数显示
@@ -121,6 +123,7 @@ $(document).ready(function() {
                         //每一项都是一个商品相关的json
                         //动态添加商展列表
                         var addTag="<div class=\"row addedTag\"><div class=\"item-box\"><div class=\"col-lg-5 col-md-5 col-sm-6 col-xs-12 item-box-img\"><div class=\"img-wrapper\"><img src=\""+item_pic+"\"/><div class=\"item-box-img-mask\"></div><a item_id='"+item_id+"' class='showMore' href=\"javascript:void(-1);\" data-toggle=\"modal\" data-target=\"#myModal\"><div class=\"item-box-img-mask-readMore\">查看详细</div></a></div></div><div class=\"col-lg-7 col-md-7 col-sm-6 col-xs-12 item-box-text\"><div class=\"text-des\"><h3>《"+name+"》</h3><table><tr><td>价格："+price+"元</td><td>邮费："+postage+"元</td></tr><tr><td>新旧程度："+old_level+"成新</td><td>新书比价："+compare+"</td></tr><tr><td>库存："+count+"</td><td>发货地点："+place+"</td></tr><tr><td>作者："+author+"</td><td>出版社："+publish+"</td></tr><tr><td>出版时间："+publish_time+"</td><td>ISBN:"+ISBN+"</td></tr></table><div class=\"text-des-buttom\"><a item_id='"+item_id+"' type=\"button\" class=\"btn btn-warning btn-xs showMore\" data-toggle=\"modal\" data-target=\"#myModal\">查看详细</a><a item_id='"+item_id+"' type=\"button\" class=\"btn btn-warning btn-xs addCart\">加入购物车</a><a item_id='"+item_id+"' type=\"button\" class=\"btn btn-warning btn-xs buyNow\">立即购买</a></div></div></div></div></div>";
+                        
                         $(".addTagBefore").before(addTag);  
                     });
                     //接下来做分页的样式处理
@@ -221,20 +224,25 @@ $(document).ready(function() {
     var priceRangeCache="";
     //一个暂存上一次分类id的变量
     var cateIdCache="";
+    //一个暂存上一次标签id的变量
+    var labelIdCache="";
 
     //X1查询时
     $("#queryItem").click(function(){
         // if(searchCache!=""){alert("有上一次的搜索记录")}
         var data=$(this).prev().val();
         searchCache=data;
-        showItemInfo(data);
+        priceRangeCache="";
+        cateIdCache="";
+        labelIdCache="";
+        showItemInfo(searchCache);
     });
 
     //X2点击分页项时
     $(".pagination.store-paging").on("click",".addedLiTag .toPage",function(){
         var page=$(this).attr("page");
         var offset=(page-1)*5;
-        showItemInfo(searchCache,5,offset,"item_id","asc",priceRangeCache);
+        showItemInfo(searchCache,5,offset,"item_id","asc",priceRangeCache,cateIdCache,labelIdCache);
     });
 
 
@@ -242,10 +250,22 @@ $(document).ready(function() {
     $("#priceRangeBtn").click(function(){
         var priceRange=$("#range_1").val();
         priceRangeCache=priceRange;
-        showItemInfo(searchCache,5,0,"item_id","asc",priceRangeCache);
+        showItemInfo(searchCache,5,0,"item_id","asc",priceRangeCache,cateIdCache,labelIdCache);
     });
 
+    //当选择了分类时
+    $("#addCateTag").on("click",".addedCate",function(){
+        var cateId=$(this).attr("cateId");
+        cateIdCache=cateId;
+        showItemInfo(searchCache,5,0,"item_id","asc",priceRangeCache,cateIdCache,labelIdCache);
+    });
 
+    //选择了标签时
+    $(".lableTag").click(function(){
+        var labelId=$(this).attr("lableId");
+        labelIdCache=labelId;
+        showItemInfo(searchCache,5,0,"item_id","asc",priceRangeCache,cateIdCache,labelIdCache);
+    });
     
     
 

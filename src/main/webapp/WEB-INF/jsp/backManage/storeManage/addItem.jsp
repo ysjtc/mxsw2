@@ -140,11 +140,13 @@
                         <div class="form-group">
                             <label>书籍标签</label>
                             <select name="lable" class="form-control">
-                                <option value="1">低价</option>
-                                <option value="2">实惠</option>
-                                <option value="3">成色新</option>
-                                <option value="4">稀有</option>
-                                <option value="5">烂货</option>
+                                <option value="0">成色好</option>
+                                <option value="1">价格低</option>
+                                <option value="2">稀有</option>
+                                <option value="3">性价比高</option>
+                                <option value="4">全新书籍</option>
+								<option value="5">有收藏价值</option>
+								<option value="6">破烂书</option>
                             </select>
                         </div>
                     </div>
