@@ -58,6 +58,7 @@ $(document).ready(function() {
         success : function(data) {
             var cateJsonData=JSON.parse(data);
             // cateJsonData={
+            //     "result":true,
             //     "1":["安卓开发",23],
             //     "2":["区块链",22],
             //     "3":["人工智能",33]
@@ -66,8 +67,10 @@ $(document).ready(function() {
             if(cateJsonData['result']){
                 $("#addedCate").remove();
                 $.each(cateJsonData,function(key,value){
-                    var cateTag="<li><a class='addedCate' cateId='"+key+"' href='javascript:void(-1);'>"+value[0]+"<span>("+value[1]+")</span></a></li>";
-                    $("#addCateTag").append(cateTag);
+                    if(key!="result"){
+                        var cateTag="<li><a class='addedCate' cateId='"+key+"' href='javascript:void(-1);'>"+value[0]+"<span>("+value[1]+")</span></a></li>";
+                        $("#addCateTag").append(cateTag);
+                    }
                 });
             }else{
                 alert("意外错误！请重试！");
@@ -95,7 +98,7 @@ $(document).ready(function() {
             data : firstQuery,
             type : 'POST',
             success : function(data) {
-                //data={"total":26,"rows":[{"item_id":1,"name":"1","cateName":"2","price":"3","count":"4","author":"5","ISBN":"6","old_level":"7","compare":"8","publish_time":"9","publish":"10","place":"11","label":"12","item_pic":"13"},{"item_id":1,"name":"1","cateName":"2","price":"3","count":"4","author":"5","ISBN":"6","old_level":"7","compare":"8","publish_time":"9","publish":"10","place":"11","label":"12","item_pic":"13"},{"item_id":1,"name":"1","cateName":"2","price":"3","count":"4","author":"5","ISBN":"6","old_level":"7","compare":"8","publish_time":"9","publish":"10","place":"11","label":"12","item_pic":"13"},{"item_id":1,"name":"1","cateName":"2","price":"3","count":"4","author":"5","ISBN":"6","old_level":"7","compare":"8","publish_time":"9","publish":"10","place":"11","label":"12","item_pic":"13"},{"item_id":1,"name":"1","cateName":"2","price":"3","count":"4","author":"5","ISBN":"6","old_level":"7","compare":"8","publish_time":"9","publish":"10","place":"11","label":"12","item_pic":"13"}]};
+                //itemsJsonData={"result":true,"total":26,"rows":[{"item_id":1,"name":"1","cateName":"2","price":"3","count":"4","author":"5","ISBN":"6","old_level":"7","compare":"8","publish_time":"9","publish":"10","place":"11","label":"12","item_pic":"13"},{"item_id":1,"name":"1","cateName":"2","price":"3","count":"4","author":"5","ISBN":"6","old_level":"7","compare":"8","publish_time":"9","publish":"10","place":"11","label":"12","item_pic":"13"},{"item_id":1,"name":"1","cateName":"2","price":"3","count":"4","author":"5","ISBN":"6","old_level":"7","compare":"8","publish_time":"9","publish":"10","place":"11","label":"12","item_pic":"13"},{"item_id":1,"name":"1","cateName":"2","price":"3","count":"4","author":"5","ISBN":"6","old_level":"7","compare":"8","publish_time":"9","publish":"10","place":"11","label":"12","item_pic":"13"},{"item_id":1,"name":"1","cateName":"2","price":"3","count":"4","author":"5","ISBN":"6","old_level":"7","compare":"8","publish_time":"9","publish":"10","place":"11","label":"12","item_pic":"13"}]};
                 var itemsJsonData=JSON.parse(data);
                 if(itemsJsonData['result']){
                     // console.log(data);
@@ -267,7 +270,81 @@ $(document).ready(function() {
         showItemInfo(searchCache,5,0,"item_id","asc",priceRangeCache,cateIdCache,labelIdCache);
     });
     
+
+    //点击了select时
+    $("#pageSelect").change(function(){
+        var selectPage=$(this).val();
+        var offset=(selectPage-1)*5;
+        showItemInfo(searchCache,5,offset,"item_id","asc",priceRangeCache,cateIdCache,labelIdCache);
+    });
+
+    //点击了查看更多时
     
+    $(".left-show").on("click",".showMore",function(){
+        var item_id={};
+        item_id['item_id']=$(this).attr("item_id");
+        //ajax发送请求商品信息
+        $.ajax({
+            url : 'http:www.aomaha8.cn',
+            method : 'POST',
+            data : item_id,
+            async: false,
+            success : function(data) {
+                var itemJsonData=JSON.parse(data);
+                //itemJsonData={"desc":"不错的商品","item_id":1,"name":"1","cateName":"2","price":"3","count":"4","author":"5","ISBN":"6","old_level":"7","compare":"8","publish_time":"9","publish":"10","place":"11","label":"12","item_pic":["13","14","15"]};
+                
+                //需要的参数
+                var item_pic=itemJsonData['item_pic'];
+                var name=itemJsonData['name'];
+                var price=itemJsonData['price'];
+                var old_level=itemJsonData['old_level'];
+                var compare=itemJsonData['compare'];
+                var count=itemJsonData['count'];
+                var place=itemJsonData['place'];
+                var author=itemJsonData['author'];
+                var publish=itemJsonData['publish'];
+                var publish_time=itemJsonData['publish_time'];
+                var ISBN=itemJsonData['ISBN'];
+                var desc=itemJsonData['desc'];
+                var postage=15;
+
+                //动态添加数据
+                $(".addedIndicators").remove();
+                for(i=0;i<item_pic.length;i++){
+                    var tag="<li class='addedIndicators' data-target=\"#carousel-example-generic\" data-slide-to=\""+i+"\"></li>";
+                    if(i==0){
+                        tag="<li class='active addedIndicators' data-target=\"#carousel-example-generic\" data-slide-to=\""+i+"\"></li>";
+                    }
+                    $(".carousel-indicators").append(tag);
+                }
+                $(".addedImg").remove();
+                for(i=0;i<item_pic.length;i++){
+                    var tag="<div class='item addedImg'><img src='"+item_pic[i]+"'></div>";
+                    if(i==0){
+                        tag="<div class='item active addedImg'><img src='"+item_pic[i]+"'></div>";
+                    }
+                    $(".carousel-inner").append(tag);
+                }
+                $("#modal_item_name").html(name);
+                $("#modal_item_price").html(price);
+                $("#modal_item_postage").html(postage);
+                $("#modal_item_oldLevel").html(old_level);
+
+                $("#modal_item_compare").html(compare);
+                $("#modal_item_count").html(count);
+                $("#modal_item_place").html(place);
+                $("#modal_item_author").html(author);
+                $("#modal_item_publish").html(publish);
+                $("#modal_item_publishTime").html(publish_time);
+                $("#modal_item_ISBN").html(ISBN);
+                $("#modal_item_desc").html(desc);
+                
+            },
+            error : function(data){
+                alert("请求失败！请刷新再试！");
+            }
+        });
+    });
 
 
 

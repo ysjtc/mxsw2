@@ -33,7 +33,8 @@
         <!--右侧的显示内容结束-->
     </div>
     <!-- 外层包装结束 -->
-    <!-- 模态框开始 -->
+    
+	<!-- 模态框开始 -->
     <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
@@ -43,22 +44,12 @@
                         <div id="carousel-example-generic" class="carousel slide" data-ride="carousel">
                             <!-- Indicators -->
                             <ol class="carousel-indicators">
-                                <li data-target="#carousel-example-generic" data-slide-to="0" class="active"></li>
-                                <li data-target="#carousel-example-generic" data-slide-to="1"></li>
-                                <li data-target="#carousel-example-generic" data-slide-to="2"></li>
+                                
                             </ol>
 
                             <!-- Wrapper for slides -->
                             <div class="carousel-inner" role="listbox">
-                                <div class="item active">
-                                    <img src="static/images/book1.jpg" alt="...">
-                                </div>
-                                <div class="item">
-                                    <img src="static/images/book1.jpg" alt="...">
-                                </div>
-                                <div class="item">
-                                    <img src="static/images/book1.jpg" alt="...">
-                                </div>
+                                
                             </div>
 
                             <!-- Controls -->
@@ -74,29 +65,29 @@
                     </div>
                     <div class="good-info-document">
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                        <h1>Metasploit渗透测试魔鬼训练营</h1>
+                        <h1 id="modal_item_name"></h1>
                         <div class="base-info">
                             <!--采用表格的方式展示商品的信息-->
                             <table>
                                 <tr>
-                                    <td>价格：15元</td>
-                                    <td>邮费：5元</td>
+                                    <td>价格：<span id="modal_item_price"></span>元</td>
+                                    <td>邮费：<span id="modal_item_postage"></span>元</td>
                                 </tr>
                                 <tr>
-                                    <td>新旧程度：8成新</td>
-                                    <td>新书比价：0.8</td>
+                                    <td>新旧程度：<span id="modal_item_oldLevel"></span>成新</td>
+                                    <td>新书比价：<span id="modal_item_compare"></span></td>
                                 </tr>
                                 <tr>
-                                    <td>库存：25</td>
-                                    <td>发货地点：天津</td>
+                                    <td>库存：<span id="modal_item_count"></span></td>
+                                    <td>发货地点：<span id="modal_item_place"></span></td>
                                 </tr>
                                 <tr>
-                                    <td>作者：诸葛建伟/陈力波/田繁等 </td>
-                                    <td>出版社：机械工业出版社</td>
+                                    <td>作者：<span id="modal_item_author"></span> </td>
+                                    <td>出版社：<span id="modal_item_publish"></span></td>
                                 </tr>
                                 <tr>
-                                    <td>出版时间：2015-5-15</td>
-                                    <td>ISBN:9787111434993 </td>
+                                    <td>出版时间：<span id="modal_item_publishTime"></span></td>
+                                    <td>ISBN:<span id="modal_item_ISBN"></span></td>
                                 </tr>
                             </table>
 
@@ -104,7 +95,8 @@
                         </div>
                         <div class="detail-info">
                             <h2>概述</h2>
-                            <p>《三国志·魏志·王粲传》：“﹝蔡邕﹞闻 粲 在门，倒屣迎之。粲 至，年既幼弱，容状短小，一坐尽惊。邕 曰：‘此王公孙也，有异才，吾不如也。吾家书籍文章，尽当与之。’” 　　宋苏轼《论高丽进奉状》：“使者所至，图画山川，购买书籍。” 　　清王士禛《池北偶谈·谈异六·焦桂花》：“曹升六 舍人，曾於内库检视书籍。” 　　冰心《超人》：“他略略的点一点头，便回身去收拾他的书籍。”
+                            <p id="modal_item_desc">
+                                
                             </p>
                         </div>
                         <div class="opera">
