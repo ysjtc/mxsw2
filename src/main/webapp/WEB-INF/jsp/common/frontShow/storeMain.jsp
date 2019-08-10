@@ -71,25 +71,7 @@
                         </h4>
                         <!--分类项-->
                         <ul id="addCateTag">
-                            <li><a href="">计算机与网络<span>(6)</span></a></li>
-                            <li><a href="">管理<span>(10)</span></a></li>
-                            <li><a href="">经济金融<span>(4)</span></a></li>
-                            <li><a href="">语言学习<span>(4)</span></a></li>
-                            <li><a href="">文学艺术<span>(3)</span></a> </li>
-                            <li><a href="">科技工程<span>(6)</span></a> </li>
-                            <li><a href="">成功励志<span>(10)</span></a> </li>
-                            <li><a href="">心理<span>(4)</span></a></li>
-                            <li><a href="">法律<span>(4)</span></a></li>
-                            <li><a href="">社会科学<span>(3)</span></a></li>
-                            <li><a href="">教育考试<span>(6)</span></a></li>
-                            <li><a href="">建筑<span>(10)</span></a></li>
-                            <li><a href="">旅游地理<span>(4)</span></a></li>
-                            <li><a href="">医学卫生<span>(4)</span></a></li>
-                            <li><a href="">自然科学<span>(3)</span></a></li>
-                            <li><a href="">政治军事<span>(6)</span></a></li>
-                            <li><a href="">宗教哲学<span>(10)</span></a></li>
-                            <li><a href="">工具书<span>(4)</span></a></li>
-                            <li><a href="">教育考试<span>(4)</span></a></li>
+                            
                         </ul>
                     </div>
 

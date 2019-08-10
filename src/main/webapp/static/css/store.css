@@ -256,6 +256,7 @@
 .right-filter-item {
     padding: 20px 20px 15px 20px;
     margin-top: 20px;
+    margin-bottom:20px;
     width: 100%;
     background-color: #FFFFFF;
     /*给item来个边框阴影*/
@@ -462,3 +463,22 @@
 
 
 /* 模态框样式 -- end -- */
+
+/*一些小地方*/
+#pageShow{
+    line-height:2;
+    margin-left:20px;
+}
+#pageShow>span{
+    font-size:18px;
+    color:#4D4D4D;
+}
+#pageSelect{
+    min-width:50px;
+    border-radius:8px;
+}
+.active a{
+    /*font-size:30px;*/
+    background-color:#EEEEEE !important;
+    border-color:#DDDDDD !important;
+}

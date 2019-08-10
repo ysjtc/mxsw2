@@ -53,12 +53,22 @@ $(document).ready(function() {
     //处理商展页的数据显示
     //X0首次访问时
     //首先请求分类信息
-    $.ajax({
+     $.ajax({
         url : 'http:www.baidu.com',
         success : function(data) {
             var cateJsonData=JSON.parse(data);
-            if(data['result']){
-                $("#addCateTag").append();
+            // data={
+            //     "1":["安卓开发",23],
+            //     "2":["区块链",22],
+            //     "3":["人工智能",33]
+            // };
+            $("#addedCate").remove();
+            if(cateJsonData['result']){
+                //<li><a cateId='1' href='javascript:void(-1);'>计算机与网络<span>(6)</span></a></li>
+                $.each(cateJsonData,function(key,value){
+                    var cateTag="<li><a class='addedCate' cateId='"+key+"' href='javascript:void(-1);'>"+value[0]+"<span>("+value[1]+")</span></a></li>";
+                    $("#addCateTag").append(cateTag);
+                });
             }else{
                 alert("意外错误！请重试！");
             }
@@ -85,7 +95,7 @@ $(document).ready(function() {
             success : function(data) {
                 // data={"total":26,"rows":[{"item_id":1,"name":"1","cateName":"2","price":"3","count":"4","author":"5","ISBN":"6","old_level":"7","compare":"8","publish_time":"9","publish":"10","place":"11","label":"12","item_pic":"13"},{"item_id":1,"name":"1","cateName":"2","price":"3","count":"4","author":"5","ISBN":"6","old_level":"7","compare":"8","publish_time":"9","publish":"10","place":"11","label":"12","item_pic":"13"},{"item_id":1,"name":"1","cateName":"2","price":"3","count":"4","author":"5","ISBN":"6","old_level":"7","compare":"8","publish_time":"9","publish":"10","place":"11","label":"12","item_pic":"13"},{"item_id":1,"name":"1","cateName":"2","price":"3","count":"4","author":"5","ISBN":"6","old_level":"7","compare":"8","publish_time":"9","publish":"10","place":"11","label":"12","item_pic":"13"},{"item_id":1,"name":"1","cateName":"2","price":"3","count":"4","author":"5","ISBN":"6","old_level":"7","compare":"8","publish_time":"9","publish":"10","place":"11","label":"12","item_pic":"13"}]};
                 var itemsJsonData=JSON.parse(data);
-                if(!data['result']){
+                if(data['result']){
                     // console.log(data);
                     var total=itemsJsonData['total'];
                     //设置商展页的总数显示
