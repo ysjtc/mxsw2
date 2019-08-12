@@ -16,6 +16,13 @@ public class ForwardController {
     }
 
 
+    /*进入Store.jsp页面*/
+    @RequestMapping("/store")
+    public String store(){
+        return "frontShow/store/store";
+    }
+
+
 
 
 }
