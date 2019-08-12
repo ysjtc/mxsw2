@@ -347,5 +347,64 @@ $(document).ready(function() {
     });
 
 
+    //处理支付
+    $(".left-show").on("click",".buyNow",function(){
+        var out_trade_no=$("input[name='out_trade_no']").val();;
+        var subject=$("input[name='subject']").val();;
+        var total_amount=$("input[name='total_amount']").val();;
+        var body=$("input[name='body']").val();;
+        // alert(subject);
+        $.ajax({
+            url:'Pay/AliPay',
+            dataType:'html',
+            type:'post',
+            async:false,
+            // contentType:'application/json',
+            // data:JSON.stringify(obj),
+            data:{
+                'out_trade_no':out_trade_no,
+                'subject':subject,
+                'total_amount':total_amount,
+                'body':body
+            },
+            success:function (data){
+                alert("成功"+data);
+                $('#formdiv').html(data);
+
+            },error:function (data) {
+                alert("失败"+data);
+            }
+        })
+    });
+
+    //模态框的支付点击
+    $(".buyNow").click(function(){
+        var out_trade_no=$("input[name='out_trade_no']").val();;
+        var subject=$("input[name='subject']").val();;
+        var total_amount=$("input[name='total_amount']").val();;
+        var body=$("input[name='body']").val();;
+        // alert(subject);
+        $.ajax({
+            url:'Pay/AliPay',
+            dataType:'html',
+            type:'post',
+            async:false,
+            // contentType:'application/json',
+            // data:JSON.stringify(obj),
+            data:{
+                'out_trade_no':out_trade_no,
+                'subject':subject,
+                'total_amount':total_amount,
+                'body':body
+            },
+            success:function (data){
+                alert("成功"+data);
+                $('#formdiv').html(data);
+
+            },error:function (data) {
+                alert("失败"+data);
+            }
+        })
+    });
 
 });

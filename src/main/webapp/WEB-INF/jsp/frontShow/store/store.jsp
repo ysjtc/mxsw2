@@ -100,7 +100,7 @@
                             </p>
                         </div>
                         <div class="opera">
-                            <button class="btn btn-primary">立即购买</button>
+                            <button class="btn btn-primary buyNow">立即购买</button>
                             <button class="btn btn-success">加入购物车</button>
                         </div>
                     </div>
@@ -110,6 +110,13 @@
     </div>
     <!-- 模态框结束 -->
 
+    <!--一个隐藏的有关支付的提交input-->
+    <div style="display: none;">
+       <input type="text" name="out_trade_no" id="out_trade_no" value=""><br>
+       <input type="text" name="subject" id="subject" value=""><br>
+       <input type="text" name="total_amount" id="total_amount" value=""><br>
+       <input type="text" name="body" id="body" value=""><br>
+    </div>
 
 
 
