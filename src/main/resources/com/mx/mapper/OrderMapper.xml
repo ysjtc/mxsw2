@@ -10,14 +10,7 @@
     <result column="status" jdbcType="BIT" property="status" />
     <result column="note" jdbcType="VARCHAR" property="note" />
   </resultMap>
-  <insert id="insert" parameterType="com.mx.pojo.Order">
-    insert into order (o_id, u_id, add_id, 
-      create_time, number, status, 
-      note)
-    values (#{oId,jdbcType=INTEGER}, #{uId,jdbcType=INTEGER}, #{addId,jdbcType=INTEGER}, 
-      #{createTime,jdbcType=VARCHAR}, #{number,jdbcType=VARCHAR}, #{status,jdbcType=BIT}, 
-      #{note,jdbcType=VARCHAR})
-  </insert>
+
   <insert id="insertSelective" parameterType="com.mx.pojo.Order">
     insert into order
     <trim prefix="(" suffix=")" suffixOverrides=",">

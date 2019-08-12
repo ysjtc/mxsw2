@@ -11,6 +11,9 @@
   <select id="queryAllCategory" resultType="com.mx.pojo.Category">
     select * from category
   </select>
+  <select id="queryItemsItemCateName" resultType="com.mx.pojo.Category">
+    select * from category
+  </select>
   <insert id="insert" parameterType="com.mx.pojo.Category">
     insert into category (c_id, name)
     values (#{cId,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR})

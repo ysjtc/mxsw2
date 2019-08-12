@@ -12,4 +12,6 @@ public interface CategoryMapper {
     List<Integer> queryCid();
 
     List<Category> queryAllCategory();
+
+    List<Category> queryItemsItemCateName();
 }

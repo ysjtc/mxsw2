@@ -19,4 +19,7 @@ public interface CategoryService {
     List<Category> queryAllCategory();
 
 
+    //查询商品类别
+    String queryItemsItemCateName();
+
 }

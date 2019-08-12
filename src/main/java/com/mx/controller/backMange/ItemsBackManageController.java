@@ -26,8 +26,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Controller
-@RequestMapping("/Items")
-public class ItemsController {
+@RequestMapping("/ItemsBackManage")
+public class ItemsBackManageController {
 
     //自动注入items
     @Autowired

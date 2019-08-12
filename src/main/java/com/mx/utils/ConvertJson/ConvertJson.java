@@ -19,7 +19,7 @@ public class ConvertJson {
         }
         //把最后的，（逗号）截取掉
         str = jsonStrAll.substring(0, jsonStrAll.length()-1)+"]}";
-        System.out.println(str);
+//        System.out.println(str);
         return str;
     }
 

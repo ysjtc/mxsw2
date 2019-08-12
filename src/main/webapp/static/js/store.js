@@ -54,7 +54,7 @@ $(document).ready(function() {
     //X0首次访问时
     //首先请求分类信息
     $.ajax({
-        url : 'http:www.baidu.com',
+        url : 'ItemsFrontManage/query/ItemsItemCate',
         success : function(data) {
             var cateJsonData=JSON.parse(data);
             // cateJsonData={
@@ -83,7 +83,7 @@ $(document).ready(function() {
 
 
     //一个处理商品数据的函数，包括分页等功能
-    function showItemInfo(queryData="",pageSize=5,offset=0,sort="item_id",sortOrder="asc",priceRange,cateId,labelId){
+    function showItemInfo(queryData="",pageSize=5,offset=0,sort="item_id",sortOrder="asc",priceRange="",cateId="",labelId=""){
         var firstQuery={};
         firstQuery['pageSize']=pageSize;
         firstQuery['offset']=offset;
@@ -94,12 +94,12 @@ $(document).ready(function() {
         firstQuery['cateId']=cateId;
         firstQuery['labelId']=labelId;
         $.ajax({
-            url : 'http:www.baidu.com',
+            url : 'ItemsFrontManage/query/AllItems',
             data : firstQuery,
             type : 'POST',
             success : function(data) {
-                //itemsJsonData={"result":true,"total":26,"rows":[{"item_id":1,"name":"1","cateName":"2","price":"3","count":"4","author":"5","ISBN":"6","old_level":"7","compare":"8","publish_time":"9","publish":"10","place":"11","label":"12","item_pic":"13"},{"item_id":1,"name":"1","cateName":"2","price":"3","count":"4","author":"5","ISBN":"6","old_level":"7","compare":"8","publish_time":"9","publish":"10","place":"11","label":"12","item_pic":"13"},{"item_id":1,"name":"1","cateName":"2","price":"3","count":"4","author":"5","ISBN":"6","old_level":"7","compare":"8","publish_time":"9","publish":"10","place":"11","label":"12","item_pic":"13"},{"item_id":1,"name":"1","cateName":"2","price":"3","count":"4","author":"5","ISBN":"6","old_level":"7","compare":"8","publish_time":"9","publish":"10","place":"11","label":"12","item_pic":"13"},{"item_id":1,"name":"1","cateName":"2","price":"3","count":"4","author":"5","ISBN":"6","old_level":"7","compare":"8","publish_time":"9","publish":"10","place":"11","label":"12","item_pic":"13"}]};
-                var itemsJsonData=JSON.parse(data);
+                itemsJsonData={"result":true,"total":26,"rows":[{"item_id":1,"name":"1","cateName":"2","price":"3","count":"4","author":"5","ISBN":"6","old_level":"7","compare":"8","publish_time":"9","publish":"10","place":"11","label":"12","item_pic":"13"},{"item_id":1,"name":"1","cateName":"2","price":"3","count":"4","author":"5","ISBN":"6","old_level":"7","compare":"8","publish_time":"9","publish":"10","place":"11","label":"12","item_pic":"13"},{"item_id":1,"name":"1","cateName":"2","price":"3","count":"4","author":"5","ISBN":"6","old_level":"7","compare":"8","publish_time":"9","publish":"10","place":"11","label":"12","item_pic":"13"},{"item_id":1,"name":"1","cateName":"2","price":"3","count":"4","author":"5","ISBN":"6","old_level":"7","compare":"8","publish_time":"9","publish":"10","place":"11","label":"12","item_pic":"13"},{"item_id":1,"name":"1","cateName":"2","price":"3","count":"4","author":"5","ISBN":"6","old_level":"7","compare":"8","publish_time":"9","publish":"10","place":"11","label":"12","item_pic":"13"}]};
+                //var itemsJsonData=JSON.parse(data);
                 if(itemsJsonData['result']){
                     // console.log(data);
                     var total=itemsJsonData['total'];
