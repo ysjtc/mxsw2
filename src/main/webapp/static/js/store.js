@@ -285,7 +285,7 @@ $(document).ready(function() {
         item_id['item_id']=$(this).attr("item_id");
         //ajax发送请求商品信息
         $.ajax({
-            url : 'http:www.aomaha8.cn',
+            url : 'ItemsFrontManage/query/ItemByID',
             method : 'POST',
             data : item_id,
             async: false,

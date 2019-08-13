@@ -77,4 +77,20 @@ public class ConvertJson {
         return (pageNum>0)? (pageNum-1)*pageSize:0;
     }
 
+
+    //获取item表中除itemid外的所有字段
+    public static String FrontConvertItem(List<Item> list) {
+        //定义一个StringBuilder
+        StringBuilder jsonStrAll = new StringBuilder("{");
+        String str=null;
+        for (int i=0;i<list.size();i++){
+            //把你要拼接的字段放进去
+            jsonStrAll.append(list.get(i).FrontToJson() +",");
+        }
+        //把最后的，（逗号）截取掉
+        str = jsonStrAll.substring(0, jsonStrAll.length()-1);
+        System.out.println("ConvertItem----"+str);
+        return str;
+    }
+
 }

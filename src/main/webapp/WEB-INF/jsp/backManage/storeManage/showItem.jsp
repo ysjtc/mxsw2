@@ -528,7 +528,7 @@
             })
         }
         //未定位查询前先设定表格显示所有
-        doTable("Items/query/AllItems");
+        doTable("ItemsBackManage/query/AllItems");
 
 
         /*function saveData(item_id, field, tdValue){
@@ -671,20 +671,20 @@
 
             if($.trim(lowPrice)!=""&&$.trim(highPrice)!=""){
                 //根据价格查询的url
-                url="Items/query/ItemsByPrice";
+                url="ItemsBackManage/query/ItemsByPrice";
                 data["lowPrice"]=lowPrice;
                 data["highPrice"]=highPrice;
             }else if($.trim(isbn)!=""){
                 //根据ISBN查询的url
-                url="Items/query/ToQueryItemsByIsbn";
+                url="ItemsBackManage/query/ToQueryItemsByIsbn";
                 data["isbn"]=isbn;
             }else if($.trim(bookname)!=""){
                 //根据书名查询的url
-                url="Items/query/ItemsByName";
+                url="ItemsBackManage/query/ItemsByName";
                 data["bookname"]=bookname;
             }else if($.trim(itemCate)!=""){
                 //根据商品类别来查询的url
-                url="Items/query/ItemsByItemCate";
+                url="ItemsBackManage/query/ItemsByItemCate";
                 data["itemCate"]=itemCate;
             }else{
                 $("#queryIssu").html("错误！请检查是否输入了查询信息，或者信息是否完整！");
@@ -729,7 +729,7 @@
 
                 //ajax提交删除请求
                 $.ajax({
-                    url:'Items/deleteItem',
+                    url:'ItemsBackManage/deleteItem',
                     data:itemIdData,
                     type:'post',
                     success:function(data){
@@ -769,7 +769,7 @@
             var tmp={};
             tmp['itemID']= $(obj).attr("itemid");
             $.ajax({
-                url : 'Items/query/getPicPath',//访问后台的上传方法路径
+                url : 'ItemsBackManage/query/getPicPath',//访问后台的上传方法路径
                 data : tmp,       //保存的formdata集合
                 type : 'POST',
                 success : function(data) {
@@ -997,7 +997,7 @@
                 if(postFlag){
                     //ajax发送数据
                     $.ajax({
-                        url : 'Items/updateItem',//访问后台的上传方法路径
+                        url : 'ItemsBackManage/updateItem',//访问后台的上传方法路径
                         data : newPicForm,       //保存的formdata集合
                         type : 'POST',
                         cache : false,

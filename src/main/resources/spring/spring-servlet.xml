@@ -22,17 +22,14 @@
         <property name="suffix" value=".jsp"></property>
     </bean>
     <!--加上MVC驱动-->
-    <mvc:annotation-driven><!--
-        &lt;!&ndash;配置消息转换器已支持json的使用&ndash;&gt;
+    <mvc:annotation-driven>
+       <!--配置消息转换器已支持json的使用-->
         <mvc:message-converters>
             <bean class="org.springframework.http.converter.StringHttpMessageConverter">
-                <property name="supportedMed iaTypes">
-                    <list>
-                        <value>application/json;charset=UTF-8</value>
-                    </list>
-                </property>
+              <constructor-arg value="utf-8"/>
+                <property name="writeAcceptCharset" value="false"/>
             </bean>
-        </mvc:message-converters>-->
+        </mvc:message-converters>
     </mvc:annotation-driven>
     <!--文件上传解析器
         id只能为multipartResolver
@@ -55,7 +52,7 @@
             <!--/*只能拦截/name一层，而/**可以拦截多层-->
             <!--/**/*可以拦截任意包任意层-->
             <mvc:mapping path="/SuperAdmin/**/*"/>
-
+            <mvc:exclude-mapping path="/SuperAdmin/ToLogin"/>
             <bean class="com.mx.interCeptors.SuperAdminInterCeptor">
             </bean>
         </mvc:interceptor>

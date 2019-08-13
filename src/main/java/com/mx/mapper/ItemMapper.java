@@ -125,4 +125,7 @@ public interface ItemMapper {
 
     //查询某商品种类的个数
     int QueryItemsCounts(@Param("cateId") Integer cateId);
+
+    //通过itemid查询商品
+    List<Item> FrontQueryItemById(@Param("itemId") Integer itemId);
 }

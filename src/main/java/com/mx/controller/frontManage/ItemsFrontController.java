@@ -167,9 +167,17 @@ public class ItemsFrontController {
     //查询商品类别
     @ResponseBody
     @RequestMapping("/query/ItemsItemCate")
-    public String queryItemsItemCate(HttpSession session){
-
-        return categoryService.queryItemsItemCateName();
+    public String queryItemsItemCate(){
+        String str=categoryService.queryItemsItemCateName();
+        System.out.println(str);
+        return str;
+      }
+ //查询商品类别
+    @ResponseBody
+    @RequestMapping("/query/ItemByID")
+    public String queryItemByID(Integer item_id,HttpSession session){
+        System.out.println("---------"+item_id);
+        return itemsService.FrontQueryItemById(item_id);
       }
 
 

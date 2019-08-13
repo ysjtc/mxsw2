@@ -76,7 +76,7 @@ public class ItemsServiceImpl implements ItemsService {
 
     @Override
     public String queryItemById(Integer  itemId) {
-       System.out.println("传入的itemid:"+itemId);
+//       System.out.println("传入的itemid:"+itemId);
         List<Item> list=itemMapper.queryItemsById(itemId);
         String item=ConvertJson.UpdateConvertItem(list);
         List<Item_Pic> picPath=item_picMapper.queryByItemID(itemId);
@@ -411,6 +411,16 @@ public class ItemsServiceImpl implements ItemsService {
     public int QueryItemsCounts(Integer cateId) {
 
         return itemMapper.QueryItemsCounts(cateId);
+    }
+
+    @Override
+    public String FrontQueryItemById(Integer itemId) {
+        List<Item> list=itemMapper.FrontQueryItemById(itemId);
+        String item=ConvertJson.FrontConvertItem(list);
+        System.out.println("传入的itemid是："+itemId);
+        List<Item_Pic> picPath=item_picMapper.queryByItemID(itemId);
+        String itemPath=ConvertJson.UpdateConvertPath(item,picPath);
+        return itemPath;
     }
 
 

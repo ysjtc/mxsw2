@@ -221,6 +221,20 @@ public class Item implements Serializable {
                         "\""+"place"+"\":"+"\""+place +"\","+
                         "\""+"label"+"\":"+"\""+label +"\",";
     }
+    public String FrontToJson() {
+        return
+                        "\""+"name"+"\":"+"\""+name +"\","+
+                        "\""+"price"+"\":"+"\""+price +"\","+
+                        "\""+"count"+"\":"+"\""+count +"\","+
+                        "\""+"author"+"\":"+"\""+author +"\","+
+                        "\""+"ISBN"+"\":"+"\""+isbn +"\","+
+                        "\""+"old_level"+"\":"+"\""+ oldLevel +"\","+
+                        "\""+"compare"+"\":"+"\""+compare +"\","+
+                        "\""+"describe"+"\":"+"\""+describe +"\","+
+                        "\""+"publish_time"+"\":"+"\""+publishTime +"\","+
+                        "\""+"publish"+"\":"+"\""+publish +"\","+
+                        "\""+"place"+"\":"+"\""+place +"\",";
+    }
 
     @Override
     public String toString() {

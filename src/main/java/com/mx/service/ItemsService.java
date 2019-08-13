@@ -98,4 +98,6 @@ public interface ItemsService {
     //查询某商品种类的个数
     int QueryItemsCounts(Integer cateId);
 
+    //通过itemid查询商品
+    String FrontQueryItemById(Integer itemid);
 }

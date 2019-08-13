@@ -364,7 +364,7 @@
                 //alert(cacheExtData);
                 $("#item_pic").fileinput({
                 language: 'zh', //设置语言
-                uploadUrl:"Items/ToAdd", //上传的地址
+                uploadUrl:"ItemsBackManage/ToAdd", //上传的地址
                 allowedFileExtensions: ['jpg', 'jpeg', 'png'],//接收的文件后缀
                 uploadExtraData:function(){
                     return cacheExtData;
