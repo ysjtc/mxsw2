@@ -2,7 +2,6 @@ package com.mx.controller.backMange;
 
 
 import com.mx.pojo.SuperAdmin;
-import com.mx.service.CategoryService;
 import com.mx.service.SuperAdminService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -19,9 +18,6 @@ public class SuperAdminController {
     @Autowired
     private SuperAdminService superAdminService;
 
-    //自动注入category
-    @Autowired
-    private CategoryService categoryService;
 
 //    //自动注入Item
 //    @Autowired
@@ -45,8 +41,7 @@ public class SuperAdminController {
     //superadmin登陆
     @RequestMapping("/login")
     public String login(SuperAdmin superAdmin, Model model, HttpSession session){
-        //查询商品类型,跟随登陆启动
-        session.setAttribute("Category",categoryService.queryAllCategory());
+
             if (superAdmin != null) {
                  superAdmin = superAdminService.login(superAdmin);
                 //登录成功  跳向成功页面

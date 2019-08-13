@@ -54,13 +54,13 @@
             <mvc:mapping path="/SuperAdmin/**/*"/>
             <mvc:mapping path="/ItemsBackManage/**/*"/>
             <mvc:mapping path="/Forward/**/*"/>
-            <mvc:exclude-mapping path="/SuperAdmin/ToLogin"/>
-            <mvc:exclude-mapping path="/SuperAdmin/addSuperadmin"/>
+            <mvc:exclude-mapping path="/SuperAdmin/ToSuperadmin"/>
             <bean class="com.mx.interCeptors.SuperAdminInterCeptor">
             </bean>
         </mvc:interceptor>
         <!--<mvc:interceptor>-->
-            <!--<mvc:mapping path="/User/**/*"/>-->
+            <!--<mvc:mapping path="/UserLogin"/>
+            <mvc:exclude-mapping path="/SuperAdmin/add/**/*"/>-->
             <!--<mvc:exclude-mapping path="/User/login"/>-->
             <!--<bean class="com.mx.interCeptors.SessionInterceptor"></bean>-->
          <!--</mvc:interceptor>-->
