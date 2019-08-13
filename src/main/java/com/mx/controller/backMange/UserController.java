@@ -42,6 +42,7 @@ public class UserController {
             Errors error,
             Model model,
             HttpSession session){
+
         if (!error.hasErrors()) {
             /*判断用户名是否合法*/
             if(user.getName()==null||
@@ -50,9 +51,13 @@ public class UserController {
                     user.getName().length()<6){
                 return "frontShow/errorPage/error";
             }
+
             /*若用户账号与密码都正确，则从数据库拿到用户记录recorduser*/
             User recorduser = userService.login(user);
-
+            if(recorduser==null){
+                model.addAttribute("status","密码或账号输入错误");
+                return "frontShow/personal/login";
+            }
             /*当用户账号与密码都正确时进入登录成功页面*/
             if (recorduser != null) {
                User_Pic userPic=userPicService.queryById(recorduser.getuId());
@@ -67,6 +72,9 @@ public class UserController {
         }else{
             return "frontShow/personal/login";
         }
+/*    }catch (Exception e){
+        return "frontShow/errorPage/error.jsp";
+    }*/
     }
 
     /*用户注册的handle*/
@@ -74,6 +82,7 @@ public class UserController {
     @PreventRepeat
     public String register(
             @Valid @ModelAttribute User user,
+            Model model,
             Errors error,
             HttpSession session
             ){
@@ -98,8 +107,9 @@ public class UserController {
                     /*添加用户头像信息*/
                     User_Pic userPic=new User_Pic();
                     userPic.setuId(userService.getUserIdByname(user.getName()));
-                    userPic.setUserPath("static/upload/userPic/timg.jpg");
+                    userPic.setUserPath("static/images/personal_img.png");
                     userPicService.addUserPic(userPic);
+                    model.addAttribute("userPic",userPic);
                 }catch(Exception e){
                     e.printStackTrace();
                 }

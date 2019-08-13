@@ -31,19 +31,21 @@ public class UserServiceImpl implements UserService {
     @Override
     /*登陆*/
     public User login(User u) {
+
         /*获取用户记录*/
         /*获取用户记录前，先将密码加密后在与数据库中的密码比对*/
         MD5 md5 = new MD5();
-        String passwd=md5.MD5Encode(u.getPassword());
+        String passwd = md5.MD5Encode(u.getPassword());
         u.setPassword(passwd);
-        User user=usermapper.queryUserByname(u.getName());
-        if(user.getPassword().equals(u.getPassword())){
+        User user = usermapper.queryUserByname(u.getName());
+        if(user==null)return null;
+        if (user.getPassword().equals(u.getPassword())) {
             return user;
-        }else{
+        } else {
             return null;
         }
-    }
 
+    }
     /*注册*/
     @Override
     public boolean addUser(User user) {
