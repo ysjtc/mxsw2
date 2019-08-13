@@ -1,4 +1,5 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
@@ -111,9 +112,14 @@
     <!-- 模态框结束 -->
 
     <!--一个隐藏的有关支付的提交input-->
+    <%
+        java.text.SimpleDateFormat formatter = new java.text.SimpleDateFormat("yyyyMMddHHmmss");
+        java.util.Date currentTime = new java.util.Date();//得到当前系统时间
+        String date = formatter.format(currentTime); //将日期时间格式化
+    %>
     <div style="display: none;">
        <input type="text" name="out_trade_no" id="out_trade_no" value=""><br>
-       <input type="text" name="subject" id="subject" value=""><br>
+       <input type="text" name="subject" id="subject" value="${USER_ID}<%=date%>"><br>
        <input type="text" name="total_amount" id="total_amount" value=""><br>
        <input type="text" name="body" id="body" value=""><br>
     </div>

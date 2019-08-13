@@ -477,7 +477,7 @@
     min-width:50px;
     border-radius:8px;
 }
-.active a{
+.clicked a{
     /*font-size:30px;*/
     background-color:#EEEEEE !important;
     border-color:#DDDDDD !important;

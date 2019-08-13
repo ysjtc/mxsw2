@@ -160,7 +160,7 @@ $(document).ready(function() {
                         //以curentPage为中心，两边各2各项展开分页
                         for(i=(curentPage-2);i<=curentPage+2;i++){
                             if (i==curentPage) {
-                                    var pageTag="<li class='active addedLiTag'><a href=\"javascript:void(-1);\" class=\"toPage\" page=\""+(i)+"\">"+(i)+"</a></li>";
+                                    var pageTag="<li class='clicked addedLiTag'><a href=\"javascript:void(-1);\" class=\"toPage\" page=\""+(i)+"\">"+(i)+"</a></li>";
                                 }else{
                                     var pageTag="<li class='addedLiTag'><a href=\"javascript:void(-1);\" class=\"toPage\" page=\""+(i)+"\">"+(i)+"</a></li>";
                                 }
@@ -171,7 +171,7 @@ $(document).ready(function() {
                             for(i=0;i<totalPage;i++){
                                 // alert("i----"+(i+1));
                                 if ((i+1)==curentPage) {
-                                    var pageTag="<li class='active addedLiTag'><a href=\"javascript:void(-1);\" class=\"toPage\" page=\""+(i+1)+"\">"+(i+1)+"</a></li>";
+                                    var pageTag="<li class='clicked addedLiTag'><a href=\"javascript:void(-1);\" class=\"toPage\" page=\""+(i+1)+"\">"+(i+1)+"</a></li>";
                                 }else{
                                     var pageTag="<li class='addedLiTag'><a href=\"javascript:void(-1);\" class=\"toPage\" page=\""+(i+1)+"\">"+(i+1)+"</a></li>";
                                 }
@@ -182,7 +182,7 @@ $(document).ready(function() {
                                 for(i=0;i<5;i++){
                                     // alert("i----"+(i+1));
                                     if ((i+1)==curentPage) {
-                                        var pageTag="<li class='active addedLiTag'><a href=\"javascript:void(-1);\" class=\"toPage\" page=\""+(i+1)+"\">"+(i+1)+"</a></li>";
+                                        var pageTag="<li class='clicked addedLiTag'><a href=\"javascript:void(-1);\" class=\"toPage\" page=\""+(i+1)+"\">"+(i+1)+"</a></li>";
                                     }else{
                                         var pageTag="<li class='addedLiTag'><a href=\"javascript:void(-1);\" class=\"toPage\" page=\""+(i+1)+"\">"+(i+1)+"</a></li>";
                                     }
@@ -192,7 +192,7 @@ $(document).ready(function() {
                                 //从next开始倒着，达到5项停止
                                 for(i=5,n=totalPage;i>0;i--,n--){
                                     if (n==curentPage) {
-                                        var pageTag="<li class='active addedLiTag'><a href=\"javascript:void(-1);\" class=\"toPage\" page=\""+n+"\">"+n+"</a></li>";
+                                        var pageTag="<li class='clicked addedLiTag'><a href=\"javascript:void(-1);\" class=\"toPage\" page=\""+n+"\">"+n+"</a></li>";
                                     }else{
                                         var pageTag="<li class='addedLiTag'><a href=\"javascript:void(-1);\" class=\"toPage\" page=\""+n+"\">"+n+"</a></li>";
                                     }
@@ -208,7 +208,7 @@ $(document).ready(function() {
 
 
                     
-                    // doActivePage();  
+                    // doclickedPage();  
                 }else{
                     alert("请求失败！请刷新再试！");
                 }
@@ -313,7 +313,7 @@ $(document).ready(function() {
                 for(i=0;i<item_pic.length;i++){
                     var tag="<li class='addedIndicators' data-target=\"#carousel-example-generic\" data-slide-to=\""+i+"\"></li>";
                     if(i==0){
-                        tag="<li class='active addedIndicators' data-target=\"#carousel-example-generic\" data-slide-to=\""+i+"\"></li>";
+                        tag="<li class='clicked addedIndicators' data-target=\"#carousel-example-generic\" data-slide-to=\""+i+"\"></li>";
                     }
                     $(".carousel-indicators").append(tag);
                 }
@@ -321,7 +321,7 @@ $(document).ready(function() {
                 for(i=0;i<item_pic.length;i++){
                     var tag="<div class='item addedImg'><img src='"+item_pic[i]+"'></div>";
                     if(i==0){
-                        tag="<div class='item active addedImg'><img src='"+item_pic[i]+"'></div>";
+                        tag="<div class='item clicked addedImg'><img src='"+item_pic[i]+"'></div>";
                     }
                     $(".carousel-inner").append(tag);
                 }
