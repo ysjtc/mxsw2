@@ -1,8 +1,10 @@
 package com.mx.service;
 
+import com.mx.pojo.Page;
 import com.mx.pojo.User;
+import com.mx.pojo.UserData;
 
-import java.util.List;
+import java.util.Map;
 
 public interface UserService {
     /*用户登陆*/
@@ -18,9 +20,12 @@ public interface UserService {
     public boolean updateUser(User user);
 
     /*查找特定用户*/
-    public User queryUserByname(String name);
+    public UserData queryUserByname(String name);
+
+    /*得到用户id*/
+    public int getUserIdByname(String name);
 
     /*查找所有用户*/
-    public List<User> queryAllUser();
+    public Map queryAllUser(Page page);
 
 }

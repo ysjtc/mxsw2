@@ -1,11 +1,12 @@
 package com.mx.controller.backMange;
 
-import com.mx.pojo.User;
-import com.mx.pojo.User_Pic;
+import com.mx.pojo.*;
 import com.mx.service.UserPicService;
 import com.mx.service.UserService;
+import com.mx.service.VipService;
 import com.mx.utils.Anno.PreventRepeat;
 import com.mx.utils.RandomUser.RandomUser;
+import com.mx.utils.UpLoad.UserUpload;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -13,19 +14,15 @@ import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
-import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
-import java.io.File;
-import java.io.IOException;
-import java.util.List;
+import java.util.Map;
 
 
 @Controller
 @RequestMapping(value="/User")
 public class UserController {
-
 
     @Autowired
     private UserService userService;
@@ -33,6 +30,8 @@ public class UserController {
     @Autowired
     private UserPicService userPicService;
 
+    @Autowired
+    private VipService vipService;
 
 
     /*用户登录的handle*/
@@ -60,7 +59,7 @@ public class UserController {
                 model.addAttribute("user",recorduser);
                 model.addAttribute("userpic",userPic);
                 session.setAttribute("USER_SESSION", recorduser);
-                session.setAttribute("USER_ID", recorduser.getuId());
+                session.setAttribute("USE_ID", recorduser.getName());
                 return "frontShow/personal/personalMain";
             } else {
                 return "frontShow/errorPage/error";
@@ -70,31 +69,37 @@ public class UserController {
         }
     }
 
-
     /*用户注册的handle*/
     @RequestMapping(value="/register",method = RequestMethod.POST)
     @PreventRepeat
     public String register(
             @Valid @ModelAttribute User user,
             Errors error,
-            Model model,
-            HttpSession session,
-            @RequestParam("file") CommonsMultipartFile file
+            HttpSession session
             ){
         if (error.hasErrors()) {
             return "frontShow/errorPage/error";
         }else{
             /*随机生成用户名*/
             user.setName(RandomUser.RandomName());
+            System.out.println(user.getName());
             while(userService.queryUserByname(user.getName())!=null){
                 user.setName(RandomUser.RandomName());
             }
             /*开始创建用户*/
             if (userService.addUser(user)) {
                 try {
-                   // User_Pic userPic=this.imgUpload(file, request, user);
-                    model.addAttribute("user", user);
-                    //model.addAttribute("userPic",userPic);
+                   /* *//*添加vip信息*//*
+                    Vip vip=new Vip();
+                    vip.setVipId(userService.getUserIdByname(user.getName()));
+                    vip.setScore(0);
+                    vipService.AddVip(vip);*/
+
+                    /*添加用户头像信息*/
+                    User_Pic userPic=new User_Pic();
+                    userPic.setuId(userService.getUserIdByname(user.getName()));
+                    userPic.setUserPath("static/upload/userPic/timg.jpg");
+                    userPicService.addUserPic(userPic);
                 }catch(Exception e){
                     e.printStackTrace();
                 }
@@ -116,7 +121,7 @@ public class UserController {
     }
 
     /*删除用户的handle*/
-    @RequestMapping("/delateuser")
+    @RequestMapping("/delateUser")
     @PreventRepeat
     public String deleteuser(String name){
         if(userService.deleteUser(name)){
@@ -127,21 +132,24 @@ public class UserController {
     }
 
     /*修改用户信息的handle*/
-    @RequestMapping("/updateuser")
+    @RequestMapping("/updateUser")
     @PreventRepeat
     public String updateuser(
         @Valid @ModelAttribute User user,
-        Errors error,
-        Model model){
+        HttpServletRequest request,
+        @RequestParam("file") CommonsMultipartFile file,
+        Errors error
+        )throws Exception{
         if(error.hasErrors()){
-            return "redirect:/jsp/test/update.jsp";
+            return "frontShow/errorPage/error";
         }else {
             if (userService.updateUser(user)) {
-                User useraccept=userService.queryUserByname(user.getName());
-                model.addAttribute("user",useraccept);
-                return "redirect:/jsp/test/success.jsp";
+
+                User_Pic userPic= UserUpload.imgUpload(file,request,user,userService,userPicService);
+                UserData useraccept=userService.queryUserByname(user.getName());
+                return "";
             } else {
-                return "redirect:/jsp/test/update.jsp";
+                return "";
             }
         }
     }
@@ -149,55 +157,51 @@ public class UserController {
     /*查找所有用户的handle*/
     @ResponseBody
     @RequestMapping("/getAlluser")
-    @PreventRepeat
-    public Object getAlluser(){
-
-        List<User> users=userService.queryAllUser();
+    public Object getAlluser(
+            @RequestBody Page page
+    ){
+        Map users=userService.queryAllUser(page);
+        System.out.println(users);
         return users;
     }
 
     /*查找特定用户的handle*/
-    @RequestMapping("/queryuser")
+    @ResponseBody
+    @RequestMapping("/queryUser")
     @PreventRepeat
-    public String queryUser(String name,Model model){
-        User user=userService.queryUserByname(name);
-        model.addAttribute("user",user);
-        return "";
+    public Object queryUser(String name){
+        UserData user=userService.queryUserByname(name);
+        return user;
     }
 
-    /*注册时图片上传*/
 
-    public User_Pic imgUpload(
-                CommonsMultipartFile file,
-                HttpServletRequest request,
-                User user) throws IOException {
-        if(!file.isEmpty()) {
-            User_Pic userPic=new User_Pic();
-            //文件后缀名
-            String suffixName=file.getContentType().substring(file.getContentType().indexOf("/")+1);
-            // 文件名
-            String newFileName = user.getName()+"."+suffixName;
-            // 获得项目的路径
-            ServletContext sc = request.getSession().getServletContext();
-            // 上传位置
-            String path = sc.getRealPath("/user"); // 设定文件保存的目录
-            File f = new File(path);
-            File f2 = new File(path + newFileName);
-        /*判断目录是否存在，不存在则创建*/
-            if (!f.exists())
-                f.mkdirs();
-            if (f2.exists())
-                f2.delete();
-            userPic.setuId(userService.queryUserByname(user.getName()).getuId());
-            if (!file.isEmpty()) {
-                /*将图片路径存入数据库*/
-                userPic.setUserPath(path + "\\"+newFileName);
-                userPicService.addUserPic(userPic);
-                /*将图片存入在服务器下的制定路径（虚拟的）*/
-                file.transferTo(new File(path + newFileName));
-                return userPic;
+
+
+
+
+   /* @RequestMapping(value="/regtest",method = RequestMethod.POST)
+    public String regtest(
+            @Valid @ModelAttribute User user,
+            HttpSession session,
+            HttpServletRequest request,
+            @RequestParam("file") CommonsMultipartFile file
+    ){
+            *//*开始创建用户*//*
+            if (userService.addUser(user)) {
+                try {
+                    User_Pic userPic= UserUpload.imgUpload(file,request,user,userService,userPicService);
+                    session.setAttribute("userPic",userPic.getUserPath());
+                }catch(Exception e){
+                    e.printStackTrace();
+                }
+                return "redirect:/jsp/show.jsp";
+            } else {
+                session.setAttribute("STATUE", "账号已存在");
+                return "";
             }
-    }
-        return null;
+        }*/
+
+
+
 }
-}
+

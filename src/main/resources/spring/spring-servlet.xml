@@ -66,12 +66,12 @@
          <!--</mvc:interceptor>-->
 
         <!--防止重复提交的拦截器-->
-        <mvc:interceptor>
-            <!-- 拦截url -->
+       <!-- <mvc:interceptor>
+            &lt;!&ndash; 拦截url &ndash;&gt;
             <mvc:mapping path="/User/**/*"/>
-            <!-- 自定义拦截器类 -->
+            &lt;!&ndash; 自定义拦截器类 &ndash;&gt;
             <bean class="com.mx.interCeptors.RepeatInterCeptor"/>
-        </mvc:interceptor>
+        </mvc:interceptor>-->
 
         <!-- 登录验证拦截 -->
         <mvc:interceptor>

@@ -1,6 +1,7 @@
 package com.mx.mapper;
 
 import com.mx.pojo.User;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -16,6 +17,11 @@ public interface UserMapper {
     int updateUserByname(User user);
 
     List<User> queryUser();
+
+    List<User> queryPageUsers(@Param("offset")int offset, @Param("pageSize")int pageSize,
+                              @Param("sort")String sort, @Param("sortOrder")String sortOrder);
+
+    int getAlluserNum();
 
 
 }

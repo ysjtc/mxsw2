@@ -1,18 +1,32 @@
 package com.mx.service.Impl;
 
 import com.mx.mapper.UserMapper;
+import com.mx.mapper.User_PicMapper;
+import com.mx.mapper.VipMapper;
+import com.mx.pojo.Page;
 import com.mx.pojo.User;
+import com.mx.pojo.UserData;
+import com.mx.pojo.Vip;
 import com.mx.service.UserService;
 import com.mx.utils.MD5.MD5;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class UserServiceImpl implements UserService {
     @Autowired
     private UserMapper usermapper;
+
+    @Autowired
+    private VipMapper vipMapper;
+
+    @Autowired
+    private User_PicMapper userPicMapper;
 
     @Override
     /*登陆*/
@@ -39,9 +53,14 @@ public class UserServiceImpl implements UserService {
             MD5 md5 = new MD5();
             String passwd=md5.MD5Encode(user.getPassword());
             user.setPassword(passwd);
-
             /*添加数据*/
             usermapper.insertSelective(user);
+
+            /*级联生成vip*/
+            Vip vip=new Vip();
+            vip.setVipId(usermapper.queryUserByname(user.getName()).getuId());
+            vip.setScore(0);
+            vipMapper.insert(vip);
             return true;
         }else{
             return false;
@@ -82,18 +101,52 @@ public class UserServiceImpl implements UserService {
 
     /*依据账号查找用户*/
     @Override
-    public User queryUserByname(String name) {
+    public UserData queryUserByname(String name) {
+        UserData userData=new UserData();
         User user=usermapper.queryUserByname(name);
-        return user;
+        if(user==null)return null;
+        userData.setName(user.getName());/*账号*/
+        userData.setPassword(null);/*密码*/
+        userData.setEmail( user.getEmail());/*邮箱*/
+        userData.setuName( user.getuName());/*用户名*/
+        /*用户积分*/
+        userData.setScore(vipMapper.queryScore(user.getuId()).getScore());
+        /*用户头像*/
+        userData.setUserPath(userPicMapper.queryUserPic(user.getuId()).getUserPath());
+        user.setPassword(null);
+        return userData;
+    }
+
+    @Override
+    public int getUserIdByname(String name) {
+        User user=usermapper.queryUserByname(name);
+        return user.getuId();
     }
 
     /*查找所有用户*/
     @Override
-    public List<User> queryAllUser() {
-        List<User> userlist=usermapper.queryUser();
+    public Map queryAllUser(Page page) {
+        List<User> userlist=usermapper.queryPageUsers(page.getOffset(),
+                page.getPageSize(),page.getSort(),page.getSortOrder());
+
+        int total=usermapper.getAlluserNum();
+
+        List<UserData> userDataList=new ArrayList<UserData>();
+        UserData userData=new UserData();
         for(int i=0;i<userlist.size();i++){
-            userlist.get(i).setPassword(null);
+            userData.setName( userlist.get(i).getName());/*账号*/
+            userData.setPassword(null);/*密码*/
+            userData.setEmail( userlist.get(i).getEmail());/*邮箱*/
+            userData.setuName( userlist.get(i).getuName());/*用户名*/
+            /*用户积分*/
+            userData.setScore(vipMapper.queryScore(userlist.get(i).getuId()).getScore());
+            /*用户头像*/
+            userData.setUserPath(userPicMapper.queryUserPic(userlist.get(i).getuId()).getUserPath());
+            userDataList.add(userData);
         }
-        return userlist;
+        Map map=new HashMap();
+        map.put("total",total);
+        map.put("rows",userDataList);
+        return map;
     }
 }

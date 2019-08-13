@@ -177,7 +177,7 @@
                         width: '70',
                         formatter:function(value, row, index){
 
-                            return "<button onclick='blackRoom(this)' class='btn btn-default btn-xs' uName='"+row.uName+"'><span class='glyphicon glyphicon-exclamation-sign'></span>关小黑屋</button>";
+                            return "<button onclick='blackRoom(this)' class='btn btn-default btn-xs' uName='"+row.name+"'><span class='glyphicon glyphicon-exclamation-sign'></span>关小黑屋</button>";
                         }
                     }
                     ],
@@ -203,7 +203,7 @@
                 data['uName']=uName;
                 data['name']=name;
                 // 查询接口地址
-                var url="User";
+                var url="User/queryUser";
                 doTable(url,data);
                 
             }else{
@@ -216,7 +216,7 @@
         //小黑屋
         function blackRoom(obj){
             var uName={};
-            uName['name']=$(obj).attr("name");
+            uName['name']=$(obj).attr("uName");
             // ajax提交删除请求
             if(confirm("确定要拉黑此用户？")){
 
