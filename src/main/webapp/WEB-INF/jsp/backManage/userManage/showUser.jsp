@@ -44,12 +44,12 @@
                                 <!-- 内联样式 -->
                                 <div class="form-inline" role="form" id="findUser">
                                     <div class="form-group">
-                                        <label>用户ID：</label>
+                                        <label>用户昵称：</label>
                                         <input name="uName" type="text" class="form-control">
                                     </div>
                                     &emsp;&emsp;
                                     <div class="form-group">
-                                        <label>用户名：</label>
+                                        <label>用户ID：</label>
                                         <input name="name" type="text" class="form-control">
                                     </div>
                                     &emsp;
@@ -114,8 +114,8 @@
                 pageNumber: 1, // 首页页码
                 sidePagination: 'server', // 设置为服务器端分页
                 sortable: true,          //列排序
-                sortName: 'item_id', // 要排序的字段
-                uniqueId:'item_id',
+                sortName: 'name', // 要排序的字段
+                uniqueId:'name',
                 sortOrder: 'asc', // 排序规则
                 queryParams:function(params){
                     //alert(JSON.stringify(queryData));
@@ -138,13 +138,13 @@
                     [
                         {
                             field: 'uName',
-                            title: '用户ID',
+                            title: '用户名称',
                             align: 'center',
                             valign: 'middle',
                             width: '100',
                         }, {
                         field: 'name',
-                        title: '用户名称',
+                        title: '用户ID',
                         align: 'center',
                         valign: 'middle',
                         width: '100',
@@ -203,7 +203,7 @@
                 data['uName']=uName;
                 data['name']=name;
                 // 查询接口地址
-                var url="dasd/dasd";
+                var url="User";
                 doTable(url,data);
                 
             }else{
@@ -216,7 +216,7 @@
         //小黑屋
         function blackRoom(obj){
             var uName={};
-            uName['uName']=$(obj).attr("uName");
+            uName['name']=$(obj).attr("name");
             // ajax提交删除请求
             if(confirm("确定要拉黑此用户？")){
 
