@@ -52,12 +52,15 @@
             <!--/*只能拦截/name一层，而/**可以拦截多层-->
             <!--/**/*可以拦截任意包任意层-->
             <mvc:mapping path="/SuperAdmin/**/*"/>
-            <mvc:exclude-mapping path="/SuperAdmin/ToLogin"/>
+            <mvc:mapping path="/ItemsBackManage/**/*"/>
+            <mvc:mapping path="/Forward/**/*"/>
+            <mvc:exclude-mapping path="/SuperAdmin/ToSuperadmin"/>
             <bean class="com.mx.interCeptors.SuperAdminInterCeptor">
             </bean>
         </mvc:interceptor>
         <!--<mvc:interceptor>-->
-            <!--<mvc:mapping path="/User/**/*"/>-->
+            <!--<mvc:mapping path="/UserLogin"/>
+            <mvc:exclude-mapping path="/SuperAdmin/add/**/*"/>-->
             <!--<mvc:exclude-mapping path="/User/login"/>-->
             <!--<bean class="com.mx.interCeptors.SessionInterceptor"></bean>-->
          <!--</mvc:interceptor>-->

@@ -279,7 +279,7 @@ $(document).ready(function() {
     });
 
     //点击了查看更多时
-    
+
     $(".left-show").on("click",".showMore",function(){
         var item_id={};
         item_id['item_id']=$(this).attr("item_id");
@@ -292,7 +292,7 @@ $(document).ready(function() {
             success : function(data) {
                 var itemJsonData=JSON.parse(data);
                 //itemJsonData={"desc":"不错的商品","item_id":1,"name":"1","cateName":"2","price":"3","count":"4","author":"5","ISBN":"6","old_level":"7","compare":"8","publish_time":"9","publish":"10","place":"11","label":"12","item_pic":["13","14","15"]};
-                
+
                 //需要的参数
                 var item_pic=itemJsonData['item_pic'];
                 var name=itemJsonData['name'];
@@ -313,7 +313,7 @@ $(document).ready(function() {
                 for(i=0;i<item_pic.length;i++){
                     var tag="<li class='addedIndicators' data-target=\"#carousel-example-generic\" data-slide-to=\""+i+"\"></li>";
                     if(i==0){
-                        tag="<li class='clicked addedIndicators' data-target=\"#carousel-example-generic\" data-slide-to=\""+i+"\"></li>";
+                        tag="<li class='active addedIndicators' data-target=\"#carousel-example-generic\" data-slide-to=\""+i+"\"></li>";
                     }
                     $(".carousel-indicators").append(tag);
                 }
@@ -321,7 +321,7 @@ $(document).ready(function() {
                 for(i=0;i<item_pic.length;i++){
                     var tag="<div class='item addedImg'><img src='"+item_pic[i]+"'></div>";
                     if(i==0){
-                        tag="<div class='item clicked addedImg'><img src='"+item_pic[i]+"'></div>";
+                        tag="<div class='item active addedImg'><img src='"+item_pic[i]+"'></div>";
                     }
                     $(".carousel-inner").append(tag);
                 }
@@ -338,7 +338,7 @@ $(document).ready(function() {
                 $("#modal_item_publishTime").html(publish_time);
                 $("#modal_item_ISBN").html(ISBN);
                 $("#modal_item_desc").html(desc);
-                
+
             },
             error : function(data){
                 alert("请求失败！请刷新再试！");

@@ -230,7 +230,7 @@ public class Item implements Serializable {
                         "\""+"ISBN"+"\":"+"\""+isbn +"\","+
                         "\""+"old_level"+"\":"+"\""+ oldLevel +"\","+
                         "\""+"compare"+"\":"+"\""+compare +"\","+
-                        "\""+"describe"+"\":"+"\""+describe +"\","+
+                        "\""+"desc"+"\":"+"\""+describe +"\","+
                         "\""+"publish_time"+"\":"+"\""+publishTime +"\","+
                         "\""+"publish"+"\":"+"\""+publish +"\","+
                         "\""+"place"+"\":"+"\""+place +"\",";
