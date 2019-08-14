@@ -256,7 +256,7 @@
 .right-filter-item {
     padding: 20px 20px 15px 20px;
     margin-top: 20px;
-    margin-bottom:20px;
+    margin-bottom: 20px;
     width: 100%;
     background-color: #FFFFFF;
     /*给item来个边框阴影*/
@@ -369,7 +369,7 @@
 /* 模态框样式 -- start -- */
 
 .modal-dialog {
-    width: 80%;
+    width: 70%;
     margin-top: 100px;
 }
 
@@ -385,7 +385,8 @@
 }
 
 .modal-body .good-info-img {
-    width: 55%;
+    width: 560px;
+    height: 420px;
 }
 
 .modal-body .good-info-document {
@@ -420,14 +421,15 @@
 }
 
 .good-info-document h1 {
-    margin-top: 50px;
+    margin-top: 30px;
+    margin-bottom: 10px;
     font-size: 20px;
     font-weight: 700;
 }
 
 .good-info-document .base-info,
 .good-info-document .detail-info {
-    padding-bottom: 20px;
+    padding-bottom: 15px;
     border-bottom: 1px solid #ccc;
 }
 
@@ -443,7 +445,7 @@
 .good-info-document .opera {
     display: flex;
     justify-content: flex-end;
-    padding: 20px 0 30px;
+    padding: 20px 0 0;
 }
 
 .good-info-document .opera button {
@@ -456,7 +458,7 @@
 }
 
 .good-info-document .detail-info p {
-    font-size: 14px;
+    font-size: 13px;
     color: #606060;
     text-indent: 2em;
 }
@@ -464,27 +466,34 @@
 
 /* 模态框样式 -- end -- */
 
+
 /*一些小地方*/
-#pageShow{
-    line-height:2;
-    margin-left:20px;
+
+#pageShow {
+    line-height: 2;
+    margin-left: 20px;
 }
-#pageShow>span{
-    font-size:18px;
-    color:#4D4D4D;
+
+#pageShow>span {
+    font-size: 18px;
+    color: #4D4D4D;
 }
-#pageSelect{
-    min-width:50px;
-    border-radius:8px;
+
+#pageSelect {
+    min-width: 50px;
+    border-radius: 8px;
 }
-.clicked a{
+
+.clicked a {
     /*font-size:30px;*/
-    background-color:#EEEEEE !important;
-    border-color:#DDDDDD !important;
+    background-color: #EEEEEE !important;
+    border-color: #DDDDDD !important;
 }
-#prevFlag span{
+
+#prevFlag span {
     padding: 3px;
 }
-#nextFlag span{
+
+#nextFlag span {
     padding: 3px;
 }
