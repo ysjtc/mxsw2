@@ -29,4 +29,12 @@
     </trim>
   </insert>
 
+  <select id="queryScore" parameterType="integer" resultType="com.mx.pojo.Vip">
+    select *from vip where vip_id=#{id}
+  </select>
+
+  <select id="queryAllvip" resultType="com.mx.pojo.Vip">
+    select *from vip
+  </select>
+
 </mapper>

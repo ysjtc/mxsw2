@@ -9,7 +9,7 @@
     <result column="u_name" jdbcType="VARCHAR" property="uName" />
   </resultMap>
   <insert id="insert" parameterType="com.mx.pojo.User">
-    insert into user (u_id, name, password, uname,email)
+    insert into user (u_id, name, password, u_name,email)
     values (#{uId,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, 
       #{uname,jdbcType=VARCHAR},#{email,jdbcType=VARCHAR})
   </insert>
@@ -75,4 +75,11 @@
     where name=#{name}
   </update>
 
+  <select id="queryPageUsers" parameterType="map"  resultType="com.mx.pojo.User">
+    select * from user order by #{sort} #{sortOrder} limit #{offset},#{pageSize};
+  </select>
+
+  <select id="getAlluserNum" resultType="integer">
+    select count(*) from user
+  </select>
 </mapper>

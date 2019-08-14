@@ -11,7 +11,7 @@ $(document).ready(function(){
                     validating: 'glyphicon glyphicon-refresh'
                 },
                 fields: {
-                    uname: {
+                    uName: {
                         message: '用户昵称验证失败',
                         validators: {
                             notEmpty: {

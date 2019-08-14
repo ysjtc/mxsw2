@@ -18,7 +18,7 @@
                             <div class="input-group-addon">
                                 <span class="glyphicon glyphicon-user" aria-hidden="true"></span>
                             </div>
-                            <input name="uname" type="text" class="form-control" placeholder="Your Name">
+                            <input name="uName" type="text" class="form-control" placeholder="Your Name">
                         </div>
                     </div>
                     <!-- 密码 -->
