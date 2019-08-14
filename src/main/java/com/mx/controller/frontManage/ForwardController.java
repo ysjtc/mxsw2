@@ -15,7 +15,11 @@ public class ForwardController {
         return "frontShow/personal/login";
     }
 
-
+    /*进入个人信息页面*/
+    @RequestMapping(value="/personalMain")
+    public String personalMain(){
+        return "frontShow/personal/personalMain";
+    }
     /*进入Store.jsp页面*/
     @RequestMapping("/store")
     public String store(){

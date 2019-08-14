@@ -52,8 +52,8 @@
                         <!-- 用户的其他基本信息 -->
                         <div class="personal-otherInfo">
                             <span>安全性: <span class="safe">普通</span></span>
-                            <span>邮箱: 821245424@qq.com</span>
-                            <span>手机号: xxxxxxxxxxx</span>
+                            <span>邮箱: ${user.email}</span>
+                            <span>手机号: ${user.tel}</span>
                         </div>
                     </div>
                 </div>
