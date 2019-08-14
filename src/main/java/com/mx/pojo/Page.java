@@ -8,6 +8,23 @@ public class Page {
     private Integer pageSize;
     private String sort;
     private String sortOrder;
+    private QueryData queryData;
+
+    public QueryData getQueryData() {
+        return queryData;
+    }
+
+    public void setQueryData(QueryData queryData) {
+        this.queryData = queryData;
+    }
+
+    public void setOffset(Integer offset) {
+        this.offset = offset;
+    }
+
+    public void setPageSize(Integer pageSize) {
+        this.pageSize = pageSize;
+    }
 
     public Integer getOffset() {
         return offset;
@@ -48,6 +65,8 @@ public class Page {
                 ", pageSize=" + pageSize +
                 ", sort='" + sort + '\'' +
                 ", sortOrder='" + sortOrder + '\'' +
+                ", queryData=" + queryData +
                 '}';
     }
 }
+

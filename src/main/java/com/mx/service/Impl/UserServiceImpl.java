@@ -85,20 +85,31 @@ public class UserServiceImpl implements UserService {
     /*修改用户*/
     @Override
     public boolean updateUser(User user) {
+        /*验证是否没有输入*/
+        if(user.getEmail()==null&&user.getEmail().equals("")
+                &&user.getTel()==null&&user.getSex()==null
+                &&user.getSex().equals(""))
+            return false;
         User u=usermapper.queryUserByname(user.getName());
         /*查看用户是否存在，若不存在则修改失败，存在则成功*/
         if(u!=null){
-            /*修改密码时需对密码进行加密处理*/
-            if(user.getPassword()!=null){
-                MD5 md5 = new MD5();
-                String passwd=md5.MD5Encode(u.getPassword());
-                u.setPassword(passwd);
-            }
         usermapper.updateUserByname(user);
             return true;
         }else{
             return false;
         }
+    }
+
+
+    /*修改密码*/
+    public boolean updateUserPasswd(User user){
+        /*修改密码时需对密码进行加密处理*/
+        if(user.getPassword()!=null){
+            MD5 md5 = new MD5();
+            String passwd=md5.MD5Encode(user.getPassword());
+            user.setPassword(passwd);
+        }
+        return true;
     }
 
     /*依据账号查找用户*/
@@ -111,6 +122,8 @@ public class UserServiceImpl implements UserService {
         userData.setPassword(null);/*密码*/
         userData.setEmail( user.getEmail());/*邮箱*/
         userData.setuName( user.getuName());/*用户名*/
+        userData.setSex(user.getSex());/*性别*/
+        userData.setTel(user.getTel());/*电话*/
         /*用户积分*/
         userData.setScore(vipMapper.queryScore(user.getuId()).getScore());
         /*用户头像*/
@@ -128,18 +141,29 @@ public class UserServiceImpl implements UserService {
     /*查找所有用户*/
     @Override
     public Map queryAllUser(Page page) {
-        List<User> userlist=usermapper.queryPageUsers(page.getOffset(),
-                page.getPageSize(),page.getSort(),page.getSortOrder());
+        List<User> userlist=new ArrayList<User>();
+        int total;
+        if(page.getQueryData()==null){
+            userlist=usermapper.queryPageUsers(page.getOffset(),
+                    page.getPageSize(),page.getSort(),page.getSortOrder(),
+                    null,null);
+            total=usermapper.getAlluserNum(null,null);
+        }else {
+            userlist = usermapper.queryPageUsers(page.getOffset(),
+                    page.getPageSize(), page.getSort(), page.getSortOrder(),
+                    page.getQueryData().getName(), page.getQueryData().getuName());
+            total = usermapper.getAlluserNum(page.getQueryData().getName(), page.getQueryData().getuName());
 
-        int total=usermapper.getAlluserNum();
-
+        }
         List<UserData> userDataList=new ArrayList<UserData>();
-        UserData userData=new UserData();
         for(int i=0;i<userlist.size();i++){
+            UserData userData=new UserData();
             userData.setName( userlist.get(i).getName());/*账号*/
             userData.setPassword(null);/*密码*/
             userData.setEmail( userlist.get(i).getEmail());/*邮箱*/
             userData.setuName( userlist.get(i).getuName());/*用户名*/
+            userData.setSex(userlist.get(i).getSex());/*性别*/
+            userData.setTel(userlist.get(i).getTel());/*电话*/
             /*用户积分*/
             userData.setScore(vipMapper.queryScore(userlist.get(i).getuId()).getScore());
             /*用户头像*/
@@ -149,6 +173,7 @@ public class UserServiceImpl implements UserService {
         Map map=new HashMap();
         map.put("total",total);
         map.put("rows",userDataList);
+        System.out.println(map);
         return map;
     }
 }

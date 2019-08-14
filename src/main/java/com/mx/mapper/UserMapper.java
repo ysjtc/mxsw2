@@ -19,9 +19,10 @@ public interface UserMapper {
     List<User> queryUser();
 
     List<User> queryPageUsers(@Param("offset")int offset, @Param("pageSize")int pageSize,
-                              @Param("sort")String sort, @Param("sortOrder")String sortOrder);
+                              @Param("sort")String sort, @Param("sortOrder")String sortOrder,
+                              @Param("name")String name,@Param("uName")String uName);
 
-    int getAlluserNum();
+    int getAlluserNum( @Param("name")String name,@Param("uName")String uName);
 
 
 }

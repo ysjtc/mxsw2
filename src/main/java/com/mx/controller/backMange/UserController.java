@@ -1,15 +1,20 @@
 package com.mx.controller.backMange;
 
-import com.mx.pojo.*;
+import com.mx.pojo.Page;
+import com.mx.pojo.User;
+import com.mx.pojo.UserData;
+import com.mx.pojo.User_Pic;
 import com.mx.service.UserPicService;
 import com.mx.service.UserService;
 import com.mx.service.VipService;
 import com.mx.utils.Anno.PreventRepeat;
 import com.mx.utils.RandomUser.RandomUser;
 import com.mx.utils.UpLoad.UserUpload;
+import com.mx.utils.Validators.UserValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.commons.CommonsMultipartFile;
@@ -17,6 +22,7 @@ import org.springframework.web.multipart.commons.CommonsMultipartFile;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
+import java.util.HashMap;
 import java.util.Map;
 
 
@@ -42,7 +48,6 @@ public class UserController {
             Errors error,
             Model model,
             HttpSession session){
-
         if (!error.hasErrors()) {
             /*判断用户名是否合法*/
             if(user.getName()==null||
@@ -54,20 +59,17 @@ public class UserController {
 
             /*若用户账号与密码都正确，则从数据库拿到用户记录recorduser*/
             User recorduser = userService.login(user);
-            if(recorduser==null){
-                model.addAttribute("status","密码或账号输入错误");
-                return "frontShow/personal/login";
-            }
             /*当用户账号与密码都正确时进入登录成功页面*/
             if (recorduser != null) {
                User_Pic userPic=userPicService.queryById(recorduser.getuId());
                 model.addAttribute("user",recorduser);
-                model.addAttribute("userpic",userPic);
+                model.addAttribute("userPic",userPic);
                 session.setAttribute("USER_SESSION", recorduser);
-                session.setAttribute("USE_ID", recorduser.getName());
+                session.setAttribute("USER_ID", recorduser.getName());
                 return "frontShow/personal/personalMain";
             } else {
-                return "frontShow/errorPage/error";
+                model.addAttribute("status","密码或账号输入错误");
+                return "frontShow/personal/login";
             }
         }else{
             return "frontShow/personal/login";
@@ -82,8 +84,8 @@ public class UserController {
     @PreventRepeat
     public String register(
             @Valid @ModelAttribute User user,
-            Model model,
             Errors error,
+            Model model,
             HttpSession session
             ){
         if (error.hasErrors()) {
@@ -98,25 +100,20 @@ public class UserController {
             /*开始创建用户*/
             if (userService.addUser(user)) {
                 try {
-                   /* *//*添加vip信息*//*
-                    Vip vip=new Vip();
-                    vip.setVipId(userService.getUserIdByname(user.getName()));
-                    vip.setScore(0);
-                    vipService.AddVip(vip);*/
-
                     /*添加用户头像信息*/
                     User_Pic userPic=new User_Pic();
                     userPic.setuId(userService.getUserIdByname(user.getName()));
                     userPic.setUserPath("static/images/personal_img.png");
                     userPicService.addUserPic(userPic);
+                    session.setAttribute("USER_ID",user.getName());
                     model.addAttribute("userPic",userPic);
                 }catch(Exception e){
                     e.printStackTrace();
                 }
                 return "frontShow/personal/personalMain";
             } else {
-                session.setAttribute("STATUE", "账号已存在");
-                return "frontShow/errorPage/error";
+                session.setAttribute("status", "账号已存在");
+                return "frontShow/personal/login";
             }
         }
     }
@@ -143,24 +140,40 @@ public class UserController {
 
     /*修改用户信息的handle*/
     @RequestMapping("/updateUser")
-    @PreventRepeat
-    public String updateuser(
+    @ResponseBody
+    public Object updateuser(
         @Valid @ModelAttribute User user,
+        BindingResult result,
         HttpServletRequest request,
-        @RequestParam("file") CommonsMultipartFile file,
-        Errors error
+        HttpSession session,
+        @RequestParam("userPic") CommonsMultipartFile file
         )throws Exception{
-        if(error.hasErrors()){
-            return "frontShow/errorPage/error";
+        Map map=new HashMap();
+        if(UserValidator.checkError(result,session)){
+            System.out.println("========1");
+            System.out.println(session.getAttribute("error"));
+            map.put("result",false);
+            return map;
         }else {
-            if (userService.updateUser(user)) {
-
-                User_Pic userPic= UserUpload.imgUpload(file,request,user,userService,userPicService);
-                UserData useraccept=userService.queryUserByname(user.getName());
-                return "";
-            } else {
-                return "";
+            /*对电话号码不合法做判断*/
+            if(String.valueOf(user.getTel()).trim().length()!=11){
+                System.out.println("========2");
+                map.put("result",false);
+                return map;
             }
+            System.out.println("==========3");
+            user.setName((String)session.getAttribute("USER_ID"));
+                if (userService.updateUser(user)) {
+                    User_Pic userPic = UserUpload.imgUpload(file, request, user, userService, userPicService);
+                    userPicService.updateUserPic(userPic);
+                    //UserData useraccept = userService.queryUserByname(user.getName());
+                    map.put("result", true);
+                    return map;
+                } else {
+                    System.out.println("==========4");
+                    map.put("result", false);
+                    return map;
+                }
         }
     }
 
@@ -170,7 +183,9 @@ public class UserController {
     public Object getAlluser(
             @RequestBody Page page
     ){
+        System.out.println(page);
         Map users=userService.queryAllUser(page);
+        System.out.println("----------------");
         System.out.println(users);
         return users;
     }

@@ -28,4 +28,7 @@ public interface UserService {
     /*查找所有用户*/
     public Map queryAllUser(Page page);
 
+    /*修改密码*/
+    public boolean updateUserPasswd(User user);
+
 }

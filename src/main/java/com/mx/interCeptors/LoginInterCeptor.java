@@ -3,7 +3,6 @@ package com.mx.interCeptors;/*
 @description 用户登录验证拦截器
 */
 
-import com.mx.pojo.User;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -14,12 +13,12 @@ public class LoginInterCeptor implements HandlerInterceptor {
 
     @Override
     public boolean preHandle(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Object o) throws Exception {
-        User user=(User) httpServletRequest.getSession().getAttribute("USE_ID");
-        if(user!=null){
+        String uId=(String) httpServletRequest.getSession().getAttribute("USER_ID");
+        if(uId!=null&&!uId.equals("")){
             return true;
         }else {
             httpServletRequest.setAttribute("msg","请先登录");
-            httpServletRequest.getRequestDispatcher("/WEB-INF/jsp/frontShow/personal/login").forward(httpServletRequest,httpServletResponse);
+            httpServletRequest.getRequestDispatcher("/FrontForward/loginMain").forward(httpServletRequest,httpServletResponse);
             return false;
         }
     }
