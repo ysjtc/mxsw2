@@ -1,3 +1,4 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <!--左侧导航栏开始-->
 <div class="col-lg-1 visible-lg left-nav">
@@ -10,7 +11,7 @@
     <!-- 上部导航模块 -->
     <div class="row">
         <div class="nav-item">
-            <a href="./../store/store.html">
+            <a href="FrontForward/store">
                 <span class="glyphicon glyphicon-book"></span>
                 <span class="nav-section">商城</span>
             </a>
@@ -65,13 +66,14 @@
     <!-- 个人中心导航模块 -->
     <div class="row">
         <div class="nav-personal">
-            <a class="nav-personal-img" href="../personal/login.html">
+            <a class="nav-personal-img" href="<c:choose><c:when test="${empty USE_ID}">FrontForward/loginMain</c:when></c:choose>">
                 <img src="static/images/account.png" alt="">
             </a>
             <div class="subnav">
                 <ul>
                     <li><a href="#">我的订单</a></li>
                     <li><a href="#">我的收藏</a></li>
+                    <li><a href="#">注销登录</a></li>
                 </ul>
             </div>
         </div>

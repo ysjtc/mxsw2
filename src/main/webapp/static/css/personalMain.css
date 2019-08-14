@@ -468,3 +468,13 @@
 
 
 /* 用户修改信息模态框结束 */
+
+/*一个main-content的外包装*/
+.main-content-wrapper{
+    margin:20px;
+}
+
+/*修正表格的高度问题*/
+.fixed-table-body{
+    height:auto !important;
+}
