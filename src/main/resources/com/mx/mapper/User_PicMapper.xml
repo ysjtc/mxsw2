@@ -35,8 +35,8 @@
     delete from user_pic where u_id=#{uId}
   </delete>
   <update id="updateUserPic" parameterType="com.mx.pojo.User_Pic">
-    update from user_pic set
-    path=#{userPath}
+    update  user_pic set
+    user_path=#{userPath}
     where u_id=#{uId}
   </update>
 </mapper>

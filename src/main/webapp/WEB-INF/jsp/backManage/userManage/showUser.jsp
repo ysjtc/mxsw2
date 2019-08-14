@@ -161,7 +161,7 @@
                         valign: 'middle',
                         width: '100',
                     }, {
-                        field: 'user_path',
+                        field: 'userPath',
                         title: '头像',
                         align: 'center',
                         valign: 'middle',
@@ -203,7 +203,7 @@
                 data['uName']=uName;
                 data['name']=name;
                 // 查询接口地址
-                var url="User/queryUser";
+                var url="User/getAlluser";
                 doTable(url,data);
                 
             }else{

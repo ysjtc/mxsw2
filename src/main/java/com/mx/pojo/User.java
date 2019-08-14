@@ -1,5 +1,8 @@
 package com.mx.pojo;
 
+import org.hibernate.validator.constraints.Length;
+
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 import java.io.Serializable;
 
@@ -14,8 +17,8 @@ public class User implements Serializable {
 
     private String name;
 
-    /*@NotBlank(message="密码不能为空")
-    @Length(min=6,max =18,message = "密码长度必须在6到18位之间")*/
+    @NotBlank(message="密码不能为空")
+    @Length(min=6,max =18,message = "密码长度必须在6到18位之间")
     private String password;
 
 
@@ -27,7 +30,7 @@ public class User implements Serializable {
 
     private String sex;
 
-    private Integer tel;
+    private String tel;
 
 
     private static final long serialVersionUID = 1L;
@@ -70,11 +73,11 @@ public class User implements Serializable {
         this.sex = sex;
     }
 
-    public Integer getTel() {
+    public String getTel() {
         return tel;
     }
 
-    public void setTel(int tel) {
+    public void setTel(String tel) {
         this.tel = tel;
     }
 

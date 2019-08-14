@@ -36,11 +36,11 @@ $(document).ready(function() {
             userEditFrom.set("uName",$("input[name='uname']").val());
             userEditFrom.set("sex",$("input[name='userSex']:checked").val());
             userEditFrom.set("email",$("input[name='email']").val());
-            userEditFrom.set("phoneNum",$("input[name='phoneNum']").val());
+            userEditFrom.set("tel",$("input[name='phoneNum']").val());
 
             // console.log(editData);
             $.ajax({
-                url:'http:www.baidu.com',
+                url:'User/updateUser',
                 data:userEditFrom,
                 type : 'POST',
                 cache : false,

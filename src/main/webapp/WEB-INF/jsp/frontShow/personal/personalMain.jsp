@@ -33,7 +33,7 @@
                     <div class="left-info">
                         <!-- 个人头像 -->
                         <a class="thumbnail personal-pic">
-                            <img src="${userpic.userPath}" />
+                            <img src="${userPic.userPath}" />
                         </a>
 
                         <!-- 用户ID和昵称 -->

@@ -90,6 +90,11 @@ public class UserServiceImpl implements UserService {
                 &&user.getTel()==null&&user.getSex()==null
                 &&user.getSex().equals(""))
             return false;
+        /*对电话号码不合法做判断*/
+        if(user.getTel().length()!=11){
+            System.out.println("========2");
+            return false;
+        }
         User u=usermapper.queryUserByname(user.getName());
         /*查看用户是否存在，若不存在则修改失败，存在则成功*/
         if(u!=null){

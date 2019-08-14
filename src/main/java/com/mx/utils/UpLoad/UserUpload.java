@@ -7,7 +7,7 @@ import com.mx.pojo.User;
 import com.mx.pojo.User_Pic;
 import com.mx.service.UserPicService;
 import com.mx.service.UserService;
-import org.springframework.web.multipart.commons.CommonsMultipartFile;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
@@ -17,7 +17,7 @@ import java.io.IOException;
 public class UserUpload {
     /*注册时图片上传*/
     public static User_Pic imgUpload(
-            CommonsMultipartFile file,
+            MultipartFile file,
             HttpServletRequest request,
             User user,
             UserService userService,
@@ -50,6 +50,10 @@ public class UserUpload {
                 userPic.setuId(userService.getUserIdByname(user.getName()));
                 userPic.setUserPath("static/upload/userPic/"+newFileName);
                 userPicService.addUserPic(userPic);
+            }else{
+                userPic.setuId(userService.getUserIdByname(user.getName()));
+                userPic.setUserPath("static/upload/userPic/"+newFileName);
+                userPicService.updateUserPic(userPic);
             }
             return userPic;
         }

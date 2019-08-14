@@ -10,14 +10,12 @@ import com.mx.service.VipService;
 import com.mx.utils.Anno.PreventRepeat;
 import com.mx.utils.RandomUser.RandomUser;
 import com.mx.utils.UpLoad.UserUpload;
-import com.mx.utils.Validators.UserValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.commons.CommonsMultipartFile;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -142,39 +140,27 @@ public class UserController {
     @RequestMapping("/updateUser")
     @ResponseBody
     public Object updateuser(
-        @Valid @ModelAttribute User user,
-        BindingResult result,
+            User user,
         HttpServletRequest request,
         HttpSession session,
-        @RequestParam("userPic") CommonsMultipartFile file
+        @RequestParam("userPic") MultipartFile file
         )throws Exception{
-        Map map=new HashMap();
-        if(UserValidator.checkError(result,session)){
-            System.out.println("========1");
-            System.out.println(session.getAttribute("error"));
-            map.put("result",false);
-            return map;
-        }else {
-            /*对电话号码不合法做判断*/
-            if(String.valueOf(user.getTel()).trim().length()!=11){
-                System.out.println("========2");
-                map.put("result",false);
-                return map;
-            }
+            Map map=new HashMap();
             System.out.println("==========3");
             user.setName((String)session.getAttribute("USER_ID"));
                 if (userService.updateUser(user)) {
+                    System.out.println("==========4");
                     User_Pic userPic = UserUpload.imgUpload(file, request, user, userService, userPicService);
                     userPicService.updateUserPic(userPic);
                     //UserData useraccept = userService.queryUserByname(user.getName());
                     map.put("result", true);
                     return map;
                 } else {
-                    System.out.println("==========4");
+                    System.out.println("==========5");
                     map.put("result", false);
                     return map;
                 }
-        }
+
     }
 
     /*查找所有用户的handle*/

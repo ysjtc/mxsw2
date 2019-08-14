@@ -18,16 +18,16 @@ public class UserData {
 
     private String sex;
 
-    private Integer tel;
+    private String tel;
 
 
     public String getSex() { return sex; }
 
     public void setSex(String sex) { this.sex = sex; }
 
-    public Integer getTel() { return tel; }
+    public String getTel() { return tel; }
 
-    public void setTel(Integer tel) { this.tel = tel; }
+    public void setTel(String tel) { this.tel = tel; }
 
     public String getName() {
         return name;

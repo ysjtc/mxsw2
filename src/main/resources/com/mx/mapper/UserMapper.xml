@@ -7,6 +7,8 @@
     <result column="password" jdbcType="VARCHAR" property="password" />
     <result column="email" jdbcType="VARCHAR" property="email" />
     <result column="u_name" jdbcType="VARCHAR" property="uName" />
+      <result column="sex" jdbcType="VARCHAR" property="sex"/>
+      <result column="tel" jdbcType="VARCHAR" property="tel"/>
   </resultMap>
   <insert id="insert" parameterType="com.mx.pojo.User">
     insert into user (u_id, name, password, u_name,email)
@@ -29,9 +31,16 @@
         u_name,
       </if>
       <if test="email != null">
-        email
+        email,
       </if>
+      <if test="sex!=null">
+        sex,
+      </if>
+        <if test="tel!=null">
+            tel
+        </if>
     </trim>
+
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <!--<if test="uId != null">
         #{uId,jdbcType=INTEGER},
@@ -48,6 +57,12 @@
       <if test="email != null">
         #{email,jdbcType=VARCHAR}
       </if>
+        <if test="sex != null">
+           #{sex,jdbcType=VARCHAR}
+        </if>
+        <if test="tel != null">
+            #{tel,jdbcType=VARCHAR}
+        </if>
     </trim>
   </insert>
 
@@ -68,18 +83,37 @@
 
   <!--通过用户名来修改用户信息-->
   <update id="updateUserByname" parameterType="com.mx.pojo.User">
-    update from  user set
+    update user set
         u_name=#{uName},
-        password=#{password},
+        sex=#{sex},
+        tel=#{tel},
         email=#{email}
     where name=#{name}
   </update>
 
   <select id="queryPageUsers" parameterType="map"  resultType="com.mx.pojo.User">
-    select * from user order by #{sort} #{sortOrder} limit #{offset},#{pageSize};
+    select * from user
+      <where>
+          <if test="name!=null">
+              name like CONCAT(CONCAT('%', #{name}), '%')
+          </if>
+          <if test="uName!=null">
+             and u_name like CONCAT(CONCAT('%', #{uName}), '%')
+          </if>
+      </where>
+    order by #{sort} #{sortOrder} limit #{offset},#{pageSize};
   </select>
 
-  <select id="getAlluserNum" resultType="integer">
+  <select id="getAlluserNum"  parameterType="map" resultType="integer">
     select count(*) from user
+      <where>
+          <if test="name!=null">
+               name like CONCAT(CONCAT('%', #{name}), '%')
+          </if>
+          <if test="uName!=null">
+              and u_name like CONCAT(CONCAT('%', #{uName}), '%')
+          </if>
+      </where>
   </select>
+
 </mapper>
