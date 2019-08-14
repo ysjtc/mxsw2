@@ -14,7 +14,6 @@ public class User implements Serializable {
 
     private Integer uId;
 
-
     private String name;
 
     @NotBlank(message="密码不能为空")

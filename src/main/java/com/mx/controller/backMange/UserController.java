@@ -10,9 +10,11 @@ import com.mx.service.VipService;
 import com.mx.utils.Anno.PreventRepeat;
 import com.mx.utils.RandomUser.RandomUser;
 import com.mx.utils.UpLoad.UserUpload;
+import com.mx.utils.Validators.UserValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -60,9 +62,15 @@ public class UserController {
             /*当用户账号与密码都正确时进入登录成功页面*/
             if (recorduser != null) {
                User_Pic userPic=userPicService.queryById(recorduser.getuId());
-                model.addAttribute("user",recorduser);
+                UserData userData=userService.queryUserByname(recorduser.getName());
+                if(userData.getTel()==null) {
+                    userData.setTel("55555555555");
+                }
+                model.addAttribute("user",userData);
                 model.addAttribute("userPic",userPic);
-                session.setAttribute("USER_SESSION", recorduser);
+
+                session.setAttribute("USER_SESSION", userData);
+                session.setAttribute("USERPIC", userPic);
                 session.setAttribute("USER_ID", recorduser.getName());
                 return "frontShow/personal/personalMain";
             } else {
@@ -81,12 +89,12 @@ public class UserController {
     @RequestMapping(value="/register",method = RequestMethod.POST)
     @PreventRepeat
     public String register(
-            @Valid @ModelAttribute User user,
-            Errors error,
+            @Valid  User user,
+            BindingResult result,
             Model model,
             HttpSession session
             ){
-        if (error.hasErrors()) {
+        if (UserValidator.checkError(result,session)) {
             return "frontShow/errorPage/error";
         }else{
             /*随机生成用户名*/
@@ -103,7 +111,13 @@ public class UserController {
                     userPic.setuId(userService.getUserIdByname(user.getName()));
                     userPic.setUserPath("static/images/personal_img.png");
                     userPicService.addUserPic(userPic);
+                    UserData userData=userService.queryUserByname(user.getName());
+                    if(userData.getTel()==null) {
+                        userData.setTel("55555555555");
+                    }
+                    session.setAttribute("USER_SESSION", userData);
                     session.setAttribute("USER_ID",user.getName());
+                    session.setAttribute("USERPIC",userPic);
                     model.addAttribute("userPic",userPic);
                 }catch(Exception e){
                     e.printStackTrace();
@@ -146,21 +160,21 @@ public class UserController {
         @RequestParam("userPic") MultipartFile file
         )throws Exception{
             Map map=new HashMap();
-            System.out.println("==========3");
+
             user.setName((String)session.getAttribute("USER_ID"));
                 if (userService.updateUser(user)) {
-                    System.out.println("==========4");
                     User_Pic userPic = UserUpload.imgUpload(file, request, user, userService, userPicService);
                     userPicService.updateUserPic(userPic);
-                    //UserData useraccept = userService.queryUserByname(user.getName());
+                    UserData userData=userService.queryUserByname(user.getName());
+
+                    session.setAttribute("USER_SESSION",userData);
+                    session.setAttribute("USERPIC",userPic);
                     map.put("result", true);
                     return map;
                 } else {
-                    System.out.println("==========5");
                     map.put("result", false);
                     return map;
                 }
-
     }
 
     /*查找所有用户的handle*/
