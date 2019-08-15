@@ -12,23 +12,23 @@ import java.io.Serializable;
  */
 public class User implements Serializable {
 
-    private Integer uId;
+    private Integer uId;//自增id字段
 
-    private String name;
+    private String name;//账号
 
     @NotBlank(message="密码不能为空")
     @Length(min=6,max =18,message = "密码长度必须在6到18位之间")
-    private String password;
+    private String password;//密码
 
     @Email
-    private String email;
+    private String email;//邮箱
 
     @NotBlank(message="用户昵称不能为空")
     private String uName;//昵称
 
-    private String sex;
+    private String sex;//性别
 
-    private String tel;
+    private String tel;//电话号码
 
 
     private static final long serialVersionUID = 1L;

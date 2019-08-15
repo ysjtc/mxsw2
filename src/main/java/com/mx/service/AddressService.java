@@ -13,7 +13,7 @@ public interface AddressService {
     public void Addaddress(Address address);
 
     /*删除收货人信息*/
-    public void  Clearaddress(Address address);
+    public void  Clearaddress(int addId);
 
     /*修改收货人信息*/
     public void  updateaddress(Address address);

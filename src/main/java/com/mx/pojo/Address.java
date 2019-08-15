@@ -9,24 +9,24 @@ import java.io.Serializable;
  */
 public class Address implements Serializable {
 
-    private Integer addId;
+    private Integer addId;//数据库自增id
 
-    private Integer uId;
+    private Integer uId;//用户数据库自增的id
 
     @NotBlank(message = "电话号码不能为空")
-    private String tel;
+    private String tel;//电话号码
 
     @NotBlank(message = "邮编不能为空")
-    private String postcode;
+    private String postcode;//邮编
 
     @NotBlank(message = "收货人姓名不能为空")
-    private String name;
+    private String name;//收货人姓名
 
     @NotBlank(message = "详细地址不能为空")
-    private String addr;
+    private String addr;//详细地址
 
     @NotBlank(message = "省份不能为空")
-    private String province;
+    private String province;//省份
 
     private static final long serialVersionUID = 1L;
 

@@ -89,18 +89,8 @@
     where u_id=#{uId}
   </select>
 
-  <delete id="deleteAddress" parameterType="com.mx.pojo.Address">
+  <delete id="deleteAddress" parameterType="integer">
     delete from address
-    <where>
-      <if test="uId!=null">
-        and u_id=#{uId}
-      </if>
-      <if test="tel!=null">
-        and tel =#{tel}
-      </if>
-      <if test="addr!=null">
-        and addr =#{addr}
-      </if>
-    </where>
+    where add_id=#{addId}
   </delete>
 </mapper>

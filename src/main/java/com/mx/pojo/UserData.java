@@ -4,21 +4,21 @@ package com.mx.pojo;/*
 */
 
 public class UserData {
-    private String name;
+    private String name;//账号
 
-    private String password;
+    private String password;//密码
 
-    private String email;
+    private String email;//邮箱
 
-    private String uName;
+    private String uName;//昵称
 
-    private String userPath;
+    private String userPath;//用户头像路径
 
-    private Integer score;
+    private Integer score;//积分
 
-    private String sex;
+    private String sex;//性别
 
-    private String tel;
+    private String tel;//密码
 
 
     public String getSex() { return sex; }

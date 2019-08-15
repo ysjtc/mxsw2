@@ -1,4 +1,4 @@
-package com.mx.controller.backMange;
+package com.mx.controller.frontManage;
 
 import com.mx.pojo.Page;
 import com.mx.pojo.User;
@@ -86,7 +86,7 @@ public class UserController {
             Model model,
             HttpSession session
             ){
-        if (UserValidator.checkError(result,session)) {
+        if (UserValidator.checkError(result)) {
             model.addAttribute("info","请勿非法测试！");
             return "frontShow/personal/login";
         }else{
