@@ -31,4 +31,7 @@ public interface UserService {
     /*修改密码*/
     public boolean updateUserPasswd(User user);
 
+    /*得到所有用户数量*/
+    public int getAlluserNum();
+
 }

@@ -67,4 +67,40 @@
       </if>
     </trim>
   </insert>
+
+  <update id="updateAddress" parameterType="com.mx.pojo.Address">
+    update address set
+        name=#{name},
+        tel=#{tel},
+        postcode=#{postcode},
+        province=#{province},
+        addr=#{addr}
+    where u_id=#{uId}
+  </update>
+
+  <select id="selectAddress" parameterType="map" resultType="com.mx.pojo.Address">
+    select * from address
+    where u_id=#{uId}
+    order by #{sort} #{sortOrder} limit #{offset},#{pageSize};
+  </select>
+
+  <select id="getAlladdress" parameterType="integer" resultType="integer">
+    select count(*) from address
+    where u_id=#{uId}
+  </select>
+
+  <delete id="deleteAddress" parameterType="com.mx.pojo.Address">
+    delete from address
+    <where>
+      <if test="uId!=null">
+        and u_id=#{uId}
+      </if>
+      <if test="tel!=null">
+        and tel =#{tel}
+      </if>
+      <if test="addr!=null">
+        and addr =#{addr}
+      </if>
+    </where>
+  </delete>
 </mapper>

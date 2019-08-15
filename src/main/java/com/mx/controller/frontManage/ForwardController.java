@@ -1,10 +1,8 @@
 package com.mx.controller.frontManage;
 
-import com.mx.pojo.UserData;
-import com.mx.pojo.User_Pic;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.servlet.http.HttpSession;
 
@@ -23,16 +21,18 @@ public class ForwardController {
     /*进入个人信息页面*/
     @RequestMapping(value="/personalMain")
     public String personalMain(HttpSession session,Model model){
-        UserData userData=(UserData)session.getAttribute("USER_SESSION");
-        User_Pic userPic=(User_Pic) session.getAttribute("USERPIC");
-        model.addAttribute("user",userData);
-        model.addAttribute("userPic",userPic);
         return "frontShow/personal/personalMain";
     }
     /*进入Store.jsp页面*/
     @RequestMapping("/store")
     public String store(){
         return "frontShow/store/store";
+    }
+
+    /*进入添加收货人页*/
+    @RequestMapping("/addAddr")
+    public String addAddr(){
+        return "frontShow/personal/addAddr";
     }
 
 

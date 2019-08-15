@@ -85,14 +85,14 @@ $(document).ready(function() {
             postData['addr']=$("textarea[name='addr']").val();
             //ajax发送数据
             $.ajax({
-                url : 'http:www.baidu.com',//访问后台的上传方法路径
+                url : 'Address/addAddr',//访问后台的上传方法路径
                 data : postData,
                 type : 'POST',
                 success : function(data) {
                     var data=JSON.parse(data);
                     if(data['result']){
                         //修改成功后刷新下方表格
-                        doTable("http:www.baidu.com");
+                        doTable("Address/getAlladdress");
                         alert("添加成功");
                     }else{
                         alert("意外错误，请重试！");
@@ -185,5 +185,5 @@ $(document).ready(function() {
         })
     }
     //未定位查询前先设定表格显示所有
-    doTable("http:www.baidu.com");
+    doTable("Address/getAlladdress");
 });

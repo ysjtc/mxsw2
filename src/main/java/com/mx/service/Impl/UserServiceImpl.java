@@ -9,6 +9,7 @@ import com.mx.pojo.UserData;
 import com.mx.pojo.Vip;
 import com.mx.service.UserService;
 import com.mx.utils.MD5.MD5;
+import org.apache.commons.lang.StringEscapeUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -85,16 +86,6 @@ public class UserServiceImpl implements UserService {
     /*修改用户*/
     @Override
     public boolean updateUser(User user) {
-        /*验证是否没有输入*/
-        if(user.getEmail()==null&&user.getEmail().equals("")
-                &&user.getTel()==null&&user.getSex()==null
-                &&user.getSex().equals(""))
-            return false;
-        /*对电话号码不合法做判断*/
-        if(user.getTel().length()!=11){
-            System.out.println("========2");
-            return false;
-        }
         User u=usermapper.queryUserByname(user.getName());
         /*查看用户是否存在，若不存在则修改失败，存在则成功*/
         if(u!=null){
@@ -115,6 +106,11 @@ public class UserServiceImpl implements UserService {
             user.setPassword(passwd);
         }
         return true;
+    }
+
+    @Override
+    public int getAlluserNum() {
+        return usermapper.getAlluserNum(null,null);
     }
 
     /*依据账号查找用户*/
@@ -163,16 +159,16 @@ public class UserServiceImpl implements UserService {
         List<UserData> userDataList=new ArrayList<UserData>();
         for(int i=0;i<userlist.size();i++){
             UserData userData=new UserData();
-            userData.setName( userlist.get(i).getName());/*账号*/
+            userData.setName(StringEscapeUtils.escapeHtml(userlist.get(i).getName()));/*账号*/
             userData.setPassword(null);/*密码*/
-            userData.setEmail( userlist.get(i).getEmail());/*邮箱*/
-            userData.setuName( userlist.get(i).getuName());/*用户名*/
-            userData.setSex(userlist.get(i).getSex());/*性别*/
-            userData.setTel(userlist.get(i).getTel());/*电话*/
+            userData.setEmail(StringEscapeUtils.escapeHtml(userlist.get(i).getEmail()));/*邮箱*/
+            userData.setuName(StringEscapeUtils.escapeHtml(userlist.get(i).getuName()));/*用户名*/
+            userData.setSex(StringEscapeUtils.escapeHtml(userlist.get(i).getSex()));/*性别*/
+            userData.setTel(StringEscapeUtils.escapeHtml(userlist.get(i).getTel()));/*电话*/
             /*用户积分*/
             userData.setScore(vipMapper.queryScore(userlist.get(i).getuId()).getScore());
             /*用户头像*/
-            userData.setUserPath(userPicMapper.queryUserPic(userlist.get(i).getuId()).getUserPath());
+            userData.setUserPath(StringEscapeUtils.escapeHtml(userPicMapper.queryUserPic(userlist.get(i).getuId()).getUserPath()));
             userDataList.add(userData);
         }
         Map map=new HashMap();

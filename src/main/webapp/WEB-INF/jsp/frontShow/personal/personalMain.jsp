@@ -38,9 +38,9 @@
 
                         <!-- 用户ID和昵称 -->
                         <div class="personal-baseInfo">
-                            <h4>${user.uName}
+                            <h4>${userData.uName}
                                 <span class="personal-vip"><img src="static/images/vip/vip1.png"></span>
-                                <span class="personal-id">(ID:${user.name})</span>
+                                <span class="personal-id">(ID:${userData.name})</span>
                             </h4>
                             <span class="greeting">晚上好</span>
                             <a class="update" href="#" data-toggle="modal" data-target="#updateInfo">修改个人信息&nbsp;&gt;&nbsp;&gt;&nbsp;</a>
@@ -52,8 +52,8 @@
                         <!-- 用户的其他基本信息 -->
                         <div class="personal-otherInfo">
                             <span>安全性: <span class="safe">普通</span></span>
-                            <span>邮箱: ${user.email}</span>
-                            <span>手机号: ${user.tel}</span>
+                            <span>邮箱: ${userData.email}</span>
+                            <span>手机号: ${userData.tel}</span>
                         </div>
                     </div>
                 </div>
@@ -62,11 +62,11 @@
                 <!-- 导航栏 -->
                 <div class="col-xs-12 personal-info">
                     <ul class="nav nav-tabs nav-justified">
-                        <li class="active"><a href="#">购物车</a></li>
+                        <li class="active"><a href="FrontForward/personalMain">购物车</a></li>
                         <li><a href="#">订单</a></li>
                         <li><a href="#">物流</a></li>
                         <li><a href="#">退换货</a></li>
-                        <li><a href="#">收货人信息</a></li>
+                        <li><a href="FrontForward/addAddr">收货人信息</a></li>
                     </ul>
                     <!-- 导航栏下的内容 -->
                     <div class="main-content">

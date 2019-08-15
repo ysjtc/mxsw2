@@ -8,6 +8,8 @@ import com.mx.service.UserPicService;
 import com.mx.service.UserService;
 import com.mx.service.VipService;
 import com.mx.utils.Anno.PreventRepeat;
+import com.mx.utils.Encoding.htmlEncoding;
+import com.mx.utils.Encoding.userCheck;
 import com.mx.utils.RandomUser.RandomUser;
 import com.mx.utils.UpLoad.UserUpload;
 import com.mx.utils.Validators.UserValidator;
@@ -15,7 +17,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -40,93 +41,89 @@ public class UserController {
     private VipService vipService;
 
 
+    /*用户管理下的个人信息模块*/
     /*用户登录的handle*/
     @PreventRepeat
     @RequestMapping(value="/login")
     public String login(
-            @Valid @ModelAttribute User user,
-            Errors error,
+              User user,
             Model model,
             HttpSession session){
-        if (!error.hasErrors()) {
             /*判断用户名是否合法*/
             if(user.getName()==null||
                     user.getName().equals("")||
                     user.getName().length()>12||
-                    user.getName().length()<6){
+                    user.getName().length()<6||
+                    user.getPassword()==null||
+                    user.getPassword().equals("")||
+                    user.getPassword().length()>18||
+                    user.getPassword().length()<6){
                 return "frontShow/errorPage/error";
             }
-
             /*若用户账号与密码都正确，则从数据库拿到用户记录recorduser*/
             User recorduser = userService.login(user);
             /*当用户账号与密码都正确时进入登录成功页面*/
             if (recorduser != null) {
                User_Pic userPic=userPicService.queryById(recorduser.getuId());
                 UserData userData=userService.queryUserByname(recorduser.getName());
-                if(userData.getTel()==null) {
-                    userData.setTel("55555555555");
-                }
-                model.addAttribute("user",userData);
-                model.addAttribute("userPic",userPic);
-
-                session.setAttribute("USER_SESSION", userData);
-                session.setAttribute("USERPIC", userPic);
+                userData=htmlEncoding.getUserData(userData);
+                session.setAttribute("userData", userData);
+                session.setAttribute("userPic", userPic);
                 session.setAttribute("USER_ID", recorduser.getName());
                 return "frontShow/personal/personalMain";
             } else {
                 model.addAttribute("status","密码或账号输入错误");
                 return "frontShow/personal/login";
             }
-        }else{
-            return "frontShow/personal/login";
-        }
-/*    }catch (Exception e){
-        return "frontShow/errorPage/error.jsp";
-    }*/
     }
 
     /*用户注册的handle*/
     @RequestMapping(value="/register",method = RequestMethod.POST)
     @PreventRepeat
     public String register(
-            @Valid  User user,
+             @Valid User user,
             BindingResult result,
             Model model,
             HttpSession session
             ){
         if (UserValidator.checkError(result,session)) {
-            return "frontShow/errorPage/error";
+            model.addAttribute("info","请勿非法测试！");
+            return "frontShow/personal/login";
         }else{
-            /*随机生成用户名*/
-            user.setName(RandomUser.RandomName());
-            System.out.println(user.getName());
-            while(userService.queryUserByname(user.getName())!=null){
-                user.setName(RandomUser.RandomName());
-            }
-            /*开始创建用户*/
-            if (userService.addUser(user)) {
-                try {
-                    /*添加用户头像信息*/
-                    User_Pic userPic=new User_Pic();
-                    userPic.setuId(userService.getUserIdByname(user.getName()));
-                    userPic.setUserPath("static/images/personal_img.png");
-                    userPicService.addUserPic(userPic);
-                    UserData userData=userService.queryUserByname(user.getName());
-                    if(userData.getTel()==null) {
-                        userData.setTel("55555555555");
-                    }
-                    session.setAttribute("USER_SESSION", userData);
-                    session.setAttribute("USER_ID",user.getName());
-                    session.setAttribute("USERPIC",userPic);
-                    model.addAttribute("userPic",userPic);
-                }catch(Exception e){
-                    e.printStackTrace();
+            try {
+                /*随机生成用户名*/
+                int num=userService.getAlluserNum();
+                user.setName(RandomUser.RandomName(num));
+
+                /*入库前的验证*/
+                if(!userCheck.CheckregisterUser(user)) {
+                    /*开始创建用户*/
+                    userService.addUser(user);
+                }else{
+                    model.addAttribute("info","注册数据格式错误！");
+                    return "frontShow/personal/login";
                 }
-                return "frontShow/personal/personalMain";
-            } else {
-                session.setAttribute("status", "账号已存在");
+
+                /*添加用户头像信息*/
+                User_Pic userPic=new User_Pic();
+                userPic.setuId(userService.getUserIdByname(user.getName()));
+                userPic.setUserPath("static/images/personal_img.png");
+                userPicService.addUserPic(userPic);
+
+                UserData userData=userService.queryUserByname(user.getName());
+                if(userData.getTel()==null||userData.getTel().equals("")) {
+                    userData.setTel("none");
+                }
+                /*写入session*/
+                userData=htmlEncoding.getUserData(userData);
+                session.setAttribute("userData", userData);
+                session.setAttribute("USER_ID",user.getName());
+                session.setAttribute("userPic",userPic);
+            }catch(Exception e){
+                e.printStackTrace();
                 return "frontShow/personal/login";
             }
+            return "frontShow/personal/personalMain";
         }
     }
 
@@ -134,7 +131,7 @@ public class UserController {
     @RequestMapping("/loginout")
     @PreventRepeat
     public String loginout(HttpSession session){
-        session.removeAttribute("USER_SESSION");
+        session.removeAttribute("USER_ID");
         session.invalidate();
         return "frontShow/navigation/nav";
     }
@@ -162,13 +159,20 @@ public class UserController {
             Map map=new HashMap();
 
             user.setName((String)session.getAttribute("USER_ID"));
+            /*入库前的验证*/
+            if(userCheck.CheckupdateUser(user,file)){
+                System.out.println("============");
+                map.put("result", false);
+                return map;
+            }
+            /*用户信息更新*/
                 if (userService.updateUser(user)) {
                     User_Pic userPic = UserUpload.imgUpload(file, request, user, userService, userPicService);
                     userPicService.updateUserPic(userPic);
-                    UserData userData=userService.queryUserByname(user.getName());
 
-                    session.setAttribute("USER_SESSION",userData);
-                    session.setAttribute("USERPIC",userPic);
+                    UserData userData=userService.queryUserByname(user.getName());
+                    session.setAttribute("userData",userData);
+                    session.setAttribute("userPic",userPic);
                     map.put("result", true);
                     return map;
                 } else {
@@ -183,10 +187,7 @@ public class UserController {
     public Object getAlluser(
             @RequestBody Page page
     ){
-        System.out.println(page);
         Map users=userService.queryAllUser(page);
-        System.out.println("----------------");
-        System.out.println(users);
         return users;
     }
 
@@ -198,35 +199,6 @@ public class UserController {
         UserData user=userService.queryUserByname(name);
         return user;
     }
-
-
-
-
-
-
-   /* @RequestMapping(value="/regtest",method = RequestMethod.POST)
-    public String regtest(
-            @Valid @ModelAttribute User user,
-            HttpSession session,
-            HttpServletRequest request,
-            @RequestParam("file") CommonsMultipartFile file
-    ){
-            *//*开始创建用户*//*
-            if (userService.addUser(user)) {
-                try {
-                    User_Pic userPic= UserUpload.imgUpload(file,request,user,userService,userPicService);
-                    session.setAttribute("userPic",userPic.getUserPath());
-                }catch(Exception e){
-                    e.printStackTrace();
-                }
-                return "redirect:/jsp/show.jsp";
-            } else {
-                session.setAttribute("STATUE", "账号已存在");
-                return "";
-            }
-        }*/
-
-
 
 }
 

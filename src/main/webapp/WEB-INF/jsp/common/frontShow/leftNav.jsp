@@ -66,7 +66,7 @@
     <!-- 个人中心导航模块 -->
     <div class="row">
         <div class="nav-personal">
-            <a class="nav-personal-img" href="<c:choose><c:when test="${empty USE_ID}">FrontForward/loginMain</c:when></c:choose>">
+            <a class="nav-personal-img" href="<c:choose><c:when test="${empty USER_ID}">FrontForward/loginMain</c:when><c:when test="${not empty USER_ID}">FrontForward/personalMain</c:when></c:choose>">
                 <img src="static/images/account.png" alt="">
             </a>
             <div class="subnav">

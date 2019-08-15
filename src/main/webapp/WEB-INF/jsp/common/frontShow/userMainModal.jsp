@@ -17,7 +17,7 @@
                 <ul class="info-data">
                     <li>
                         <div class="avatar">
-                            <img id="userPic" src="${userpic.userPath}" />
+                            <img id="userPic" src="${userPic.userPath}" />
                             <%--一个隐藏的用于接收图片数据的input--%>
                             <input name="userPic" id="userPicInput" style="display:none;" type="file"/>
                             <a id="editUserPic">编辑</a>
@@ -25,7 +25,7 @@
                     </li>
                     <li>
                         <label>昵称：</label>
-                        <input name="uname" type="text" class="form-control" placeholder="${user.uName}">
+                        <input name="uname" type="text" class="form-control" placeholder="${userData.uName}">
                     </li>
                     <li>
                         <label>性别：</label>
@@ -34,11 +34,11 @@
                     </li>
                     <li>
                         <label>手机：</label>
-                        <input name="phoneNum" type="number" class="form-control" placeholder="152xxxx0015">
+                        <input name="phoneNum" type="number" class="form-control" placeholder="${userData.tel}">
                     </li>
                     <li>
                         <label>邮箱：</label>
-                        <input name="email" type="email" class="form-control" placeholder="8212xxxxx@163.com">
+                        <input name="email" type="email" class="form-control" placeholder="${userData.email}">
                     </li>
                 </ul>
 

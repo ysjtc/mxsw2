@@ -1,5 +1,6 @@
 package com.mx.pojo;
 
+import javax.validation.constraints.NotBlank;
 import java.io.Serializable;
 /**
  *
@@ -12,14 +13,19 @@ public class Address implements Serializable {
 
     private Integer uId;
 
+    @NotBlank(message = "电话号码不能为空")
     private String tel;
 
+    @NotBlank(message = "邮编不能为空")
     private String postcode;
 
+    @NotBlank(message = "收货人姓名不能为空")
     private String name;
 
+    @NotBlank(message = "详细地址不能为空")
     private String addr;
 
+    @NotBlank(message = "省份不能为空")
     private String province;
 
     private static final long serialVersionUID = 1L;

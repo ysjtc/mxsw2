@@ -2,8 +2,8 @@ package com.mx.pojo;
 
 import org.hibernate.validator.constraints.Length;
 
+import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Pattern;
 import java.io.Serializable;
 
 /**
@@ -20,11 +20,10 @@ public class User implements Serializable {
     @Length(min=6,max =18,message = "密码长度必须在6到18位之间")
     private String password;
 
-
-    @Pattern(regexp = "^[A-Za-z0-9][\\w\\-\\.]{3,12}@([\\w\\-]+\\.)+[\\w]{2,3}$", message = "该邮箱不合法")
+    @Email
     private String email;
 
-    //@NotBlank(message="用户昵称不能为空")
+    @NotBlank(message="用户昵称不能为空")
     private String uName;//昵称
 
     private String sex;

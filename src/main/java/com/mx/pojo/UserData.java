@@ -80,12 +80,14 @@ public class UserData {
     @Override
     public String toString() {
         return "UserData{" +
-                ", name='" + name + '\'' +
+                "name='" + name + '\'' +
                 ", password='" + password + '\'' +
                 ", email='" + email + '\'' +
                 ", uName='" + uName + '\'' +
                 ", userPath='" + userPath + '\'' +
                 ", score=" + score +
+                ", sex='" + sex + '\'' +
+                ", tel='" + tel + '\'' +
                 '}';
     }
 }

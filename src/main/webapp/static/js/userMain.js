@@ -27,8 +27,9 @@ $(document).ready(function() {
 
     //点击提交修改时
     $("#updateUser").click(function(){
-        if(!updateUserFlag){
-            alert("您选择的图片文件不合格");
+        var judge=$("#userPicInput").prop("files")[0];
+        if(!updateUserFlag||judge==null){
+            alert("您选择的图片文件不合格或者没有选择图片");
         }else{
 
             var userEditFrom=new FormData();
@@ -48,9 +49,11 @@ $(document).ready(function() {
                 contentType : false,
                 success:function(data){
                     // 要求返回json字符串，键名为result
-                    if(JSON.parse(data).result){
-                        $("#userEditResult-main").html("删除成功！");
-                        $("#userEditResult").removeAttr("hidden");
+                    if(data.result){
+                        window.location.href="FrontForward/personalMain";
+
+                    }else{
+                        alert("请检查");
                     }
                 },
                 error(xhr,status,error){

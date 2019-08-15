@@ -14,6 +14,7 @@ import java.util.Map;
 public class UserValidator {
     public  static boolean checkError(BindingResult result, HttpSession session){
         if(result.hasErrors()) {
+
             //校验失败，返回失败,显示校验失败的错误信息
             Map<String, Object> map = new HashMap<>();
             List<FieldError> errors = result.getFieldErrors();
@@ -21,9 +22,9 @@ public class UserValidator {
                 map.put(fieldError.getField(), fieldError.getDefaultMessage());
             }
             session.setAttribute("error",map);
-            return false;
-        }else {
             return true;
+        }else {
+            return false;
         }
     }
 }
