@@ -80,6 +80,8 @@ public class OrderBackManageController {
         }
 
     }
+
+
     //查看某个用户的全部订单的状态
     @ResponseBody
     @RequestMapping("/seeAllOrderStatus")

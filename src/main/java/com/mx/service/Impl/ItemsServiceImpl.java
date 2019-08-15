@@ -32,6 +32,9 @@ public class ItemsServiceImpl implements ItemsService {
         List<Item> list=itemMapper.queryItemsByName(pageSize,offset,sort,sortOrder,name);
         //将查询结果转换成json数组
         int count=itemMapper.queryItemsByNameCount(name);
+        if (count==0){
+            return null;
+        }
         String str=ConvertJson.Convert(count,list);
         return str;
     }
@@ -40,6 +43,9 @@ public class ItemsServiceImpl implements ItemsService {
     public String queryItemsByISBN(Integer pageSize, Integer offset, String sort, String sortOrder,String isbn) {
         List<Item> list=itemMapper.queryItemsByISBN(pageSize,offset,sort,sortOrder,isbn);
         int count=itemMapper.queryItemsByISBNCount(isbn);
+        if (count==0){
+            return null;
+        }
         String str=ConvertJson.Convert(count,list);
         return str;
     }
@@ -50,6 +56,9 @@ public class ItemsServiceImpl implements ItemsService {
 //        System.out.println("lust："+itemList);
 //        System.out.println(itemList.size());
         int count=itemMapper.queryItemsCount();
+        if (count==0){
+            return null;
+        }
         String str=ConvertJson.Convert(count,itemList);
         return str;
     }
@@ -57,7 +66,11 @@ public class ItemsServiceImpl implements ItemsService {
     //查询商品总记录数
     @Override
     public int queryItemsCount() {
-        return itemMapper.queryItemsCount();
+        int count=itemMapper.queryItemsCount();
+        if (count==0){
+            return 0;
+        }
+        return count;
     }
 
     @Override
@@ -86,13 +99,13 @@ public class ItemsServiceImpl implements ItemsService {
         return itemPath;
     }
 
-
-
-
     @Override
     public String queryItemsByPrice(Integer pageSize, Integer offset, String sort, String sortOrder,Integer lowPrice, Integer highPrice) {
         List<Item> list=itemMapper.queryItemsByPrice(pageSize,offset,sort,sortOrder,lowPrice,highPrice);
         int count=itemMapper.queryItemsByPriceCount(lowPrice,highPrice);
+        if (count==0){
+         return null;
+        }
         String str=ConvertJson.Convert(count,list);
         return str;
     }
@@ -101,11 +114,18 @@ public class ItemsServiceImpl implements ItemsService {
     public String queryItemsByItemCate(Integer pageSize, Integer offset, String sort, String sortOrder,Integer itemCate) {
         List<Item> list=itemMapper.queryItemsByItemCate(pageSize,offset,sort,sortOrder,itemCate);
         int count=itemMapper.queryItemsByItemCateCount(itemCate);
+        if (count==0){
+            return null;
+        }
         //将查询结果转换成json数组
         String str=ConvertJson.Convert(count,list);
         return str;
     }
 
+
+    /**
+     *前台展示
+     */
 
     @Override
     public String FrontQueryAll(Integer pageSize, Integer offset, String sort, String sortOrder) {
@@ -129,6 +149,7 @@ public class ItemsServiceImpl implements ItemsService {
         StringBuilder jsonStrAll = new StringBuilder("{");
         try{
             String str=queryItemsByPrice(pageSize,offset,sort,sortOrder,lowPrice,highPrice);
+            System.out.println("查询出来的价格商品："+str);
              ItemsByPriceData=str.substring(1,str.lastIndexOf("}"))+"}";
             jsonStrAll.append("\"result\":true,");
             jsonStrAll.append(ItemsByPriceData);
@@ -146,6 +167,10 @@ public class ItemsServiceImpl implements ItemsService {
         try{
             List<Item> list=itemMapper.queryItemsByPriceAndCateAndLabelID(pageSize,offset,sort,sortOrder,lowPrice,highPrice,cateId,labelId);
             int count=itemMapper.queryItemsByPriceAndCateAndLabelIDCount(lowPrice,highPrice,cateId,labelId);
+            if (count==0){
+                jsonStrAll.append("\"result\":false}");
+                return jsonStrAll+"";
+            }
             //将查询结果转换成json数组
             String str=ConvertJson.Convert(count,list);
             ItemsByPriceData=str.substring(1,str.lastIndexOf("}"))+"}";
@@ -165,11 +190,14 @@ public class ItemsServiceImpl implements ItemsService {
         try{
             List<Item> list=itemMapper.queryItemsByLabelId(pageSize,offset,sort,sortOrder,labelId);
             int count=itemMapper.queryItemsByLabelIdCount(labelId);
+            if (count==0){
+                jsonStrAll.append("\"result\":false}");
+                return jsonStrAll+"";
+            }
             //将查询结果转换成json数组
             String str=ConvertJson.Convert(count,list);
             ItemsByPriceData=str.substring(1,str.lastIndexOf("}"))+"}";
             jsonStrAll.append("\"result\":true,");
-
         }catch (Exception e){
             jsonStrAll.append("\"result\":false}");
         }
@@ -201,6 +229,10 @@ public class ItemsServiceImpl implements ItemsService {
         try{
             List<Item> list=itemMapper.queryItemsByCateAndLabelID(pageSize,offset,sort,sortOrder,cateId,labelId);
             int count=itemMapper.queryItemsByCateAndLabelIDCount(cateId,labelId);
+            if (count==0){
+                jsonStrAll.append("\"result\":false}");
+                return jsonStrAll+"";
+            }
             //将查询结果转换成json数组
             String str=ConvertJson.Convert(count,list);
             ItemsByPriceData=str.substring(1,str.lastIndexOf("}"))+"}";
@@ -237,6 +269,10 @@ public class ItemsServiceImpl implements ItemsService {
         try{
             List<Item> list=itemMapper.queryItemsByNameAndLabelId(pageSize,offset,sort,sortOrder,queryData,labelId);
             int count=itemMapper.queryItemsByNameAndLabelIdCount(queryData,labelId);
+            if (count==0){
+                jsonStrAll.append("\"result\":false}");
+                return jsonStrAll+"";
+            }
             //将查询结果转换成json数组
             String str=ConvertJson.Convert(count,list);
             ItemsByPriceData=str.substring(1,str.lastIndexOf("}"))+"}";
@@ -257,6 +293,10 @@ public class ItemsServiceImpl implements ItemsService {
         try{
             List<Item> list=itemMapper.queryItemsByNameAndCateId(pageSize,offset,sort,sortOrder,queryData,cateId);
             int count=itemMapper.queryItemsByNameAndCateIdCount(queryData,cateId);
+            if (count==0){
+                jsonStrAll.append("\"result\":false}");
+                return jsonStrAll+"";
+            }
             //将查询结果转换成json数组
             String str=ConvertJson.Convert(count,list);
             ItemsByPriceData=str.substring(1,str.lastIndexOf("}"))+"}";
@@ -277,6 +317,10 @@ public class ItemsServiceImpl implements ItemsService {
         try{
             List<Item> list=itemMapper.queryItemsByNameAndCateIdAndLabelId(pageSize,offset,sort,sortOrder,queryData,cateId,labelId);
             int count=itemMapper.queryItemsByNameAndCateIdAndLabelIdCount(queryData,cateId,labelId);
+            if (count==0){
+                jsonStrAll.append("\"result\":false}");
+                return jsonStrAll+"";
+            }
             //将查询结果转换成json数组
             String str=ConvertJson.Convert(count,list);
             ItemsByPriceData=str.substring(1,str.lastIndexOf("}"))+"}";
@@ -297,6 +341,10 @@ public class ItemsServiceImpl implements ItemsService {
         try{
             List<Item> list=itemMapper.queryItemsByNameAndPrice(pageSize,offset,sort,sortOrder,queryData,lowPrice,highPrice);
             int count=itemMapper.queryItemsByNameAndPriceCount(queryData,lowPrice,highPrice);
+            if (count==0){
+                jsonStrAll.append("\"result\":false}");
+                return jsonStrAll+"";
+            }
             //将查询结果转换成json数组
             String str=ConvertJson.Convert(count,list);
             ItemsByPriceData=str.substring(1,str.lastIndexOf("}"))+"}";
@@ -317,6 +365,10 @@ public class ItemsServiceImpl implements ItemsService {
         try{
             List<Item> list=itemMapper.queryItemsByNameAndPriceAndLabelId(pageSize,offset,sort,sortOrder,queryData,lowPrice,highPrice,labelId);
             int count=itemMapper.queryItemsByNameAndPriceAndLabelIdCount(queryData,lowPrice,highPrice,labelId);
+            if (count==0){
+                jsonStrAll.append("\"result\":false}");
+                return jsonStrAll+"";
+            }
             //将查询结果转换成json数组
             String str=ConvertJson.Convert(count,list);
             ItemsByPriceData=str.substring(1,str.lastIndexOf("}"))+"}";
@@ -337,6 +389,10 @@ public class ItemsServiceImpl implements ItemsService {
         try{
             List<Item> list=itemMapper.queryItemsByExceptLabelId(pageSize,offset,sort,sortOrder,queryData,lowPrice,highPrice,cateId);
             int count=itemMapper.queryItemsByExceptLabelIdCount(queryData,lowPrice,highPrice,cateId);
+            if (count==0){
+                jsonStrAll.append("\"result\":false}");
+                return jsonStrAll+"";
+            }
             //将查询结果转换成json数组
             String str=ConvertJson.Convert(count,list);
             ItemsByPriceData=str.substring(1,str.lastIndexOf("}"))+"}";
@@ -357,6 +413,10 @@ public class ItemsServiceImpl implements ItemsService {
         try{
             List<Item> list=itemMapper.queryItemsByAll(pageSize,offset,sort,sortOrder,queryData,lowPrice,highPrice,cateId,labelId);
             int count=itemMapper.queryItemsByAllCount(queryData,lowPrice,highPrice,cateId,labelId);
+            if (count==0){
+                jsonStrAll.append("\"result\":false}");
+                return jsonStrAll+"";
+            }
             //将查询结果转换成json数组
             String str=ConvertJson.Convert(count,list);
             ItemsByPriceData=str.substring(1,str.lastIndexOf("}"))+"}";
@@ -377,6 +437,10 @@ public class ItemsServiceImpl implements ItemsService {
         try{
             List<Item> list=itemMapper.queryItemsByPriceAndLabelId(pageSize,offset,sort,sortOrder,lowPrice,highPrice,labelId);
             int count=itemMapper.queryItemsByPriceAndLabelIdCount(lowPrice,highPrice,labelId);
+            if (count==0){
+                jsonStrAll.append("\"result\":false}");
+                return jsonStrAll+"";
+            }
             //将查询结果转换成json数组
             String str=ConvertJson.Convert(count,list);
             ItemsByPriceData=str.substring(1,str.lastIndexOf("}"))+"}";
@@ -396,6 +460,10 @@ public class ItemsServiceImpl implements ItemsService {
         try{
             List<Item> list=itemMapper.queryItemsByPriceAndCateId(pageSize,offset,sort,sortOrder,lowPrice,highPrice,cateId);
             int count=itemMapper.queryItemsByPriceAndCateIdCount(lowPrice,highPrice,cateId);
+            if (count==0){
+                jsonStrAll.append("\"result\":false}");
+                return jsonStrAll+"";
+            }
             //将查询结果转换成json数组
             String str=ConvertJson.Convert(count,list);
             ItemsByPriceData=str.substring(1,str.lastIndexOf("}"))+"}";
@@ -411,7 +479,6 @@ public class ItemsServiceImpl implements ItemsService {
 
     @Override
     public int QueryItemsCounts(Integer cateId) {
-
         return itemMapper.QueryItemsCounts(cateId);
     }
 
