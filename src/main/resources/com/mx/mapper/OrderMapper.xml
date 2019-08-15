@@ -64,7 +64,7 @@
   </insert>
   <select id="SeeOrder"  resultMap="OrderAndDetailMaps">
       SELECT t1.o_name ,t1.number,t4.name,t2.count,t3.addr,t1.note,t1.create_time,t2.total_price,
-      CASE t1.`status` WHEN 0 THEN '未支付' WHEN 1 THEN '已支付'  END AS `status`
+      CASE t1.`status` WHEN 0 THEN '未处理' WHEN 1 THEN '未支付' WHEN 2 THEN '待收货中' WHEN 3THEN '收货完成' WHEN 4 THEN '退货中' WHEN 5 THEN '退货完成' END AS `status`
       FROM  `order` AS t1, order_detail AS t2 , address AS t3 , item AS t4
       <where>
       t1.add_id=t3.add_id AND t1.o_id=t2.o_id AND t2.item_id=t4.item_id AND
@@ -76,7 +76,7 @@
   </select>
   <select id="SeeAllOrder"  resultMap="OrderAndDetailMaps">
       SELECT t1.o_id,t1.o_name ,t1.number,t4.name,t2.count,t3.addr,t1.note,t1.create_time,t2.total_price,
-      CASE t1.`status` WHEN 0 THEN '未支付' WHEN 1 THEN '已支付'  END AS `status`
+      CASE t1.`status` WHEN 0 THEN '未处理' WHEN 1 THEN '未支付' WHEN 2 THEN '待收货中' WHEN 3THEN '收货完成' WHEN 4 THEN '退货中' WHEN 5 THEN '退货完成'  END AS `status`
       FROM  `order` AS t1, order_detail AS t2 , address AS t3 , item AS t4
       <where>
       t1.add_id=t3.add_id AND t1.o_id=t2.o_id AND t2.item_id=t4.item_id AND
@@ -96,7 +96,7 @@
     </select>
   <select id="QueryAllOrderStatus"  resultMap="OrderAndDetailMaps">
       SELECT t1.o_id,t1.o_name ,t1.number,t4.name,t2.count,t3.addr,t1.note,t1.create_time,t2.total_price,
-      CASE t1.`status` WHEN 0 THEN '未支付' WHEN 1 THEN '已支付'  END AS `status`
+      CASE t1.`status` WHEN 0 THEN '未处理' WHEN 1 THEN '未支付' WHEN 2 THEN '待收货中' WHEN 3THEN '收货完成' WHEN 4 THEN '退货中' WHEN 5 THEN '退货完成'  END AS `status`
       FROM  `order` AS t1, order_detail AS t2 , address AS t3 , item AS t4
       <where>
       t1.add_id=t3.add_id AND t1.o_id=t2.o_id AND t2.item_id=t4.item_id AND
