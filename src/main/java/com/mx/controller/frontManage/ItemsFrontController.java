@@ -176,7 +176,7 @@ public class ItemsFrontController {
     @ResponseBody
     @RequestMapping("/query/ItemByID")
     public String queryItemByID(Integer item_id,HttpSession session){
-        System.out.println("---------"+item_id);
+//        System.out.println("---------"+item_id);
         return itemsService.FrontQueryItemById(item_id);
       }
 

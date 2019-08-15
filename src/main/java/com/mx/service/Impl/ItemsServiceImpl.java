@@ -70,8 +70,10 @@ public class ItemsServiceImpl implements ItemsService {
 
     @Override
     public boolean deleteItem(Integer id) {
-        return itemMapper.deleteItem(id);
-
+        boolean row= itemMapper.deleteItem(id);
+        if (!row){
+            return false;
+        }else return true;
     }
 
     @Override
