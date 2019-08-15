@@ -17,7 +17,7 @@
     <link rel="stylesheet" type="text/css" href="static/css/personalMain.css">
     <script src="static/js/userMain.js"></script>
     <%--添加收货人信息的js--%>
-    <script src="static/js/addAddr.js"></script>
+    <script src="static/js/userOrder.js"></script>
 </head>
 
 <body>
@@ -27,39 +27,39 @@
     <%@ include file="./../../common/frontShow/topNav.jsp"%>
     <%@ include file="./../../common/frontShow/leftNav.jsp"%>
 
-        <!--右侧的显示内容开始-->
-        <div class="col-lg-11 col-md-12 col-sm-12 col-xs-12 right-content">
-            <div class="row pannel-main">
-                <!-- 顶部个人基本信息 -- start -->
-                <div class="col-xs-12 personal-info">
-                    <!-- 左侧信息区域 -->
-                    <div class="left-info">
-                        <!-- 个人头像 -->
-                        <a class="thumbnail personal-pic">
-                            <img src="${userPic.userPath}" />
-                        </a>
+    <!--右侧的显示内容开始-->
+    <div class="col-lg-11 col-md-12 col-sm-12 col-xs-12 right-content">
+        <div class="row pannel-main">
+            <!-- 顶部个人基本信息 -- start -->
+            <div class="col-xs-12 personal-info">
+                <!-- 左侧信息区域 -->
+                <div class="left-info">
+                    <!-- 个人头像 -->
+                    <a class="thumbnail personal-pic">
+                        <img src="${userPic.userPath}" />
+                    </a>
 
-                        <!-- 用户ID和昵称 -->
-                        <div class="personal-baseInfo">
-                            <h4>${userData.uName}
-                                <span class="personal-vip"><img src="static/images/vip/vip1.png"></span>
-                                <span class="personal-id">(ID:${userData.name})</span>
-                            </h4>
-                            <span class="greeting">晚上好</span>
-                            <a class="update" href="#" data-toggle="modal" data-target="#updateInfo">修改个人信息&nbsp;&gt;&nbsp;&gt;&nbsp;</a>
-                        </div>
+                    <!-- 用户ID和昵称 -->
+                    <div class="personal-baseInfo">
+                        <h4>${userData.uName}
+                            <span class="personal-vip"><img src="static/images/vip/vip1.png"></span>
+                            <span class="personal-id">(ID:${userData.name})</span>
+                        </h4>
+                        <span class="greeting">晚上好</span>
+                        <a class="update" href="#" data-toggle="modal" data-target="#updateInfo">修改个人信息&nbsp;&gt;&nbsp;&gt;&nbsp;</a>
                     </div>
+                </div>
 
 
-                    <!-- 右侧信息区域 -->
-                    <div class="right-info">
-                        <!-- 用户的其他基本信息 -->
-                        <div class="personal-otherInfo">
-                            <span>安全性: <span class="safe">普通</span></span>
-                            <span>邮箱: ${userData.email}</span>
-                            <span>手机号: ${userData.tel}</span>
-                        </div>
+                <!-- 右侧信息区域 -->
+                <div class="right-info">
+                    <!-- 用户的其他基本信息 -->
+                    <div class="personal-otherInfo">
+                        <span>安全性: <span class="safe">普通</span></span>
+                        <span>邮箱: ${userData.email}</span>
+                        <span>手机号: ${userData.tel}</span>
                     </div>
+                </div>
             </div>
             <!-- 顶部个人基本信息 -- end -->
 
@@ -75,7 +75,7 @@
                 <!-- 导航栏下的内容 -->
                 <div class="main-content">
                     <%--引入购物车的主内容--%>
-                    <%@ include file="./../../common/frontShow/addAddrMain.jsp"%>
+                    <%@ include file="./../../common/frontShow/userOrderMain.jsp"%>
                 </div>
 
             </div>

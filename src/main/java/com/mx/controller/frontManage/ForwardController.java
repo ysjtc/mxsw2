@@ -35,6 +35,11 @@ public class ForwardController {
         return "frontShow/personal/addAddr";
     }
 
+    /*进入订单显示页面*/
+    @RequestMapping("/userOrder")
+    public String userOrder(){
+        return "frontShow/personal/userOrder";
+    }
 
 
 

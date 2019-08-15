@@ -35,7 +35,7 @@
     </div>
     <!-- 外层包装结束 -->
     
-	<!-- 模态框开始 -->
+	<!-- 模态框开始 （商品详情的模态框）-->
     <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
@@ -94,16 +94,16 @@
 
 
                         </div>
-                        <div class="detail-info">
+                        <div class="detail-info" style="border-bottom:0px;">
                             <h2>概述</h2>
                             <p id="modal_item_desc">
                                 
                             </p>
                         </div>
-                        <div class="opera">
-                            <button class="btn btn-primary buyNow">立即购买</button>
-                            <button class="btn btn-success">加入购物车</button>
-                        </div>
+<%--                        <div class="opera">--%>
+<%--                            <button class="btn btn-primary buyNow">立即购买</button>--%>
+<%--                            <button class="btn btn-success">加入购物车</button>--%>
+<%--                        </div>--%>
                     </div>
                 </div>
             </div>
@@ -111,17 +111,47 @@
     </div>
     <!-- 模态框结束 -->
 
-    <!--一个隐藏的有关支付的提交input-->
-    <%
-        java.text.SimpleDateFormat formatter = new java.text.SimpleDateFormat("yyyyMMddHHmmss");
-        java.util.Date currentTime = new java.util.Date();//得到当前系统时间
-        String date = formatter.format(currentTime); //将日期时间格式化
-    %>
-    <div style="display: none;">
-       <input type="text" name="out_trade_no" id="out_trade_no" value=""><br>
-       <input type="text" name="subject" id="subject" value="${USER_ID}<%=date%>"><br>
-       <input type="text" name="total_amount" id="total_amount" value=""><br>
-       <input type="text" name="body" id="body" value=""><br>
+    <!--模态开始（一个用于选择订单的模态框）-->
+    <div style="width:30%;margin-left:auto;margin-right:auto;" class="modal fade" id="orderModal" tabindex="-1" role="dialog" aria-labelledby="orderLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                        &times;
+                    </button>
+                    <h4 class="modal-title" id="orderLabel">
+                        下单
+                    </h4>
+                </div>
+                <div class="modal-body" style="padding:10px;">
+                    <div style="margin-left: auto;margin-right: auto;">
+                        <div class="form-group">
+                            <label>购买数量</label>
+                            <div class="input-group input-group-sm" style="width:65%;">
+                                <span id="countCut" class="input-group-addon">-</span>
+                                <input id="orderItemCount" type="number" class="form-control" value="5">
+                                <span id="countAdd" class="input-group-addon">+</span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>备注</label>
+                            <textarea id="orderNote" class="form-control" row="3"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label>收货人</label>
+                            <select id="orderAddr" class="form-control"></select>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭
+                    </button>
+                    <button id="orderPost" type="button" class="btn btn-primary">
+                        提交订单
+                    </button>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal -->
     </div>
 
 

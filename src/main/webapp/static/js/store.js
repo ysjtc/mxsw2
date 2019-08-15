@@ -35,9 +35,9 @@ $(document).ready(function() {
     //设置RangeSlider插件的一些参数---开始
     $("#range_1").ionRangeSlider({
         min: 0,
-        max: 100,
+        max: 400,
         from: 15,
-        to: 50,
+        to: 100,
         type: 'double', //设置几个滑块
         step: 1,
         prefix: "", //设置数值前缀
@@ -347,64 +347,91 @@ $(document).ready(function() {
     });
 
 
-    //处理支付
+    //一个数量减少的函数
+    $("#countCut").click(function(){
+        $("#orderItemCount").val($("#orderItemCount").val()-1);
+        var itemCount=$("#orderItemCount").val();
+        if(itemCount<1){
+            $("#orderItemCount").val(1);
+        }
+    });
+    //一个数量增多的函数
+    $("#countAdd").click(function(){
+        $("#orderItemCount").val(parseInt($("#orderItemCount").val())+1);
+    });
+
+
+
+    //一个暂存item_id的变量
+    var orderItemId="";
+    //点击购买时
     $(".left-show").on("click",".buyNow",function(){
-        var out_trade_no=$("input[name='out_trade_no']").val();;
-        var subject=$("input[name='subject']").val();;
-        var total_amount=$("input[name='total_amount']").val();;
-        var body=$("input[name='body']").val();;
-        // alert(subject);
+        //首先请求联系人数据
         $.ajax({
-            url:'Pay/AliPay',
-            dataType:'html',
-            type:'post',
-            async:false,
-            // contentType:'application/json',
-            // data:JSON.stringify(obj),
-            data:{
-                'out_trade_no':out_trade_no,
-                'subject':subject,
-                'total_amount':total_amount,
-                'body':body
-            },
-            success:function (data){
-                alert("成功"+data);
-                $('#formdiv').html(data);
+            url : 'http:www.baidu.com',     //得到规定格式的收货人信息的url
+            type : 'POST',
+            success : function(data) {
 
-            },error:function (data) {
-                alert("失败"+data);
+                var data={"1":["曹淦","13342023320"],"2":["p1n93r","13723423232"],"result":true};
+                //动态添加联系人的select
+                if(data['result']){
+                    $(".addedAddrTag").remove();
+                    $.each(data,function(key,value){
+                        if (key!="result") {
+                            var addrTag="<option class='addedAddrTag' value='"+key+"'>"+value[0]+"："+value[1]+"</option>";
+                        }
+                        $("#orderAddr").append(addrTag);
+                    });
+                }else{
+                    alert("意外错误！请重试！");
+                }
+
+            },
+            error : function(data){
+                alert("网络错误！请检查网络！");
             }
-        })
+        });
+        orderItemId=$(this).attr("item_id");
+        $('#orderModal').modal('toggle');
     });
 
-    //模态框的支付点击
-    $(".buyNow").click(function(){
-        var out_trade_no=$("input[name='out_trade_no']").val();;
-        var subject=$("input[name='subject']").val();;
-        var total_amount=$("input[name='total_amount']").val();;
-        var body=$("input[name='body']").val();;
-        // alert(subject);
-        $.ajax({
-            url:'Pay/AliPay',
-            dataType:'html',
-            type:'post',
-            async:false,
-            // contentType:'application/json',
-            // data:JSON.stringify(obj),
-            data:{
-                'out_trade_no':out_trade_no,
-                'subject':subject,
-                'total_amount':total_amount,
-                'body':body
-            },
-            success:function (data){
-                alert("成功"+data);
-                $('#formdiv').html(data);
 
-            },error:function (data) {
-                alert("失败"+data);
+    //点击下单时
+    $("#orderPost").click(function(){
+        //准备订单数据
+        var orderForm={};
+        var myDate = new Date();
+        orderForm['item_id']=orderItemId;
+        orderForm['count']=$("#orderItemCount").val();
+        orderForm['oName']=myDate.getTime();
+        orderForm['note']=$("#orderNote").val();
+        orderForm['address_id']=$("#orderAddr").val();
+
+        //订单信息必须完整
+        var flag=true;
+        $.each(orderForm,function(key,value){
+            if(value==null||value==""){
+                flag=false;
             }
-        })
+        });
+        if(!flag){
+            alert("信息不完整，请检查！");
+        }else{
+            //ajax提交请求
+            $.ajax({
+                url : 'FrontManageOrder/createOrder',
+                data:orderForm,
+                type : 'POST',
+                success : function(data) {
+                    data=JSON.parse(data);
+                    if(data['result']){
+                        //成功后重定向到个人中心的订单页面
+                        window.location.href="FrontForward/userOrder";
+                    }else{
+                        alert("意外错误！请重试！");
+                    }
+                }
+            });
+        }
     });
-
 });
