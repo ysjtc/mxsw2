@@ -1,6 +1,7 @@
 package com.mx.utils.ConvertJson;
 import com.mx.pojo.Item;
 import com.mx.pojo.Item_Pic;
+import com.mx.pojo.Order;
 
 import java.util.List;
 
@@ -12,11 +13,10 @@ public class ConvertJson {
         String str=null;
         jsonStrAll.append("\""+"total"+"\""+":"+count+","+"\""+
                 "rows"+"\""+":[");
-//        for( Item obj : list){
             for (int i=0;i<list.size();i++){
             //把你要拼接的字段放进去
             jsonStrAll.append(list.get(i).toJson() +",");
-        }
+             }
         //把最后的，（逗号）截取掉
         str = jsonStrAll.substring(0, jsonStrAll.length()-1)+"]}";
 //        System.out.println(str);
@@ -93,4 +93,21 @@ public class ConvertJson {
         return str;
     }
 
+
+
+    public static String ConvertOrder(int count,List<Order> list) {
+        //定义一个StringBuilder
+        StringBuilder jsonStrAll = new StringBuilder("{");
+        String str=null;
+        jsonStrAll.append("\""+"total"+"\""+":"+count+","+"\""+
+                "rows"+"\""+":[");
+        for (int i=0;i<list.size();i++){
+            //把你要拼接的字段放进去
+            jsonStrAll.append(list.get(i).TOJSON() +",");
+        }
+        //把最后的，（逗号）截取掉
+        str = jsonStrAll.substring(0, jsonStrAll.length()-1)+"]}";
+//        System.out.println(str);
+        return str;
+    }
 }

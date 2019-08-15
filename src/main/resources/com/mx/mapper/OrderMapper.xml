@@ -1,22 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.mx.mapper.OrderMapper">
-  <resultMap id="BaseResultMap" type="com.mx.pojo.Order">
+  <resultMap id="OrderAndDetailMaps" type="com.mx.pojo.Order">
     <result column="o_id" jdbcType="INTEGER" property="oId" />
-    <result column="u_id" jdbcType="INTEGER" property="uId" />
-    <result column="add_id" jdbcType="INTEGER" property="addId" />
     <result column="create_time" jdbcType="VARCHAR" property="createTime" />
     <result column="number" jdbcType="VARCHAR" property="number" />
-    <result column="status" jdbcType="BIT" property="status" />
+    <result column="status" jdbcType="INTEGER" property="status" />
     <result column="note" jdbcType="VARCHAR" property="note" />
+      <association property="uId"  javaType="com.mx.pojo.User">
+          <id property="uId" column="u_id"/>
+      </association>
+      <association property="addId" javaType="com.mx.pojo.Address">
+          <id property="addId" column="add_id"/>
+          <result property="addr" column="addr"/>
+      </association>
   </resultMap>
 
-  <insert id="insertSelective" parameterType="com.mx.pojo.Order">
+  <insert id="createOrder" parameterType="com.mx.pojo.Order">
     insert into order
     <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="oId != null">
-        o_id,
-      </if>
       <if test="uId != null">
         u_id,
       </if>
@@ -38,26 +40,88 @@
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="oId != null">
-        #{oId,jdbcType=INTEGER},
+        #{oId},
       </if>
       <if test="uId != null">
-        #{uId,jdbcType=INTEGER},
+        #{uId.uId},
       </if>
       <if test="addId != null">
-        #{addId,jdbcType=INTEGER},
+        #{addId.addr},
       </if>
       <if test="createTime != null">
-        #{createTime,jdbcType=VARCHAR},
+        #{createTime},
       </if>
       <if test="number != null">
-        #{number,jdbcType=VARCHAR},
+        #{number},
       </if>
       <if test="status != null">
-        #{status,jdbcType=BIT},
+        #{status},
       </if>
       <if test="note != null">
-        #{note,jdbcType=VARCHAR},
+        #{note},
       </if>
     </trim>
   </insert>
+  <select id="SeeOrder"  resultMap="OrderAndDetailMaps">
+      SELECT t1.o_name ,t1.number,t4.name,t2.count,t3.addr,t1.note,t1.create_time,t2.total_price,
+      CASE t1.`status` WHEN 0 THEN '未处理' WHEN 1 THEN '未支付' WHEN 2 THEN '待收货中' WHEN 3THEN '收货完成' WHEN 4 THEN '退货中' WHEN 5 THEN '退货完成' END AS `status`
+      FROM  `order` AS t1, order_detail AS t2 , address AS t3 , item AS t4
+      <where>
+      t1.add_id=t3.add_id AND t1.o_id=t2.o_id AND t2.item_id=t4.item_id AND
+        <if test="uId!=null and uId!=''">
+            t1.number=#{trade_number}
+        </if>
+    </where>
+
+  </select>
+  <select id="SeeAllOrder"  resultMap="OrderAndDetailMaps">
+      SELECT t1.o_id,t1.o_name ,t1.number,t4.name,t2.count,t3.addr,t1.note,t1.create_time,t2.total_price,
+      CASE t1.`status` WHEN 0 THEN '未处理' WHEN 1 THEN '未支付' WHEN 2 THEN '待收货中' WHEN 3THEN '收货完成' WHEN 4 THEN '退货中' WHEN 5 THEN '退货完成'  END AS `status`
+      FROM  `order` AS t1, order_detail AS t2 , address AS t3 , item AS t4
+      <where>
+      t1.add_id=t3.add_id AND t1.o_id=t2.o_id AND t2.item_id=t4.item_id AND
+        <if test="uId!=null and uId!=''">
+            t1.u_id=#{uid}
+        </if>
+          GROUP BY o_id
+        <if test="sort!=null and sortOrder!=null">
+              ORDER BY #{sort} #{sortOrder}
+        </if>
+          limit #{offset},#{pageSize}
+    </where>
+
+  </select>
+  <select id="AllOrderCount" resultType="Integer">
+        select count(*) from  `order` where u_id=#{uid}
+    </select>
+  <select id="QueryAllOrderStatus"  resultMap="OrderAndDetailMaps">
+      SELECT t1.o_id,t1.o_name ,t1.number,t4.name,t2.count,t3.addr,t1.note,t1.create_time,t2.total_price,
+      CASE t1.`status` WHEN 0 THEN '未处理' WHEN 1 THEN '未支付' WHEN 2 THEN '待收货中' WHEN 3THEN '收货完成' WHEN 4 THEN '退货中' WHEN 5 THEN '退货完成'  END AS `status`
+      FROM  `order` AS t1, order_detail AS t2 , address AS t3 , item AS t4
+      <where>
+      t1.add_id=t3.add_id AND t1.o_id=t2.o_id AND t2.item_id=t4.item_id AND
+        <if test="uId!=null and uId!=''">
+            t1.u_id=#{uid} and status=#{status}
+        </if>
+          GROUP BY o_id
+        <if test="sort!=null and sortOrder!=null">
+              ORDER BY #{sort} #{sortOrder}
+        </if>
+          limit #{offset},#{pageSize}
+    </where>
+
+  </select>
+  <select id="AllOrderStatusCount" resultType="Integer">
+        select count(*) from  `order` where u_id=#{uid} and status=#{status}
+    </select>
+  <delete id="deleteOrder" parameterType="com.mx.pojo.Order">
+      delete from `order`
+      <where>
+          <trim>
+              <if test="trade_number!=null and trade_number!=''">
+                  trade_number=#{trade_number}
+              </if>
+          </trim>
+      </where>
+  </delete>
 </mapper>
