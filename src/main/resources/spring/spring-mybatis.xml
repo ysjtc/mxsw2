@@ -47,6 +47,10 @@
         <property name="checkoutTimeout" value="1000000"/>
         <!--连接失败后尝试次数-->
         <property name="acquireRetryAttempts" value="2"/>
+        <!--主线程把任务丢给线程池之后自己就直接执行完毕导致关闭了数据源-->
+        <property name="idleConnectionTestPeriod" value="60" />
+        <property name="preferredTestQuery" value="select 1" />
+        <property name="testConnectionOnCheckin" value="true"/>
     </bean>
     <!--最后关键一步,如何整合mybatis事务功能-->
     <!--1.注入一股mybatis的sqlsessionFactory这就是我们所需要的关键步骤
