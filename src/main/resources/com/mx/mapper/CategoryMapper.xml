@@ -14,27 +14,7 @@
   <select id="queryItemsItemCateName" resultType="com.mx.pojo.Category">
     select * from category
   </select>
-  <insert id="insert" parameterType="com.mx.pojo.Category">
-    insert into category (c_id, name)
-    values (#{cId,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR})
-  </insert>
-  <insert id="insertSelective" parameterType="com.mx.pojo.Category">
-    insert into category
-    <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="cId != null">
-        c_id,
-      </if>
-      <if test="name != null">
-        name,
-      </if>
-    </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides=",">
-      <if test="cId != null">
-        #{cId,jdbcType=INTEGER},
-      </if>
-      <if test="name != null">
-        #{name,jdbcType=VARCHAR},
-      </if>
-    </trim>
+  <insert id="addCategory" parameterType="com.mx.pojo.Category">
+    insert into category(catename) values (#{cateName})
   </insert>
 </mapper>

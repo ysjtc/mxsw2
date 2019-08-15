@@ -62,5 +62,13 @@ public class CategoryServiceImpl implements CategoryService {
         return str;
     }
 
+    @Override
+    public boolean addCategory(String cateName) {
+        int row=categoryMapper.addCategory(cateName);
+        if (row==0){
+            return false;
+        }else return true;
+    }
+
 
 }

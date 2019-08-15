@@ -42,7 +42,7 @@
                 </div>
                 <div class="panel-body">
                     
-                    <form action="dasd/adsad" method="POST" class="form-horizontal">
+                    <form action="ItemsBackManage/addCateName" method="POST" class="form-horizontal">
                         <div class="form-group">
                             <label style="float: left;margin-left:30px" for="cateName" class="control-label">分类名</label>
                             <div class="col-sm-4">

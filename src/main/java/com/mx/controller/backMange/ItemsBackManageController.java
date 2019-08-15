@@ -204,6 +204,7 @@ public class ItemsBackManageController {
         String isbn=String.valueOf(JsonToJsonObject.ToJsonObject(queryData,"isbn"));
         return "redirect:/Items/query/ItemsByISBN/"+pageSize+"/"+offset+"/"+sort+"/"+sortOrder+"/"+isbn;
     }
+
     @RequestMapping("/query/ItemsByISBN/{pageSize}/{offset}/{sort}/{sortOrder}/{isbn}")
     @ResponseBody
     public  String queryItemsByISBN(@PathVariable("pageSize")String pageSize,@PathVariable("offset")String offset,@PathVariable("sort")String sort,@PathVariable("sortOrder")String sortOrder,@PathVariable("isbn") String isbn,HttpSession session,Model model){
@@ -249,21 +250,29 @@ public class ItemsBackManageController {
     //通过商品名删除商品
     @ResponseBody
     @RequestMapping("/deleteItem")
-    public String deleteItemById(Integer itemId,Model model ){
+    public String deleteItemById(Integer itemId,Model model,HttpSession session ){
 //        System.out.println(itemId+"--------------");
         String truejson="{\"result\":true}";
         String falsejson="{\"result\":false}";
-        if (itemId!=null&&!itemId.equals("")){
-           boolean is=itemsService.deleteItem(itemId);
-           if (is){
-               model.addAttribute("deleteInfo","删除成功!");
-               return truejson;
-           }else {
-               model.addAttribute("deleteInfo","删除失败!");
-               return falsejson;
-           }
-        }else
-        return falsejson;
+        Object obj=session.getAttribute("SUPERADMIN_ID");
+        if (obj==null||obj.equals("")){
+            System.out.println("当前没有管理员登陆");
+            //存储错误信息
+            model.addAttribute("loginErr", "请先登录");
+            return "backManage/login/login";
+        }else {
+            if (itemId != null && !itemId.equals("")) {
+                boolean is = itemsService.deleteItem(itemId);
+                if (is) {
+                    model.addAttribute("deleteInfo", "删除成功!");
+                    return truejson;
+                } else {
+                    model.addAttribute("deleteInfo", "删除失败!");
+                    return falsejson;
+                }
+            } else
+                return falsejson;
+        }
     }
 
 
@@ -284,8 +293,8 @@ public class ItemsBackManageController {
     @ResponseBody
     @RequestMapping("/updateItem")
     public String updateItemByName(@RequestParam(value = "picFiles")MultipartFile[] multipartFiles, HttpSession session, Integer[] delPicId, Item item, Model model, HttpServletRequest request ){
-        System.out.println("item是不是空的:"+ IsEmpty.checkIsNull(item));
-        System.out.println("+++" + multipartFiles.length);
+//        System.out.println("item是不是空的:"+ IsEmpty.checkIsNull(item));
+//        System.out.println("+++" + multipartFiles.length);
 //        System.out.println("-----" +delPicId);
         String truejson="{\"result\": true }";
         String falsejson="{\"result\":false}";
@@ -380,5 +389,20 @@ public class ItemsBackManageController {
             return itemPicService.queryitemPicPaths(itemID);
           }else
               return falsejson;
+    }
+
+
+    @ResponseBody
+    @RequestMapping(value = {"/addCateName"},method = RequestMethod.POST)
+    public String addCateName(String cateName){
+        String truejson="{\"result\":true}";
+        String falsejson="{\"result\":false}";
+          if (cateName!=null&&!cateName.equals("")){
+              boolean addcate=categoryService.addCategory(cateName);
+              if (addcate){
+                  return truejson;
+              }else return falsejson;
+          }else
+          return falsejson;
     }
 }
