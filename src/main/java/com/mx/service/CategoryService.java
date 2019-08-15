@@ -22,4 +22,6 @@ public interface CategoryService {
     //查询商品类别
     String queryItemsItemCateName();
 
+
+    boolean addCategory(String cateName);
 }
