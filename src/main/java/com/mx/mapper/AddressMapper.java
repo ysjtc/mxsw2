@@ -19,7 +19,7 @@ public interface AddressMapper {
 
     int updateAddress(Address address);
 
-    int deleteAddress(Address address);
+    int deleteAddress(Integer addId);
 
 
 }

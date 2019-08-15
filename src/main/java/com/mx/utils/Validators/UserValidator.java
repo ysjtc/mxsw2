@@ -6,13 +6,12 @@ package com.mx.utils.Validators;/*
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 
-import javax.servlet.http.HttpSession;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 public class UserValidator {
-    public  static boolean checkError(BindingResult result, HttpSession session){
+    public  static boolean checkError(BindingResult result){
         if(result.hasErrors()) {
 
             //校验失败，返回失败,显示校验失败的错误信息
@@ -21,7 +20,7 @@ public class UserValidator {
             for(FieldError fieldError : errors) {
                 map.put(fieldError.getField(), fieldError.getDefaultMessage());
             }
-            session.setAttribute("error",map);
+            System.out.println(map);
             return true;
         }else {
             return false;

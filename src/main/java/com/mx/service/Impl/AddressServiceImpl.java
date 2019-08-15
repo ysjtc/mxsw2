@@ -22,6 +22,7 @@ public class AddressServiceImpl implements AddressService {
     @Autowired
     private AddressMapper addressMapper;
 
+    /*获得所有地址*/
     @Override
     public Map getAlladdress(int uId, Page page) {
         Map map =new HashMap();
@@ -37,16 +38,19 @@ public class AddressServiceImpl implements AddressService {
         return map;
     }
 
+    /*添加地址*/
     @Override
     public void Addaddress(Address address) {
         addressMapper.insertSelective(address);
     }
 
+    /*删除地址*/
     @Override
-    public void Clearaddress(Address address) {
-        addressMapper.deleteAddress(address);
+    public void Clearaddress(int addId) {
+        addressMapper.deleteAddress(addId);
     }
 
+    /*更新地址*/
     @Override
     public void updateaddress(Address address) {
         addressMapper.updateAddress(address);
