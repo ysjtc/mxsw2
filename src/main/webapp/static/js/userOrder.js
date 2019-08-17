@@ -48,7 +48,7 @@ $(document).ready(function() {
                     title: '订单编号',
                     align: 'center',
                     valign: 'middle',
-                    width: '100',
+                    width: '150',
                 }, {
                     field: 'ItemName',
                     title: '商品',
@@ -66,14 +66,16 @@ $(document).ready(function() {
                     title: '备注',
                     align: 'center',
                     valign: 'middle',
+					width: '200',
                 },{
                     field: 'createTime',
                     title: '创建时间',
                     align: 'center',
                     valign: 'middle',
+					width：'80',
                 },{
                     field: 'totalPrice',
-                    title: '创建时间',
+                    title: '订单总价',
                     align: 'center',
                     valign: 'middle',
                 },{
@@ -89,7 +91,7 @@ $(document).ready(function() {
                     width: '70',
                     formatter:function(value, row, index){
 
-                        return "<button class='btn btn-default btn-xs delOrder' oId='"+row.oId+"'><span class='glyphicon glyphicon-exclamation-sign'></span>订单取消</button><br/><button class='btn btn-default btn-xs payOrder' oId='"+row.oId+"'><span class='glyphicon glyphicon-ok'></span>订单付款</button>";
+                        return "<button class='btn btn-default btn-xs delOrder' oId='"+row.oId+"'><span class='glyphicon glyphicon-exclamation-sign'></span>订单取消</button><br/><br/><button class='btn btn-default btn-xs payOrder' body='"+row.Note+"' total_amount='"+row.totalPrice+"' subject='"+row.oName+"' Number='"+row.Number+"'><span class='glyphicon glyphicon-ok'></span>订单付款</button>";
                     }
                 }
                 ],
@@ -103,8 +105,63 @@ $(document).ready(function() {
 	//取消订单时
 	$("#userOrderInfoTable").on("click",".delOrder",function(){
 		var oId=$(this).attr("oId");
-		console.log(oId);
+		var data={};
+		data['oId']=oId;
+		//ajax发送订单取消的请求
+		$.ajax({
+                url : 'GIAO',
+                data:data,
+                type : 'POST',
+                success : function(data) {
+                    data=JSON.parse(data);
+                    if(data['result']){
+                        //取消成功后
+						alert("订单取消成功！");
+                        doTable("FrontManageOrder/seeAllOrder");
+                    }else{
+                        if(data['isLogin']==false){
+                            window.location.href="FrontForward/loginMain";
+                        }
+                        alert("取消失败，请重试！");
+                    }
+                },
+				error : function(data){
+					alert("请检查网络！");
+				}
+            });
+		
+		
+		
 	});
+	
+	
+	//结算订单时
+	$("#userOrderInfoTable").on("click",".payOrder",function(){
+		var data={};
+		data['out_trade_no']=$(this).attr("Number");
+		data['subject']=$(this).attr("subject");
+		data['total_amount']=$(this).attr("total_amount");
+		data['body']=$(this).attr("body");
+		//ajax发送订单取消的请求
+		$.ajax({
+                url : 'GIAO',
+                data:data,
+                type : 'POST',
+                success : function(data) {
+                    data=JSON.parse(data);
+                    if(data['result']){
+                        //请求支付api成功
+                        $(".main-content").append(data['form']);
+                    }else{
+                        alert("意外错误！请重试！");
+                    }
+                },
+				error : function(data){
+					alert("请检查网络！");
+				}
+            });
+	});
+	
 	
 	
 });
