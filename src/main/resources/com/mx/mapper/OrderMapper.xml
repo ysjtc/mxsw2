@@ -31,10 +31,10 @@
   <insert id="createOrder" parameterType="com.mx.pojo.Order">
     insert into order
     <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="uid != null">
+      <if test="uId != null">
         u_id,
       </if>
-      <if test="addId != null">
+      <if test="address != null">
         add_id,
       </if>
       <if test="createTime != null">
@@ -51,14 +51,11 @@
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
-      <if test="oId != null">
-        #{oId},
-      </if>
-      <if test="uid != null">
+      <if test="uId != null">
         #{uid},
       </if>
       <if test="address != null">
-        #{address.addr},
+        #{address.addId},
       </if>
       <if test="createTime != null">
         #{createTime},

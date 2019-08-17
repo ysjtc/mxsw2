@@ -450,12 +450,10 @@ $(document).ready(function() {
                         //成功后重定向到个人中心的订单页面
                         window.location.href="FrontForward/userOrder";
                     }else{
-                        if(!data['isLogin']){
+                        if(data['isLogin']==false){
                             window.location.href="FrontForward/loginMain";
-                        }else{
-                            alert("请添加收货人信息！");
-                            window.location.href="FrontForward/addAddr";
                         }
+                        alert("下单失败！请重试！");
                     }
                 }
             });

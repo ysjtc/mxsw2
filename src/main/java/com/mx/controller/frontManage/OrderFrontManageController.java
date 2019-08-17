@@ -97,7 +97,7 @@ public class OrderFrontManageController {
                 }
             } catch (Exception e) {
                 e.printStackTrace();
-                return "redirect:/FrontForward/error";
+                return falsejson;
             }
         }
     }
