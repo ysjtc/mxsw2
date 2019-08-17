@@ -38,7 +38,6 @@
         <ul>
             <li><a href="Forward/showItems">查看商品信息</a></li>
             <li><a href="Forward/addItems">添加商品</a></li>
-            <li><a href="Forward/deleteItems">添加商品类别</a></li>
         </ul>
     </div>
     <!-- 用户管理模块 -->

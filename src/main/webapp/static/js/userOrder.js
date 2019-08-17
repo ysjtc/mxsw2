@@ -30,12 +30,13 @@ $(document).ready(function() {
             },
             columns:
                 [
-                    {
-                        field: 'oId', // 返回json数据中的name
-                        title: 'ID', // 表格表头显示文字
-                        align: 'center', // 左右居中
-                        valign: 'middle', // 上下居中
-                        width: '80',
+                {
+					field: 'oId',
+					title: 'ID', 
+					align: 'center', 
+					valign: 'middle', 
+					width: '80',
+					visible:false
                     }, {
                     field: 'oName',
                     title: '订单名称',
@@ -49,23 +50,38 @@ $(document).ready(function() {
                     valign: 'middle',
                     width: '100',
                 }, {
-                    field: 'province',
-                    title: '省份',
+                    field: 'ItemName',
+                    title: '商品',
                     align: 'center',
                     valign: 'middle',
-                    width: '100',
+                    width: '150',
                 }, {
-                    field: 'addr',
+                    field: 'Address',
                     title: '地址',
                     align: 'center',
                     valign: 'middle',
                     width: '200',
                 },{
-                    field: 'add_id',
-                    title: '地址id',
+                    field: 'Note',
+                    title: '备注',
                     align: 'center',
                     valign: 'middle',
-                    visible:false,
+                },{
+                    field: 'createTime',
+                    title: '创建时间',
+                    align: 'center',
+                    valign: 'middle',
+                },{
+                    field: 'totalPrice',
+                    title: '创建时间',
+                    align: 'center',
+                    valign: 'middle',
+                },{
+                    field: 'Status',
+                    title: '状态',
+                    align: 'center',
+                    valign: 'middle',
+                    
                 }, {
                     title: "操作",
                     align: 'center',
@@ -73,7 +89,7 @@ $(document).ready(function() {
                     width: '70',
                     formatter:function(value, row, index){
 
-                        return "<button class='btn btn-default btn-xs delAddr' add_id='"+row.add_id+"'><span class='glyphicon glyphicon-exclamation-sign'></span>删除</button><br/><button class='btn btn-default btn-xs editAddr' add_id='"+row.add_id+"'><span class='glyphicon glyphicon-pencil'></span>修改</button>";
+                        return "<button class='btn btn-default btn-xs delOrder' oId='"+row.oId+"'><span class='glyphicon glyphicon-exclamation-sign'></span>订单取消</button><br/><button class='btn btn-default btn-xs payOrder' oId='"+row.oId+"'><span class='glyphicon glyphicon-ok'></span>订单付款</button>";
                     }
                 }
                 ],
@@ -82,4 +98,13 @@ $(document).ready(function() {
     }
     //未定位查询前先设定表格显示所有
     doTable("FrontManageOrder/seeAllOrder");
+	
+	
+	//取消订单时
+	$("#userOrderInfoTable").on("click",".delOrder",function(){
+		var oId=$(this).attr("oId");
+		console.log(oId);
+	});
+	
+	
 });

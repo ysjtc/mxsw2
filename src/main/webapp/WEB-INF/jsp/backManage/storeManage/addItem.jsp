@@ -92,11 +92,6 @@
                                 <c:forEach items="${Category}" var="obj">
                                     <option value="${obj.cId}">${obj.cateName}</option>
                                 </c:forEach>
-                                <%--<option value="22">计算机</option>--%>
-                                <%--<option value="1">土木</option>--%>
-                                <%--<option value="2">安全攻防</option>--%>
-                                <%--<option value="3">美术</option>--%>
-                                <%--<option value="4">商贸</option>--%>
                             </select>
                         </div>
                         <div class="form-group">
@@ -106,11 +101,41 @@
                         <div class="form-group">
                             <label>商品发货地点</label>
                             <select name="place" class="form-control">
-                                <option>湖南</option>
-                                <option>贵州</option>
-                                <option>天津</option>
-                                <option>北京</option>
-                                <option>上海</option>
+                                <option></option>
+								<option value="北京">北京市</option>
+								<option value="浙江省">浙江省</option>
+								<option value="天津市">天津市</option>
+								<option value="安徽省">安徽省</option>
+								<option value="上海市">上海市</option>
+								<option value="福建省">福建省</option>
+								<option value="重庆市">重庆市</option>
+								<option value="江西省">江西省</option>
+								<option value="山东省">山东省</option>
+								<option value="河南省">河南省</option>
+								<option value="湖北省">湖北省</option>
+								<option value="湖南省">湖南省</option>
+								<option value="广东省">广东省</option>
+								<option value="海南省">海南省</option>
+								<option value="山西省">山西省</option>
+								<option value="青海省">青海省</option>
+								<option value="江苏省">江苏省</option>
+								<option value="辽宁省">辽宁省</option>
+								<option value="吉林省">吉林省</option>
+								<option value="台湾省">台湾省</option>
+								<option value="河北省">河北省</option>
+								<option value="贵州省">贵州省</option>
+								<option value="四川省">四川省</option>
+								<option value="云南省">云南省</option>
+								<option value="陕西省">陕西省</option>
+								<option value="甘肃省">甘肃省</option>
+								<option value="黑龙江省">黑龙江省</option>
+								<option value="香港特别行政区">香港特别行政区</option>
+								<option value="澳门特别行政区">澳门特别行政区</option>
+								<option value="广西壮族自治区">广西壮族自治区</option>
+								<option value="宁夏回族自治区">宁夏回族自治区</option>
+								<option value="新疆维吾尔自治区">新疆维吾尔自治区</option>
+								<option value="内蒙古自治区">内蒙古自治区</option>
+								<option value="西藏自治区">西藏自治区</option>
                             </select>
                         </div>
                         <div class="form-group">
@@ -140,13 +165,11 @@
                         <div class="form-group">
                             <label>书籍标签</label>
                             <select name="lable" class="form-control">
-                                <option value="0">成色好</option>
-                                <option value="1">价格低</option>
-                                <option value="2">稀有</option>
-                                <option value="3">性价比高</option>
-                                <option value="4">全新书籍</option>
-								<option value="5">有收藏价值</option>
-								<option value="6">破烂书</option>
+                                <option value="1">低价</option>
+                                <option value="2">实惠</option>
+                                <option value="3">成色新</option>
+                                <option value="4">稀有</option>
+                                <option value="5">烂货</option>
                             </select>
                         </div>
                     </div>
