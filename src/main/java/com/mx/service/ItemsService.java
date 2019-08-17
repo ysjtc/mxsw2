@@ -100,4 +100,7 @@ public interface ItemsService {
 
     //通过itemid查询商品
     String FrontQueryItemById(Integer itemid);
+
+    //通过itemid查询商品单价
+    Float queryItemsPriceByItemId(Integer item_id);
 }

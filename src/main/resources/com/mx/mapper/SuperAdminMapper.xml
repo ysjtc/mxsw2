@@ -16,9 +16,7 @@
           <if test="name != null">
             and  name=#{name}
           </if>
-           <if test="password != null">
-            and  password=#{password}
-          </if>
+
       </trim>
     </where>
 

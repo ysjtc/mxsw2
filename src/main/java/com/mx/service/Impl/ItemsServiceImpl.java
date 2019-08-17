@@ -248,14 +248,14 @@ public class ItemsServiceImpl implements ItemsService {
 
     @Override
     public String FrontQueryItemsByName(Integer pageSize, Integer offset, String sort, String sortOrder, String queryData) {
-        String querydata=null;
+        String querydata="";
         StringBuilder jsonStrAll = new StringBuilder("{");
         try{
             String str=queryItemsByName(pageSize,offset,sort,sortOrder,queryData);
             querydata =str.substring(1,str.lastIndexOf("}"))+"}";
             jsonStrAll.append("\"result\":true,");
         }catch (Exception e){
-            jsonStrAll.append("\"result\":false,");
+            jsonStrAll.append("\"result\":false}");
         }
         jsonStrAll.append(querydata);
         System.out.println("---"+jsonStrAll);
@@ -492,5 +492,13 @@ public class ItemsServiceImpl implements ItemsService {
         return itemPath;
     }
 
+    @Override
+    public Float queryItemsPriceByItemId(Integer item_id) {
+        try{
+            return  itemMapper.queryItemsPriceByItemId(item_id);
+        }catch (Exception e){
+            return null;
+        }
+    }
 
 }

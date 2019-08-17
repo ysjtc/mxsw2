@@ -29,47 +29,57 @@
   </resultMap>
 
   <insert id="createOrder" parameterType="com.mx.pojo.Order">
-    insert into order
-    <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="uId != null">
-        u_id,
-      </if>
-      <if test="address != null">
-        add_id,
-      </if>
-      <if test="createTime != null">
-        create_time,
-      </if>
-      <if test="number != null">
-        number,
-      </if>
-      <if test="oStatus != null">
-        o_status,
-      </if>
-      <if test="note != null">
-        note,
-      </if>
-    </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides=",">
-      <if test="uId != null">
-        #{uid},
-      </if>
-      <if test="address != null">
-        #{address.addId},
-      </if>
-      <if test="createTime != null">
-        #{createTime},
-      </if>
-      <if test="number != null">
-        #{number},
-      </if>
-      <if test="oStatus != null">
-        #{oStatus},
-      </if>
-      <if test="note != null">
-        #{note},
-      </if>
-    </trim>
+    insert into `order`
+      <trim prefix="(" suffix=")" suffixOverrides=",">
+          <if test="oName != null">
+              o_name,
+          </if>
+          <if test="uId != null">
+              u_id,
+          </if>
+          <if test="address.addId != null">
+              add_id,
+          </if>
+          <if test="createTime != null">
+              create_time,
+          </if>
+          <if test="number != null">
+              number,
+          </if>
+          <if test="oStatus != null">
+              o_status,
+          </if>
+          <if test="note != null">
+              note,
+          </if>
+      </trim>
+      <trim prefix="values (" suffix=")" suffixOverrides=",">
+          <if test="oName != null">
+              #{oName},
+          </if>
+          <if test="uId != null">
+              #{uId},
+          </if>
+          <if test="address.addId != null">
+              #{address.addId},
+          </if>
+          <if test="createTime != null">
+              #{createTime},
+          </if>
+          <if test="number != null">
+              #{number},
+          </if>
+          <if test="oStatus != null">
+              #{oStatus},
+          </if>
+          <if test="note != null">
+              #{note},
+          </if>
+      </trim>
+      <!-- 获取到item最后一次插入的数据 -->
+      <selectKey keyProperty="oId" resultType="Integer" order="AFTER">
+          select LAST_INSERT_ID()
+      </selectKey>
   </insert>
   <select id="SeeOrder"  resultMap="OrderAndDetailMaps">
       SELECT t1.o_name ,t1.number,t4.name,t2.count,t3.addr,t1.note,t1.create_time,t2.total_price,
@@ -84,22 +94,24 @@
 
   </select>
   <select id="SeeAllOrder"  resultMap="OrderAndDetailMaps">
-    SELECT t1.`o_id`,t1.`o_name` ,t1.`number`,t4.`name`,t2.`count`,t3.`addr`,t1.`note`,t1.`create_time`,t2.`total_price`
-    ,CASE t1.`o_status` WHEN 0 THEN '未处理' WHEN 1 THEN '未支付' WHEN 2 THEN '待收货中' WHEN 3 THEN '收货完成' WHEN 4 THEN '退货中' WHEN 5 THEN '退货完成' END AS `oStatus`
+      SELECT t1.`o_id`,t1.`o_name` ,t1.`number`
+--       ,CASE t1.`o_status` WHEN 0 THEN '未处理' WHEN 1 THEN '未支付' WHEN 2 THEN '待收货中' WHEN 3 THEN '收货完成' WHEN 4 THEN '退货中' WHEN 5 THEN '退货完成' END AS `oStatus`
+      ,t1.o_status
+      ,t1.`note`,t1.`create_time`,t2.`total_price`,t4.`name`,t2.`count`,t3.`addr`
       FROM  `order` AS t1, `order_detail` AS t2 , `address` AS t3 , `item` AS t4
-    <where>
-        t1.`add_id`=t3.`add_id` AND
-        t1.`o_id`=t2.`o_id` AND
-        t2.`item_id`=t4.`item_id` AND
-        <if test="uid!=null">
-            t1.`u_id`=#{uid}
-        </if>
-        GROUP BY o_id
-        <if test="sort!=null and sortOrder!=null">
-            ORDER BY #{sort} #{sortOrder}
-        </if>
-        limit #{offset},#{pageSize}
-    </where>
+      <where>
+          t1.`add_id`=t3.`add_id` AND
+          t1.`o_id`=t2.`o_id` AND
+          t2.`item_id`=t4.`item_id` AND
+          <if test="uid!=null">
+              t1.`u_id`=#{uid}
+          </if>
+          GROUP BY o_id
+          <if test="sort!=null and sortOrder!=null">
+              ORDER BY #{sort} #{sortOrder}
+          </if>
+          limit #{offset},#{pageSize}
+      </where>
   </select>
   <select id="AllOrderCount" resultType="Integer">
         select count(*) from  `order` where u_id=#{uid}
@@ -128,8 +140,8 @@
       delete from `order`
       <where>
           <trim>
-              <if test="trade_number!=null and trade_number!=''">
-                  trade_number=#{trade_number}
+              <if test="o_id!=null and o_id!=''">
+                  o_id=#{o_id}
               </if>
           </trim>
       </where>

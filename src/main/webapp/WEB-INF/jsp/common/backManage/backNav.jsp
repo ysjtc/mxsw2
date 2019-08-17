@@ -81,9 +81,8 @@
             <h4>订单管理</h4>
         </div>
         <ul>
-            <li>查看商品信息</li>
-            <li>添加商品</li>
-            <li>删除商品</li>
+            <li><a href="Forward/showOrder">查看所有订单</a></li>
+            <li><a href="Forward/confirmReturnOrder">查看所有退单</a></li>
         </ul>
     </div>
     <!-- 管理员 -->

@@ -5,8 +5,9 @@ import com.mx.pojo.Order_Detail;
 
 public interface OrderService {
 
-    //生成订单号
-    boolean createOrder(Order order, Order_Detail order_detail);
+    //生成订单
+    boolean createOrder(Order order);
+    boolean createOrderDet(Order_Detail order_detail);
 
     //查询单个订单
     String  SeeOrder(Integer trade_number);
@@ -18,5 +19,7 @@ public interface OrderService {
     String QueryAllOrderStatus(Integer pageSize, Integer offset, String sort, String sortOrder,Integer status,Integer uid);
 
     //取消订单
-    boolean deleteOrder(Integer trade_number);
+    boolean deleteOrder(Integer o_id);
+
+
 }

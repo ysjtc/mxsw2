@@ -44,12 +44,16 @@ public class SuperAdminController {
 
             if (superAdmin != null) {
                  superAdmin = superAdminService.login(superAdmin);
-                //登录成功  跳向成功页面
-                session.setAttribute("SUPERADMIN_SESSION", superAdmin);
-                session.setAttribute("SUPERADMIN_ID", superAdmin.getSuperId());
-                //存储管理员开发者信息
-                model.addAttribute("SuperAdmin", "超级管理员");
-                return "redirect:/SuperAdmin/ToLogin";
+                 if (superAdmin==null){
+                     return "redirect:/SuperAdmin/ToLogin";
+                 }else {
+                     //登录成功  跳向成功页面
+                     session.setAttribute("SUPERADMIN_SESSION", superAdmin);
+                     session.setAttribute("SUPERADMIN_ID", superAdmin.getSuperId());
+                     //存储管理员开发者信息
+                     model.addAttribute("SuperAdmin", "超级管理员");
+                     return "redirect:/SuperAdmin/ToLogin";
+                 }
             } else {
                 //存储错误信息
                 model.addAttribute("loginErr", "请先登录");

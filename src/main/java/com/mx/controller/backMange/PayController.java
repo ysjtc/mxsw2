@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.UnsupportedEncodingException;
+import java.util.HashMap;
+import java.util.Map;
 
 @Controller
 @RequestMapping("/Pay")
@@ -25,16 +27,16 @@ public class PayController {
     /**
      * 支付宝支付接口
      *
-     * @param out_trade_no
-     * @param subject
-     * @param total_amount
-     * @param body
+     * @param out_trade_no  订单编号
+     * @param subject 订单名称
+     * @param total_amount 订单金额
+     * @param body 备注
      * @return
      * @throws AlipayApiException
      */
     @ResponseBody
     @RequestMapping(value = {"/AliPay"},method = RequestMethod.POST)
-    public String alipay(String out_trade_no, String subject, String total_amount, String body) throws AlipayApiException {
+    public Map alipay(String out_trade_no, String subject, String total_amount, String body) throws AlipayApiException {
 //        System.out.println(out_trade_no+subject+total_amount+body);
         AliPay pay=new AliPay();
         pay.setOut_trade_no(out_trade_no);
@@ -44,7 +46,10 @@ public class PayController {
         System.out.println(pay.toString());
         String form=aliPayService.aliPay(pay);
         System.out.println(form);
-        return form;
+        Map map=new HashMap();
+        map.put("form",form);
+        map.put("result",true);
+        return map;
     }
 
     /**

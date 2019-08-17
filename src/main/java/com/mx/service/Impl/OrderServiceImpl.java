@@ -1,6 +1,7 @@
 package com.mx.service.Impl;
 
 import com.mx.mapper.OrderMapper;
+import com.mx.mapper.Order_DetailMapper;
 import com.mx.pojo.Order;
 import com.mx.pojo.Order_Detail;
 import com.mx.service.OrderService;
@@ -16,11 +17,24 @@ public class OrderServiceImpl implements OrderService {
     @Autowired
     private OrderMapper orderMapper;
 
+    @Autowired
+    private Order_DetailMapper order_detailMapper;
+
     //生成订单号
     @Override
-    public boolean createOrder(Order order, Order_Detail order_detail) {
+    public boolean createOrder(Order order) {
+        System.out.println(order);
         //将订单添加到订单表
-        int row=orderMapper.createOrder(order,order_detail);
+        int row=orderMapper.createOrder(order);
+        if (row==0){ return false; }
+        else return true;
+    }
+
+    @Override
+    public boolean createOrderDet(Order_Detail order_detail) {
+        System.out.println("------------"+order_detail);
+        //将订单添加到订单详情表
+        int row=order_detailMapper.createOrderDet(order_detail);
         if (row==0){ return false; }
         else return true;
     }
@@ -55,8 +69,8 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public boolean deleteOrder(Integer trade_number) {
-        boolean row= orderMapper.deleteOrder(trade_number);
+    public boolean deleteOrder(Integer o_id) {
+        boolean row= orderMapper.deleteOrder(o_id);
         if (!row){
             return false;
         }else return true;

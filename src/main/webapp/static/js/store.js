@@ -73,7 +73,7 @@ $(document).ready(function() {
                     }
                 });
             }else{
-                alert("意外错误！请重试！");
+                alert("商品类别请求失败！请重试！");
             }
         },
         error : function(data){
@@ -202,7 +202,12 @@ $(document).ready(function() {
                     
                     // doclickedPage();  
                 }else{
-                    alert("请求失败！请刷新再试！");
+                    alert("该类商品暂时缺货,待补货中...");
+                    searchCache="";
+                    priceRangeCache="";
+                    cateIdCache="";
+                    labelIdCache="";
+                    showItemInfo(searchCache);
                 }
                 
             },

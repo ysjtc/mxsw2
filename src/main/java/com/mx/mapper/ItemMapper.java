@@ -128,4 +128,6 @@ public interface ItemMapper {
 
     //通过itemid查询商品
     List<Item> FrontQueryItemById(@Param("itemId") Integer itemId);
+
+    Float queryItemsPriceByItemId(@Param("item_id") Integer item_id);
 }

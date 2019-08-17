@@ -23,8 +23,9 @@ public class BackManageForwardController {
 
     //查看商品信息
     @RequestMapping("/showItems")
-    public String ShowItems(){
-
+    public String ShowItems(HttpSession session){
+        //查询商品类型,跟随登陆启动
+        session.setAttribute("Category",categoryService.queryAllCategory());
         return "backManage/storeManage/showItem";
     }
     //添加商品
@@ -35,9 +36,22 @@ public class BackManageForwardController {
         return "backManage/storeManage/addItem";
     }
     //进入后台查看所有用户页面
-    @RequestMapping("showUser")
+    @RequestMapping("/showUser")
     public String showUser(){
         return "backManage/userManage/showUser";
     }
+
+    //订单管理页面
+    @RequestMapping("/showOrder")
+    public String showOrder(){
+        return "backManage/orderManage/showOrder";
+    }
+
+    //退单页面
+    @RequestMapping("/confirmReturnOrder")
+    public String confirmReturnOrder(){
+        return "backManage/orderManage/confirmReturn";
+    }
+
 
 }

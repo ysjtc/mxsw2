@@ -72,7 +72,6 @@
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
-
       <if test="name != null">
         #{name},
       </if>
@@ -548,4 +547,9 @@
          </if>
      </where>
  </select>
+  <select id="queryItemsPriceByItemId" resultType="Float">
+    select item.price
+    from item
+    where item_id=#{item_id}
+  </select>
 </mapper>

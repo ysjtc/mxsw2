@@ -30,25 +30,34 @@ public class SuperAdminServiceImpl implements SuperAdminService {
     public SuperAdmin login(SuperAdmin superAdmin) {
 //        System.out.println("superAdminName:" + superAdmin.getName());
 //        System.out.println("superAdminPwd:" + superAdmin.getPassword());
-        if (superAdmin.getName()!= null || superAdmin.getPassword() != null||!"".equals(superAdmin.getPassword())||!"".equals(superAdmin.getName())) {
-            List<SuperAdmin> superAdminlist = superAdminMapper.queryAdminByName(superAdmin);
+        if (superAdmin.getName()!= null && superAdmin.getPassword() != null&&!"".equals(superAdmin.getPassword())&&!"".equals(superAdmin.getName())) {
+           try{
+               List<SuperAdmin> superAdminlist = superAdminMapper.queryAdminByName(superAdmin);
 //            System.out.println("-------------superadminList:" + superAdminlist);
-            //查询超级管理员不等于null  list集合大小为1
-            if (superAdminlist != null && superAdminlist.size() == 1) {
+               //查询超级管理员不等于null  list集合大小为1
+               if (superAdminlist != null && superAdminlist.size() == 1) {
 //            System.out.println(superAdminlist.get(0).getPassword().trim().equals(superAdmin.getPassword().trim())?"相等":"不对");
-                if (superAdminlist.get(0).getPassword().equals(superAdmin.getPassword())) {
-                    return superAdminlist.get(0);
-                }else {
-                    return null;
-                }
-            }
+                   if (superAdminlist.get(0).getPassword().equals(superAdmin.getPassword())) {
+                       return superAdminlist.get(0);
+                   }else {
+                       System.out.println("用户名或密码错误");
+                       return null;
+                   }
+               }else {
+                   System.out.println("用户名不存在");
+                   return null;
+               }
+           }catch (Exception e){
+               e.printStackTrace();
+               System.out.println("用户名或密码错误");
+               return null;
+           }
         } else {
             System.out.println("用户名或密码为空");
             return null;
         }
-            System.out.println("用户名或密码为空");
-            return null;
-        }
+
+    }
 
     @Override
     public SuperAdmin queryAdminById(String id) {

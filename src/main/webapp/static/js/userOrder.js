@@ -72,7 +72,7 @@ $(document).ready(function() {
                     title: '创建时间',
                     align: 'center',
                     valign: 'middle',
-					width：'80',
+					width:'80',
                 },{
                     field: 'totalPrice',
                     title: '订单总价',
@@ -109,7 +109,7 @@ $(document).ready(function() {
 		data['oId']=oId;
 		//ajax发送订单取消的请求
 		$.ajax({
-                url : 'GIAO',
+                url : 'FrontManageOrder/cancelOrder',
                 data:data,
                 type : 'POST',
                 success : function(data) {
@@ -144,11 +144,11 @@ $(document).ready(function() {
 		data['body']=$(this).attr("body");
 		//ajax发送订单取消的请求
 		$.ajax({
-                url : 'GIAO',
+                url : 'Pay/AliPay',
                 data:data,
                 type : 'POST',
                 success : function(data) {
-                    data=JSON.parse(data);
+                    // data=JSON.parse(data);
                     if(data['result']){
                         //请求支付api成功
                         $(".main-content").append(data['form']);

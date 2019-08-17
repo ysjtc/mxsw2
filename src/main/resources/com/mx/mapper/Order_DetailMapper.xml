@@ -7,16 +7,10 @@
     <result column="count" jdbcType="INTEGER" property="count" />
     <result column="total_price" jdbcType="REAL" property="totalPrice" />
   </resultMap>
-  <insert id="insert" parameterType="com.mx.pojo.Order_Detail">
-    insert into order_detail (o_id, item_id, count, 
-      total_price)
-    values (#{oId,jdbcType=INTEGER}, #{itemId,jdbcType=INTEGER}, #{count,jdbcType=INTEGER}, 
-      #{totalPrice,jdbcType=REAL})
-  </insert>
-  <insert id="insertSelective" parameterType="com.mx.pojo.Order_Detail">
+  <insert id="createOrderDet" parameterType="com.mx.pojo.Order_Detail">
     insert into order_detail
     <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="oId != null">
+      <if test="oId !=null">
         o_id,
       </if>
       <if test="itemId != null">
@@ -30,17 +24,17 @@
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
-      <if test="oId != null">
-        #{oId,jdbcType=INTEGER},
+      <if test="oId !=null">
+        #{oId},
       </if>
       <if test="itemId != null">
-        #{itemId,jdbcType=INTEGER},
+        #{itemId},
       </if>
       <if test="count != null">
-        #{count,jdbcType=INTEGER},
+        #{count},
       </if>
       <if test="totalPrice != null">
-        #{totalPrice,jdbcType=REAL},
+        #{totalPrice},
       </if>
     </trim>
   </insert>

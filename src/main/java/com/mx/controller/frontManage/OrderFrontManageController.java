@@ -5,6 +5,7 @@ import com.mx.pojo.Order;
 import com.mx.pojo.Order_Detail;
 import com.mx.pojo.User;
 import com.mx.service.AddressService;
+import com.mx.service.ItemsService;
 import com.mx.service.OrderService;
 import com.mx.service.UserService;
 import com.mx.utils.ConvertJson.JsonToJsonObject;
@@ -15,7 +16,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
@@ -35,6 +35,9 @@ public class OrderFrontManageController {
     @Autowired
     private AddressService addressService;
 
+    @Autowired
+    private  ItemsService itemsService;
+
     /**
      *      -------接受的参数
      *      1.商品id  2.商品数量
@@ -52,7 +55,7 @@ public class OrderFrontManageController {
     @ResponseBody
     @RequestMapping("/createOrder")
     public String createOrder(Integer item_id,Integer count,String oName, String note,Integer address_id, HttpSession session){
-        System.out.println("oName="+oName+"-----note="+note+"uid:"+session.getAttribute("USER_ID"));
+        System.out.println("itemid:"+item_id+"count:"+count+"address_id:"+address_id+"oName="+oName+"-----note="+note+"uid:"+session.getAttribute("USER_ID"));
         String truejson="{\"result\":true}";
         String falsejson="{\"result\":false}";
         //当前登陆的用户id
@@ -60,43 +63,63 @@ public class OrderFrontManageController {
         if (uname==null||uname.equals("")){
             return "{\"result\":false,\"isLogin\":false}";
         }else {
-            int u_id = userService.getUserIdByname(String.valueOf(uname));
-            //订单创建时间
-            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-            String create_time = dateFormat.format(new Date());
-            System.out.println("订单创建时间：" + create_time);
-            //订单编号(自动生成)
-            StringBuilder trade_number = new StringBuilder();
-            trade_number.append("mx" + create_time);
-            //实例化一个Order对象和一个Order_detail对象
-            Order order = new Order();
-            Order_Detail order_detail = new Order_Detail();
-            //实例化一个User对象
-            User user = new User();
-            user.setuId(u_id);
-            //实例化一个Address对象
-            //当前登陆的用户的地址表id
-            Address address = new Address();
-            address.setAddId(address_id);
+            if (count!=null&&count>0&&oName!=null&&!oName.equals("")&&address_id!=null&&address_id>0) {
+                int u_id = userService.getUserIdByname(uname);
+                //订单创建时间
+                SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                String create_time = dateFormat.format(new Date());
+                System.out.println("订单创建时间：" + create_time);
+                //订单编号(自动生成)
+                StringBuilder trade_number = new StringBuilder();
+                trade_number.append("mx" + new Date().getTime());
+//            System.out.println("订单创建时间:::::::"+trade_number);  //mx1566050992765//mx1566051018661
+                //实例化一个Order对象和一个Order_detail对象
+                Order order = new Order();
+                Order_Detail order_detail = new Order_Detail();
+                //实例化一个User对象
+                User user = new User();
+                user.setuId(u_id);
+                //实例化一个Address对象
+                //当前登陆的用户的地址表id
+                Address address = new Address();
+                address.setAddId(address_id);
 
-            order.setuId(user.getuId());
-            order.setAddress(address);
-            order.setCreateTime(create_time);
-            order.setNumber(String.valueOf(trade_number));
-            order.setNote(note);
+                order.setuId(user.getuId());
+                order.setoName(oName);
+                order.setAddress(address);
+                order.setCreateTime(create_time);
+                order.setNumber(String.valueOf(trade_number));
+                order.setoStatus("0");
+                order.setNote(note);
 
-            order_detail.setCount(count);
-            order_detail.setItemId(item_id);
 
-            try {
-                boolean createOrder = orderService.createOrder(order, order_detail);
-                if (createOrder) {
-                    return truejson;
-                } else {
+                try {
+                    //数据插入订单表
+                    boolean createOrder = orderService.createOrder(order);
+
+                    order_detail.setoId(order.getoId());
+                    System.out.println(order.getoId());
+                    order_detail.setCount(count);
+                    order_detail.setItemId(item_id);
+                    Float price = itemsService.queryItemsPriceByItemId(item_id);
+//                System.out.println("price:"+price);
+                    Float totalPrice = count * price;
+//                System.out.println("totalPrice:"+totalPrice);
+                    order_detail.setTotalPrice(totalPrice);
+                    //数据插入订单详情表
+                    boolean createOrderDet = orderService.createOrderDet(order_detail);
+
+                    if (createOrder && createOrderDet) {
+                        return truejson;
+                    } else {
+                        return falsejson;
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
                     return falsejson;
                 }
-            } catch (Exception e) {
-                e.printStackTrace();
+            }else {
+                System.out.println("非法的传入数据");
                 return falsejson;
             }
         }
@@ -110,7 +133,7 @@ public class OrderFrontManageController {
         System.out.println(trade_number);
         String uname=(String)session.getAttribute("USER_ID");
         if (uname==null||uname.equals("")){
-            return "redirect:/frontShow/personal/login";
+            return "{\"result\":false,\"isLogin\":false}";
         }else {
             try{
                 String orderList=orderService.SeeOrder(trade_number);
@@ -131,18 +154,12 @@ public class OrderFrontManageController {
     //查看某个用户的全部订单
     @ResponseBody
     @RequestMapping("/seeAllOrder")
-    public String seeAllOrder(@RequestBody String param, HttpSession session, HttpServletResponse response, HttpServletRequest request){
+    public String seeAllOrder(@RequestBody String param, HttpSession session){
         System.out.println(param);
         //当前登陆的用户id
         String uname=(String)session.getAttribute("USER_ID");
         if (uname==null||uname.equals("")){
-//            return "redirect:/FrontForward/loginMain";
-            try {
-                response.sendRedirect(request.getContextPath()+"/FrontForward/loginMain");
-            } catch (IOException e1) {
-                e1.printStackTrace();
-            }
-            return "";
+            return "{\"result\":false,\"isLogin\":false}";
         }else {
             try{
                 int u_id=userService.getUserIdByname(uname);
@@ -155,13 +172,10 @@ public class OrderFrontManageController {
                 return OrderList;
             }catch (Exception e){
                 e.printStackTrace();
-                try {
-                    response.sendRedirect("frontShow/errorPage/error");
-                } catch (IOException e1) {
-                    e1.printStackTrace();
-                }
+                //重定向到404
+                return "{\"result\":false,\"isLogin\":false}";
             }
-            return "";
+
         }
 
     }
@@ -173,7 +187,7 @@ public class OrderFrontManageController {
         //当前登陆的用户id
         String uname=(String)session.getAttribute("USER_ID");
         if (uname==null||uname.equals("")){
-            return "redirect:/FrontForward/loginMain";
+            return "{\"result\":false,\"isLogin\":false}";
         }else {
             try{
                 int u_id=userService.getUserIdByname(uname);
@@ -194,17 +208,17 @@ public class OrderFrontManageController {
     //删除订单（取消订单）
     @ResponseBody
     @RequestMapping("/cancelOrder")
-    public String cancelOrder(Integer trade_number, Model model,HttpSession session){
+    public String cancelOrder(Integer oId, Model model,HttpSession session){
         String truejson="{\"result\":true}";
         String falsejson="{\"result\":false}";
         //当前登陆的用户id
         String uname=(String)session.getAttribute("USER_ID");
         if (uname==null||uname.equals("")){
-            return "redirect:/FrontForward/loginMain";
+            return "{\"result\":false,\"isLogin\":false}";
         }else {
             try{
-            if (trade_number != null) {
-                boolean is = orderService.deleteOrder(trade_number);
+            if (oId != null) {
+                boolean is = orderService.deleteOrder(oId);
                 if (is) {
                     model.addAttribute("deleteInfo", "删除成功!");
                     return truejson;
