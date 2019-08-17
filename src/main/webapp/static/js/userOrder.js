@@ -1,85 +1,85 @@
 $(document).ready(function() {
 
-    //äÖÈ¾ÏÔÊ¾¶©µ¥µÄ±í¸ñ
+    //æ¸²æŸ“æ˜¾ç¤ºè®¢å•çš„è¡¨æ ¼
     function doTable(url){
         // alert(url);
-        $('#userOrderInfoTable').bootstrapTable('destroy');   //¶¯Ì¬¼ÓÔØ±í¸ñÖ®Ç°£¬ÏÈÏú»Ù±í¸ñ
-        $("#userOrderInfoTable").bootstrapTable({ // ¶ÔÓ¦table±êÇ©µÄid
-            url:url, // »ñÈ¡±í¸ñÊı¾İµÄurl
+        $('#userOrderInfoTable').bootstrapTable('destroy');   //åŠ¨æ€åŠ è½½è¡¨æ ¼ä¹‹å‰ï¼Œå…ˆé”€æ¯è¡¨æ ¼
+        $("#userOrderInfoTable").bootstrapTable({ // å¯¹åº”tableæ ‡ç­¾çš„id
+            url:url, // è·å–è¡¨æ ¼æ•°æ®çš„url
             method: "post",
             contentType:'application/json',
-            cache: false, // ÉèÖÃÎª false ½ûÓÃ AJAX Êı¾İ»º´æ£¬ Ä¬ÈÏÎªtrue
-            striped: true,  //±í¸ñÏÔÊ¾ÌõÎÆ£¬Ä¬ÈÏÎªfalse
-            pagination: true, // ÔÚ±í¸ñµ×²¿ÏÔÊ¾·ÖÒ³×é¼ş£¬Ä¬ÈÏfalse
-            pageList: [10, 20], // ÉèÖÃÃ¿Ò³¿ÉÏÔÊ¾µÄÊı¾İÌõÊı
-            pageSize: 10, // Ò³ÃæÊı¾İÌõÊı
-            pageNumber: 1, // Ê×Ò³Ò³Âë
-            sidePagination: 'server', // ÉèÖÃÎª·şÎñÆ÷¶Ë·ÖÒ³
-            sortable: true,          //ÁĞÅÅĞò
-            sortName: 'add_id', // ÒªÅÅĞòµÄ×Ö¶Î
-            sortOrder: 'asc', // ÅÅĞò¹æÔò
+            cache: false, // è®¾ç½®ä¸º false ç¦ç”¨ AJAX æ•°æ®ç¼“å­˜ï¼Œ é»˜è®¤ä¸ºtrue
+            striped: true,  //è¡¨æ ¼æ˜¾ç¤ºæ¡çº¹ï¼Œé»˜è®¤ä¸ºfalse
+            pagination: true, // åœ¨è¡¨æ ¼åº•éƒ¨æ˜¾ç¤ºåˆ†é¡µç»„ä»¶ï¼Œé»˜è®¤false
+            pageList: [10, 20], // è®¾ç½®æ¯é¡µå¯æ˜¾ç¤ºçš„æ•°æ®æ¡æ•°
+            pageSize: 10, // é¡µé¢æ•°æ®æ¡æ•°
+            pageNumber: 1, // é¦–é¡µé¡µç 
+            sidePagination: 'server', // è®¾ç½®ä¸ºæœåŠ¡å™¨ç«¯åˆ†é¡µ
+            sortable: true,          //åˆ—æ’åº
+            sortName: 'add_id', // è¦æ’åºçš„å­—æ®µ
+            sortOrder: 'asc', // æ’åºè§„åˆ™
             queryParams:function(params){
                 //alert(JSON.stringify(queryData));
                 var param = {
-                    pageSize: params.limit, // Ã¿Ò³ÒªÏÔÊ¾µÄÊı¾İÌõÊı
-                    offset: params.offset, // Ã¿Ò³ÏÔÊ¾Êı¾İµÄ¿ªÊ¼ĞĞºÅ(0¿ªÊ¼)
-                    sort: params.sort, // ÒªÅÅĞòµÄ×Ö¶Î
-                    sortOrder: params.order, // ÅÅĞò¹æÔò
+                    pageSize: params.limit, // æ¯é¡µè¦æ˜¾ç¤ºçš„æ•°æ®æ¡æ•°
+                    offset: params.offset, // æ¯é¡µæ˜¾ç¤ºæ•°æ®çš„å¼€å§‹è¡Œå·(0å¼€å§‹)
+                    sort: params.sort, // è¦æ’åºçš„å­—æ®µ
+                    sortOrder: params.order, // æ’åºè§„åˆ™
                 };
                 return param;
             },
             columns:
                 [
                     {
-                        field: 'name', // ·µ»ØjsonÊı¾İÖĞµÄname
-                        title: 'ÊÕ»õÈË', // ±í¸ñ±íÍ·ÏÔÊ¾ÎÄ×Ö
-                        align: 'center', // ×óÓÒ¾ÓÖĞ
-                        valign: 'middle', // ÉÏÏÂ¾ÓÖĞ
+                        field: 'name', // è¿”å›jsonæ•°æ®ä¸­çš„name
+                        title: 'æ”¶è´§äºº', // è¡¨æ ¼è¡¨å¤´æ˜¾ç¤ºæ–‡å­—
+                        align: 'center', // å·¦å³å±…ä¸­
+                        valign: 'middle', // ä¸Šä¸‹å±…ä¸­
                         width: '100',
                     }, {
                     field: 'tel',
-                    title: 'µç»°ºÅÂë',
+                    title: 'ç”µè¯å·ç ',
                     align: 'center',
                     valign: 'middle',
                     width: '100',
                 }, {
                     field: 'postcode',
-                    title: 'ÓÊ±à',
+                    title: 'é‚®ç¼–',
                     align: 'center',
                     valign: 'middle',
                     width: '100',
                 }, {
                     field: 'province',
-                    title: 'Ê¡·İ',
+                    title: 'çœä»½',
                     align: 'center',
                     valign: 'middle',
                     width: '100',
                 }, {
                     field: 'addr',
-                    title: 'µØÖ·',
+                    title: 'åœ°å€',
                     align: 'center',
                     valign: 'middle',
                     width: '200',
                 },{
                     field: 'add_id',
-                    title: 'µØÖ·id',
+                    title: 'åœ°å€id',
                     align: 'center',
                     valign: 'middle',
                     visible:false,
                 }, {
-                    title: "²Ù×÷",
+                    title: "æ“ä½œ",
                     align: 'center',
                     valign: 'middle',
                     width: '70',
                     formatter:function(value, row, index){
 
-                        return "<button class='btn btn-default btn-xs delAddr' add_id='"+row.add_id+"'><span class='glyphicon glyphicon-exclamation-sign'></span>É¾³ı</button><br/><button class='btn btn-default btn-xs editAddr' add_id='"+row.add_id+"'><span class='glyphicon glyphicon-pencil'></span>ĞŞ¸Ä</button>";
+                        return "<button class='btn btn-default btn-xs delAddr' add_id='"+row.add_id+"'><span class='glyphicon glyphicon-exclamation-sign'></span>åˆ é™¤</button><br/><button class='btn btn-default btn-xs editAddr' add_id='"+row.add_id+"'><span class='glyphicon glyphicon-pencil'></span>ä¿®æ”¹</button>";
                     }
                 }
                 ],
 
         })
     }
-    //Î´¶¨Î»²éÑ¯Ç°ÏÈÉè¶¨±í¸ñÏÔÊ¾ËùÓĞ
+    //æœªå®šä½æŸ¥è¯¢å‰å…ˆè®¾å®šè¡¨æ ¼æ˜¾ç¤ºæ‰€æœ‰
     doTable("FrontManageOrder/seeAllOrder");
 });
