@@ -15,7 +15,7 @@ public interface OrderMapper {
     List SeeOrder(@Param("trade_number") Integer trade_number);
 
     //查询某个人的全部订单
-    List SeeAllOrder(@Param("pageSize")int pageSize,@Param("offset") int offset,@Param("sort") String sort,@Param("sortOrder") String sortOrder,@Param("uid") Integer uid);
+    List<Order> SeeAllOrder(@Param("pageSize")int pageSize,@Param("offset") int offset,@Param("sort") String sort,@Param("sortOrder") String sortOrder,@Param("uid") Integer uid);
 
     //查询某个人的全部订单的数量
     int AllOrderCount(@Param("uid") Integer uid);

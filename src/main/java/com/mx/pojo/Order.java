@@ -23,10 +23,10 @@ public class Order implements Serializable {
     private  Order_Detail order_detail;
 
     //当前登陆的用户id
-    private User uId;
+    private Integer uId;
 
     //当前登陆的用户的地址id
-    private Address addId;
+    private Address address;
 
     //订单的创建时间
     private String createTime;
@@ -35,11 +35,13 @@ public class Order implements Serializable {
     private String number;
 
     //当前订单的状态
-    private Integer status;
+    private String oStatus;
 
     //备注
     private String note;
 
+    public Order() {
+    }
 
     public Integer getoId() {
         return oId;
@@ -57,28 +59,28 @@ public class Order implements Serializable {
         this.oName = oName;
     }
 
-    public User getuId() {
+    public Integer getuId() {
         return uId;
     }
 
-    public void setuId(User uId) {
+    public void setuId(Integer uId) {
         this.uId = uId;
     }
 
-    public Address getAddId() {
-        return addId;
+    public Address getAddress() {
+        return address;
     }
 
-    public void setAddId(Address addId) {
-        this.addId = addId;
+    public void setAddress(Address address) {
+        this.address = address;
     }
 
-    public Integer getStatus() {
-        return status;
+    public String getoStatus() {
+        return oStatus;
     }
 
-    public void setStatus(Integer status) {
-        this.status = status;
+    public void setoStatus(String oStatus) {
+        this.oStatus = oStatus;
     }
 
     public String getCreateTime() {
@@ -122,16 +124,16 @@ public class Order implements Serializable {
         this.order_detail = order_detail;
     }
 
-    public String TOJSON(){
+    public String TOJSON(){//ipad：2;iphone:1;
         return  "{"+"\""+"oId"+"\":"+"\""+ oId +"\","+
-                "\""+"oName"+"\":"+"\""+oName+"\""+
-                "\""+"Number"+"\":"+"\""+number+"\""+
-                "\""+"ItemName"+"\":"+"\""+itemName.getName()+"\""+
-                "\""+"Address"+"\":"+"\""+addId.getAddr()+"\""+
-                "\""+"Note"+"\":"+"\""+note+"\""+
-                "\""+"createTime"+"\":"+"\""+createTime+"\""+
-                "\""+"totalPrice"+"\":"+"\""+order_detail.getTotalPrice()+"\""+
-                "\""+"Status"+"\":"+"\""+status+"\""+
+                "\""+"oName"+"\":"+"\""+oName+"\","+
+                "\""+"Number"+"\":"+"\""+number+"\","+
+                "\""+"ItemName"+"\":"+"\""+itemName.getName()+"\","+
+                "\""+"Address"+"\":"+"\""+address.getAddr()+"\","+
+                "\""+"Note"+"\":"+"\""+note+"\","+
+                "\""+"createTime"+"\":"+"\""+createTime+"\","+
+                "\""+"totalPrice"+"\":"+"\""+order_detail.getTotalPrice()+"\","+
+                "\""+"Status"+"\":"+"\""+oStatus+"\""+
                 "}";
     }
 
@@ -140,11 +142,13 @@ public class Order implements Serializable {
         return "Order{" +
                 "oId=" + oId +
                 ", oName='" + oName + '\'' +
+                ", itemName=" + itemName +
+                ", order_detail=" + order_detail +
                 ", uId=" + uId +
-                ", addId=" + addId +
+                ", address=" + address +
                 ", createTime='" + createTime + '\'' +
                 ", number='" + number + '\'' +
-                ", status=" + status +
+                ", oStatus=" + oStatus +
                 ", note='" + note + '\'' +
                 '}';
     }

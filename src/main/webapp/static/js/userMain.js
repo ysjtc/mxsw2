@@ -51,9 +51,8 @@ $(document).ready(function() {
                     // 要求返回json字符串，键名为result
                     if(data.result){
                         window.location.href="FrontForward/personalMain";
-
                     }else{
-                        alert("请检查");
+                        alert("请检查格式是否正确！");
                     }
                 },
                 error(xhr,status,error){

@@ -21,5 +21,9 @@ public interface AddressMapper {
 
     int deleteAddress(Integer addId);
 
+    //获取收件人的地址
+    List<Address> getAddress(@Param("uid") Integer uid);
 
+    //获取收件人的地址的个数
+    int queryAddressCount(@Param("uid") Integer uid);
 }

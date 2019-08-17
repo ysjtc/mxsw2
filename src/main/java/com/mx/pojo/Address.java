@@ -28,6 +28,10 @@ public class Address implements Serializable {
     @NotBlank(message = "省份不能为空")
     private String province;//省份
 
+
+    public Address() {
+    }
+
     private static final long serialVersionUID = 1L;
 
     public Integer getAddId() {
@@ -84,5 +88,20 @@ public class Address implements Serializable {
 
     public void setProvince(String province) {
         this.province = province == null ? null : province.trim();
+    }
+
+
+
+    @Override
+    public String toString() {
+        return "Address{" +
+                "addId=" + addId +
+                ", uId=" + uId +
+                ", tel='" + tel + '\'' +
+                ", postcode='" + postcode + '\'' +
+                ", name='" + name + '\'' +
+                ", addr='" + addr + '\'' +
+                ", province='" + province + '\'' +
+                '}';
     }
 }

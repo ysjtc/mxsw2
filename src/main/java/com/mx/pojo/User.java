@@ -30,6 +30,8 @@ public class User implements Serializable {
 
     private String tel;//电话号码
 
+    public User() {
+    }
 
     private static final long serialVersionUID = 1L;
 

@@ -18,4 +18,8 @@ public interface AddressService {
     /*修改收货人信息*/
     public void  updateaddress(Address address);
 
+
+    //获取收件人地址
+    String getAddress(Integer uid);
+
 }

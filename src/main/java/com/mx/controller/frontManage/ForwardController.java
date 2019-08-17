@@ -41,6 +41,13 @@ public class ForwardController {
         return "frontShow/personal/userOrder";
     }
 
-
+    /**
+     * 404页面
+     * @return
+     */
+    @RequestMapping("/error")
+    public String error(){
+        return "frontShow/errorPage/error";
+    }
 
 }

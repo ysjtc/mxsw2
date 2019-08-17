@@ -1,4 +1,5 @@
 package com.mx.utils.ConvertJson;
+import com.mx.pojo.Address;
 import com.mx.pojo.Item;
 import com.mx.pojo.Item_Pic;
 import com.mx.pojo.Order;
@@ -107,6 +108,20 @@ public class ConvertJson {
         }
         //把最后的，（逗号）截取掉
         str = jsonStrAll.substring(0, jsonStrAll.length()-1)+"]}";
+//        System.out.println(str);
+        return str;
+    }
+
+    public static String ConvertAddress(List<Address> addressList) {
+        //定义一个StringBuilder
+        StringBuilder jsonStrAll = new StringBuilder("{");
+        String str=null;
+        for (int i=0;i<addressList.size();i++){
+            //把你要拼接的字段放进去
+            jsonStrAll.append("\""+addressList.get(i).getAddId()+"\":[\""+addressList.get(i).getName()+"\",\""+addressList.get(i).getAddr()+"\"],");
+        }
+
+        str = jsonStrAll+"\"result\":";
 //        System.out.println(str);
         return str;
     }

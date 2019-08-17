@@ -93,4 +93,17 @@
     delete from address
     where add_id=#{addId}
   </delete>
+
+  <select id="getAddress" resultType="com.mx.pojo.Address">
+    select t1.add_id,t1.name,t1.addr
+    from address as t1
+    <where>
+      <if test="uid!=null and uid!=''">
+        t1.u_id=#{uid}
+      </if>
+    </where>
+  </select>
+  <select id="queryAddressCount" resultType="Integer">
+    select count(*) from address where u_id=#{uid}
+  </select>
 </mapper>

@@ -16,7 +16,7 @@ $(document).ready(function() {
             pageNumber: 1, // 首页页码
             sidePagination: 'server', // 设置为服务器端分页
             sortable: true,          //列排序
-            sortName: 'add_id', // 要排序的字段
+            sortName: 'o_id', // 要排序的字段
             sortOrder: 'asc', // 排序规则
             queryParams:function(params){
                 //alert(JSON.stringify(queryData));
@@ -31,20 +31,20 @@ $(document).ready(function() {
             columns:
                 [
                     {
-                        field: 'name', // 返回json数据中的name
-                        title: '收货人', // 表格表头显示文字
+                        field: 'oId', // 返回json数据中的name
+                        title: 'ID', // 表格表头显示文字
                         align: 'center', // 左右居中
                         valign: 'middle', // 上下居中
-                        width: '100',
+                        width: '80',
                     }, {
-                    field: 'tel',
-                    title: '电话号码',
+                    field: 'oName',
+                    title: '订单名称',
                     align: 'center',
                     valign: 'middle',
                     width: '100',
                 }, {
-                    field: 'postcode',
-                    title: '邮编',
+                    field: 'Number',
+                    title: '订单编号',
                     align: 'center',
                     valign: 'middle',
                     width: '100',

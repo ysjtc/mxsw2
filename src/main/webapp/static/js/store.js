@@ -340,7 +340,7 @@ $(document).ready(function() {
 
 	//点击了prev按钮
     $("#prevFlag").click(function(){
-        var currentPage=$("li.active.addedLiTag a").attr("page");
+        var currentPage=$("li.clicked.addedLiTag a").attr("page");
         if(currentPage!=1){
             var offset=(currentPage-2)*5;
             showItemInfo(searchCache,5,offset,"item_id","asc",priceRangeCache,cateIdCache,labelIdCache);
@@ -349,7 +349,7 @@ $(document).ready(function() {
 
     //点击了next按钮
     $("#nextFlag").click(function(){
-        var currentPage=$("li.active.addedLiTag a").attr("page");
+        var currentPage=$("li.clicked.addedLiTag a").attr("page");
         var totalPage=$("#pageShow span").html();
         // console.log(totalPage);
         if(currentPage!=totalPage){
@@ -386,11 +386,10 @@ $(document).ready(function() {
     $(".left-show").on("click",".buyNow",function(){
         //首先请求联系人数据
         $.ajax({
-            url : 'http:www.baidu.com',     //得到规定格式的收货人信息的url
+            url : 'FrontManageOrder/seeAddressee',     //得到规定格式的收货人信息的url
             type : 'POST',
             success : function(data) {
-
-                var data={"1":["曹淦","13342023320"],"2":["p1n93r","13723423232"],"result":true};
+                // var data={"1":["曹淦","天津市...件学院"],"2":["p1n93r","13723423232"],"result":true};
                 //动态添加联系人的select
                 if(data['result']){
                     $(".addedAddrTag").remove();
@@ -400,17 +399,22 @@ $(document).ready(function() {
                         }
                         $("#orderAddr").append(addrTag);
                     });
+                    $('#orderModal').modal('toggle');
                 }else{
-                    alert("意外错误！请重试！");
+                    if(!data['isLogin']){
+                        alert("还没有登陆？");
+                        window.location.href="FrontForward/loginMain";
+                    }else{
+                        alert("请添加收货人信息！");
+                    }
                 }
-
             },
             error : function(data){
                 alert("网络错误！请检查网络！");
             }
         });
         orderItemId=$(this).attr("item_id");
-        $('#orderModal').modal('toggle');
+
     });
 
 
@@ -446,7 +450,12 @@ $(document).ready(function() {
                         //成功后重定向到个人中心的订单页面
                         window.location.href="FrontForward/userOrder";
                     }else{
-                        alert("意外错误！请重试！");
+                        if(!data['isLogin']){
+                            window.location.href="FrontForward/loginMain";
+                        }else{
+                            alert("请添加收货人信息！");
+                            window.location.href="FrontForward/addAddr";
+                        }
                     }
                 }
             });

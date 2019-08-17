@@ -7,6 +7,9 @@ import java.io.Serializable;
  *
  */
 public class Order_Detail implements Serializable {
+
+    private Integer odId;
+
     private Integer oId;
 
     private Integer itemId;
@@ -16,6 +19,17 @@ public class Order_Detail implements Serializable {
     private Float totalPrice;
 
     private static final long serialVersionUID = 1L;
+
+    public Order_Detail() {
+    }
+
+    public Integer getOdId() {
+        return odId;
+    }
+
+    public void setOdId(Integer odId) {
+        this.odId = odId;
+    }
 
     public Integer getoId() {
         return oId;
@@ -47,5 +61,17 @@ public class Order_Detail implements Serializable {
 
     public void setTotalPrice(Float totalPrice) {
         this.totalPrice = totalPrice;
+    }
+
+
+    @Override
+    public String toString() {
+        return "Order_Detail{" +
+                "odId=" + odId +
+                ", oId=" + oId +
+                ", itemId=" + itemId +
+                ", count=" + count +
+                ", totalPrice=" + totalPrice +
+                '}';
     }
 }

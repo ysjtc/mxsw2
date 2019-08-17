@@ -497,3 +497,7 @@
 #nextFlag span {
     padding: 3px;
 }
+/*订单样式*/
+#countCut,#countAdd{
+    cursor: pointer;
+}

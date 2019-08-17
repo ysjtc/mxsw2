@@ -7,6 +7,7 @@ import com.mx.mapper.AddressMapper;
 import com.mx.pojo.Address;
 import com.mx.pojo.Page;
 import com.mx.service.AddressService;
+import com.mx.utils.ConvertJson.ConvertJson;
 import com.mx.utils.Encoding.htmlEncoding;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -54,5 +55,26 @@ public class AddressServiceImpl implements AddressService {
     @Override
     public void updateaddress(Address address) {
         addressMapper.updateAddress(address);
+    }
+
+    @Override
+    public String getAddress(Integer uid) {
+        String str=null;
+        try {
+            int count=addressMapper.queryAddressCount(uid);
+            if (count==0){
+                return "{\"result\":false}";
+            }
+            List<Address> addressList=addressMapper.getAddress(uid);
+            System.out.println(addressList);
+            str= ConvertJson.ConvertAddress(addressList);
+            System.out.println(str);
+            str=str+"true";
+        }catch (Exception e){
+            e.printStackTrace();
+            str=str+"false";
+        }
+        str=str+"}";
+        return str;
     }
 }
