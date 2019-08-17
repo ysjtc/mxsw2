@@ -148,14 +148,6 @@ $(document).ready(function() {
                     }
                     //分页处理(分页条显示5项)
                     $(".addedLiTag").remove();
-                    if(curentPage==1){
-                        //如果当前页为第一页，则不能用prev
-                        $("#prevFlag").addClass("disabled");
-                    }
-                    if(curentPage==totalPage){
-                        //如果当前页为最后一页，则不能用next
-                        $("#nextFlag").addClass("disabled");
-                    }
                     if((curentPage-2)>0&&(curentPage+2)<=totalPage){
                         //以curentPage为中心，两边各2各项展开分页
                         for(i=(curentPage-2);i<=curentPage+2;i++){
@@ -345,6 +337,32 @@ $(document).ready(function() {
             }
         });
     });
+
+	//点击了prev按钮
+    $("#prevFlag").click(function(){
+        var currentPage=$("li.active.addedLiTag a").attr("page");
+        if(currentPage!=1){
+            var offset=(currentPage-2)*5;
+            showItemInfo(searchCache,5,offset,"item_id","asc",priceRangeCache,cateIdCache,labelIdCache);
+        }
+    });
+
+    //点击了next按钮
+    $("#nextFlag").click(function(){
+        var currentPage=$("li.active.addedLiTag a").attr("page");
+        var totalPage=$("#pageShow span").html();
+        // console.log(totalPage);
+        if(currentPage!=totalPage){
+            var offset=(currentPage)*5;
+            showItemInfo(searchCache,5,offset,"item_id","asc",priceRangeCache,cateIdCache,labelIdCache);
+        }
+    });
+
+
+
+
+
+
 
 
     //一个数量减少的函数
