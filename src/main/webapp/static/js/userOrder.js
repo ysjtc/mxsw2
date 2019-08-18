@@ -94,11 +94,11 @@ $(document).ready(function() {
                     formatter:function(value, row, index){
 						var statusId=row.Status;
 						if(statusId==0){
-							return "<button class='btn btn-default btn-xs delOrder' oId='"+row.oId+"'><span class='glyphicon glyphicon-exclamation-sign'></span>订单取消</button><br/><button style='margin-top:10px' class='btn btn-default btn-xs payOrder' body='"+row.Note+"' total_amount='"+row.totalPrice+"' subject='"+row.oName+"' Number='"+row.Number+"'><span class='glyphicon glyphicon-ok'></span>订单付款</button>";
+							return "<button class='btn btn-default btn-xs delOrder' oId='"+row.oId+"'><span class='glyphicon glyphicon-exclamation-sign'></span>订单取消</button><br/><button style='margin-top:7px' class='btn btn-default btn-xs payOrder' body='"+row.Note+"' total_amount='"+row.totalPrice+"' subject='"+row.oName+"' Number='"+row.Number+"'><span class='glyphicon glyphicon-ok'></span>订单付款</button>";
 						}else if(statusId==2){
-							return "<button class='btn btn-default btn-xs showLog' oId='"+row.oId+"'><span class='glyphicon glyphicon-ok'></span>查看物流</button><br/><button style='marigin-top:10px' class='btn btn-default btn-xs confirmOrder' oId='"+row.oId+"'><span class='glyphicon glyphicon-ok'></span>确认收货</button><br/><button style='margin-top:10px' class='btn btn-default btn-xs rejectLog' oId='"+row.oId+"'><span class='glyphicon glyphicon-ok'></span>已拒收</button>"";
+							return "<button class='btn btn-default btn-xs showLog' oId='"+row.oId+"'><span class='glyphicon glyphicon-eye-open'></span>查看物流</button><br/><button style='margin-top:7px' class='btn btn-default btn-xs confirmOrder' oId='"+row.oId+"'><span class='glyphicon glyphicon-ok'></span>确认收货</button><br/><button style='margin-top:7px' class='btn btn-default btn-xs rejectLog' oId='"+row.oId+"'><span class='glyphicon glyphicon-ban-circle'></span>拒收订单</button>";
 						}else if(statusId==1||statusId==3){
-							return "<button class='btn btn-default btn-xs applayLog' oId='"+row.oId+"'><span class='glyphicon glyphicon-ok'></span>退换申请</button>";
+							return "<button class='btn btn-default btn-xs applayLog' oId='"+row.oId+"'><span class='glyphicon glyphicon-edit'></span>退换申请</button>";
 						}else{
 							return "<button class='btn btn-default btn-xs' oId='"+row.oId+"'><span class='glyphicon glyphicon-exclamation-sign'></span>无操作</button>";
 						}
