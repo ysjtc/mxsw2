@@ -83,6 +83,7 @@ $(document).ready(function() {
                     title: '状态',
                     align: 'center',
                     valign: 'middle',
+					width:'80',
                     formatter:function(value, row, index){
                         return value=="0"? "未支付":value=="1"? "未处理":value=="2"? "待收货":value=="3"? "收货完成":value=="4"? "退货中":"退货完成";
                     }
