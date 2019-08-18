@@ -1,5 +1,7 @@
 package com.mx.pojo;
 
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 /**
  *
@@ -7,15 +9,21 @@ import java.io.Serializable;
  *
  */
 public class Logistics implements Serializable {
+
+    //物流表的id
     private Integer lId;
 
+    //订单表的id
+    @NotNull(message = "订单id不能为null")
     private Integer oId;
 
+    //物流单号
+    @NotEmpty(message = "物流单号不能为空")
     private String waybillNum;
 
+    //物流公司
+    @NotEmpty(message = "物流公司不能为空")
     private String company;
-
-    private Boolean status;
 
     private static final long serialVersionUID = 1L;
 
@@ -51,11 +59,13 @@ public class Logistics implements Serializable {
         this.company = company == null ? null : company.trim();
     }
 
-    public Boolean getStatus() {
-        return status;
-    }
-
-    public void setStatus(Boolean status) {
-        this.status = status;
+    @Override
+    public String toString() {
+        return "Logistics{" +
+                "lId=" + lId +
+                ", oId=" + oId +
+                ", waybillNum='" + waybillNum + '\'' +
+                ", company='" + company + '\'' +
+                '}';
     }
 }

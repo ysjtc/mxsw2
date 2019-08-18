@@ -1,16 +1,20 @@
 package com.mx.controller.backMange;
 
+import com.mx.pojo.Logistics;
 import com.mx.service.OrderService;
 import com.mx.service.UserService;
 import com.mx.utils.ConvertJson.JsonToJsonObject;
+import com.mx.utils.Validators.Validator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpSession;
+import javax.validation.Valid;
 
 @Controller
 @RequestMapping("/BackManageOrder")
@@ -40,17 +44,22 @@ public class OrderBackManageController {
     //查看单个订单
     @ResponseBody
     @RequestMapping("/seeOrder")
-    public String seeOrder(Integer trade_number,HttpSession session){
-        System.out.println(trade_number);
+    public String seeOrder(@RequestBody String param,HttpSession session){
         if (session.getAttribute("SUPERADMIN_ID")==null||session.getAttribute("SUPERADMIN_ID").equals("")){
-            return "redirect:/SuperAdmin/ToLogin";
+            return "{\"result\":false,\"isLogin\":false}";
         }else {
             try{
-                String orderList=orderService.SeeOrder(trade_number);
-                return orderList;
+                System.out.println(param);
+                String trade_number=String.valueOf(JsonToJsonObject.ToJsonObject(param,"trade_number"));
+                String orderList="";
+                if (trade_number!=null&&!trade_number.equals("")){
+                    orderList=orderService.SeeOrder(trade_number);
+                    return orderList;
+                }else
+                return "{\"result\":false}";
             }catch (Exception e){
                 e.printStackTrace();
-                return "redirect:/frontShow/errorPage/error";
+                return "{\"result\":false}";
             }
         }
     }
@@ -58,82 +67,121 @@ public class OrderBackManageController {
 
     //查看某个用户的全部订单
     @ResponseBody
-    @RequestMapping("/seeAllOrder")
+    @RequestMapping("/seeAllOrderByuId")
     public String seeAllOrder(@RequestBody String param,HttpSession session){
         System.out.println(param);
         //当前登陆的用户id
         if (session.getAttribute("SUPERADMIN_ID")==null||session.getAttribute("SUPERADMIN_ID").equals("")){
-            return "redirect:/SuperAdmin/ToLogin";
+            return "{\"result\":false,\"isLogin\":false}";
         }else {
             try{
-                int u_id=userService.getUserIdByname((String)session.getAttribute("SUPERADMIN_ID"));
-                String pageSize=String.valueOf(JsonToJsonObject.ToJsonObject(param,"pageSize"));
-                String offset=String.valueOf(JsonToJsonObject.ToJsonObject(param,"offset"));
-                String sort=String.valueOf(JsonToJsonObject.ToJsonObject(param,"sort"));
-                String sortOrder=String.valueOf(JsonToJsonObject.ToJsonObject(param,"sortOrder"));
-                String OrderList = orderService.SeeAllOrder(Integer.parseInt(pageSize),Integer.parseInt(offset),sort,sortOrder,u_id);
-                return OrderList;
-            }catch (Exception e){
-                e.printStackTrace();
-                return "redirect:/frontShow/errorPage/error";
-            }
-        }
-
-    }
-
-
-    //查看某个用户的全部订单的状态
-    @ResponseBody
-    @RequestMapping("/seeAllOrderStatus")
-    public String seeAllOrderStatus(@RequestBody String param,Integer status,HttpSession session){
-        System.out.println(param);
-        //当前登陆的用户id
-        if (session.getAttribute("SUPERADMIN_ID")==null||session.getAttribute("SUPERADMIN_ID").equals("")){
-            return "redirect:/SuperAdmin/ToLogin";
-        }else {
-            try{
-                int u_id=userService.getUserIdByname((String)session.getAttribute("SUPERADMIN_ID"));
                 //解析json对象
                 String pageSize=String.valueOf(JsonToJsonObject.ToJsonObject(param,"pageSize"));
                 String offset=String.valueOf(JsonToJsonObject.ToJsonObject(param,"offset"));
                 String sort=String.valueOf(JsonToJsonObject.ToJsonObject(param,"sort"));
                 String sortOrder=String.valueOf(JsonToJsonObject.ToJsonObject(param,"sortOrder"));
-                String OrderList = orderService.QueryAllOrderStatus(Integer.parseInt(pageSize),Integer.parseInt(offset),sort,sortOrder,status,u_id);
+                String name=String.valueOf(JsonToJsonObject.ToJsonObject(param,"name"));
+                String OrderList = "";
+                if (name!=null&&!name.equals("")){
+                    int uid=userService.getUserIdByname(name);
+                    if (uid==0){
+                        return "{\"result\":false}";
+                    }else {
+                        OrderList=orderService.SeeAllOrderBackManage(Integer.parseInt(pageSize),Integer.parseInt(offset),sort,sortOrder,uid);
+                        return OrderList;
+                    }
+                }else
+                    return "{\"result\":false}";
+            }catch (Exception e){
+                e.printStackTrace();
+                return "{\"result\":false}";
+            }
+        }
+
+    }
+
+
+    //查看全部用户的全部订单
+    @ResponseBody
+    @RequestMapping("/seeAllOrders")
+    public String seeAllOrders(@RequestBody String param,HttpSession session){
+        System.out.println(param);
+        //当前登陆的用户id
+        if (session.getAttribute("SUPERADMIN_ID")==null||session.getAttribute("SUPERADMIN_ID").equals("")){
+            return "{\"result\":false,\"isLogin\":false}";
+        }else {
+            try{
+                //解析json对象
+                String pageSize=String.valueOf(JsonToJsonObject.ToJsonObject(param,"pageSize"));
+                String offset=String.valueOf(JsonToJsonObject.ToJsonObject(param,"offset"));
+                String sort=String.valueOf(JsonToJsonObject.ToJsonObject(param,"sort"));
+                String sortOrder=String.valueOf(JsonToJsonObject.ToJsonObject(param,"sortOrder"));
+                String OrderList = orderService.SeeAllOrders(Integer.parseInt(pageSize),Integer.parseInt(offset),sort,sortOrder);
                 return OrderList;
             }catch (Exception e){
                 e.printStackTrace();
-                return "redirect:/frontShow/errorPage/error";
+                return "{\"result\":false}";
             }
         }
     }
 
-    //删除订单（取消订单）
+
+    //查看全部用户的全部订单的状态
     @ResponseBody
-    @RequestMapping("/cancelOrder")
-    public String cancelOrder(Integer trade_number, Model model,HttpSession session){
-        String truejson="{\"result\":true}";
-        String falsejson="{\"result\":false}";
+    @RequestMapping("/seeAllOrderStatus")
+    public String seeAllOrderStatus(@RequestBody String param,HttpSession session){
+        System.out.println(param);
         //当前登陆的用户id
         if (session.getAttribute("SUPERADMIN_ID")==null||session.getAttribute("SUPERADMIN_ID").equals("")){
-            return "redirect:/SuperAdmin/ToLogin";
+            return "{\"result\":false,\"isLogin\":false}";
         }else {
             try{
-            if (trade_number != null) {
-                boolean is = orderService.deleteOrder(trade_number);
-                if (is) {
-                    model.addAttribute("deleteInfo", "删除成功!");
-                    return truejson;
-                } else {
-                    model.addAttribute("deleteInfo", "删除失败!");
-                    return falsejson;
-                }
-            } else return falsejson;
+                //解析json对象
+                String pageSize=String.valueOf(JsonToJsonObject.ToJsonObject(param,"pageSize"));
+                String offset=String.valueOf(JsonToJsonObject.ToJsonObject(param,"offset"));
+                String sort=String.valueOf(JsonToJsonObject.ToJsonObject(param,"sort"));
+                String sortOrder=String.valueOf(JsonToJsonObject.ToJsonObject(param,"sortOrder"));
+                String Status=String.valueOf(JsonToJsonObject.ToJsonObject(param,"status"));
+                System.out.println(Status);//String a="[1,2]"   String b=a.split("[")[1].split();
+//                JSONArray status = new JSONArray(Status);
+//                String OrderList = orderService.QueryAllOrderStatus(Integer.parseInt(pageSize),Integer.parseInt(offset),sort,sortOrder,status);
+//                return OrderList;
+                return null;
             }catch (Exception e){
                 e.printStackTrace();
-                return "redirect:/frontShow/errorPage/error";
+                return "{\"result\":false}";
             }
         }
     }
+
+
+    //管理员更新订单的状态
+    @ResponseBody
+    @RequestMapping("/updateOrderStatus")
+    public String updateOrderStatus(@Valid Logistics logistics, BindingResult result, Integer status, HttpSession session){
+        System.out.println(logistics+"-----"+status);
+        String truejson="{\"result\": true }";
+        String falsejson="{\"result\":false}";
+        //当前登陆的用户id
+        if (session.getAttribute("SUPERADMIN_ID")==null||session.getAttribute("SUPERADMIN_ID").equals("")){
+            return "{\"result\":false,\"isLogin\":false}";
+        }else {
+            try{
+                //判断传入的数据是否存在null
+                if (Validator.checkErrors(result, session)) {
+                    boolean Order = orderService.updateOrderStatus(logistics,status);
+                    if (Order){
+                        return truejson;
+                    }else
+                        return falsejson;
+                }else return falsejson;
+            }catch (Exception e){
+                e.printStackTrace();
+                return falsejson;
+            }
+        }
+    }
+
 
 
     //更新订单

@@ -96,12 +96,11 @@ $(document).ready(function() {
 						if(statusId==0){
 							return "<button class='btn btn-default btn-xs delOrder' oId='"+row.oId+"'><span class='glyphicon glyphicon-exclamation-sign'></span>订单取消</button><br/><button style='margin-top:10px' class='btn btn-default btn-xs payOrder' body='"+row.Note+"' total_amount='"+row.totalPrice+"' subject='"+row.oName+"' Number='"+row.Number+"'><span class='glyphicon glyphicon-ok'></span>订单付款</button>";
 						}else if(statusId==2){
-							return "<button class='btn btn-default btn-xs showLog' oId='"+row.oId+"'><span class='glyphicon glyphicon-ok'></span>查看物流</button><br/><button style='marigin-top:10px' class='btn btn-default btn-xs confirmOrder' oId='"+row.oId+"'><span class='glyphicon glyphicon-ok'></span>确认收货</button><br/><button style='margin-top:10px' class='btn btn-default btn-xs rejectLog' oId='"+row.oId+"'><span class='glyphicon glyphicon-ok'></span>已拒收</button>"";
+							return "<button class='btn btn-default btn-xs showLog' oId='"+row.oId+"'><span class='glyphicon glyphicon-ok'></span>查看物流</button><br/><button style='marigin-top:10px' class='btn btn-default btn-xs confirmOrder' oId='"+row.oId+"'><span class='glyphicon glyphicon-ok'></span>确认收货</button><br/><button style='margin-top:10px' class='btn btn-default btn-xs rejectLog' oId='"+row.oId+"'><span class='glyphicon glyphicon-ok'></span>已拒收</button>";
 						}else if(statusId==1||statusId==3){
 							return "<button class='btn btn-default btn-xs applayLog' oId='"+row.oId+"'><span class='glyphicon glyphicon-ok'></span>退换申请</button>";
-						}else{
-							return "<button class='btn btn-default btn-xs' oId='"+row.oId+"'><span class='glyphicon glyphicon-exclamation-sign'></span>无操作</button>";
 						}
+						return "<button class='btn btn-default btn-xs' oId='"+row.oId+"'><span class='glyphicon glyphicon-exclamation-sign'></span>无操作</button>";
 
                         
                     }
@@ -154,7 +153,7 @@ $(document).ready(function() {
 		data['subject']=$(this).attr("subject");
 		data['total_amount']=$(this).attr("total_amount");
 		data['body']=$(this).attr("body");
-		var confirmPost=confirm("确定取消此订单？");
+		var confirmPost=confirm("确认付款？");
 		if(confirmPost==true){
 			//ajax发送订单取消的请求
 			$.ajax({

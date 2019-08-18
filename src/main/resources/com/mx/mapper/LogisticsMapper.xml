@@ -6,20 +6,12 @@
     <result column="o_id" jdbcType="INTEGER" property="oId" />
     <result column="waybill_num" jdbcType="VARCHAR" property="waybillNum" />
     <result column="company" jdbcType="VARCHAR" property="company" />
-    <result column="status" jdbcType="BIT" property="status" />
   </resultMap>
-  <insert id="insert" parameterType="com.mx.pojo.Logistics">
-    insert into logistics (l_id, o_id, waybill_num, 
-      company, status)
-    values (#{lId,jdbcType=INTEGER}, #{oId,jdbcType=INTEGER}, #{waybillNum,jdbcType=VARCHAR}, 
-      #{company,jdbcType=VARCHAR}, #{status,jdbcType=BIT})
-  </insert>
-  <insert id="insertSelective" parameterType="com.mx.pojo.Logistics">
+
+
+  <insert id="addLogistics" parameterType="com.mx.pojo.Logistics">
     insert into logistics
     <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="lId != null">
-        l_id,
-      </if>
       <if test="oId != null">
         o_id,
       </if>
@@ -29,25 +21,16 @@
       <if test="company != null">
         company,
       </if>
-      <if test="status != null">
-        status,
-      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
-      <if test="lId != null">
-        #{lId,jdbcType=INTEGER},
-      </if>
       <if test="oId != null">
-        #{oId,jdbcType=INTEGER},
+        #{oId},
       </if>
       <if test="waybillNum != null">
-        #{waybillNum,jdbcType=VARCHAR},
+        #{waybillNum},
       </if>
       <if test="company != null">
-        #{company,jdbcType=VARCHAR},
-      </if>
-      <if test="status != null">
-        #{status,jdbcType=BIT},
+        #{company},
       </if>
     </trim>
   </insert>

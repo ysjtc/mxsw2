@@ -18,7 +18,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -84,7 +83,7 @@ public class OrderFrontManageController {
                 Address address = new Address();
                 address.setAddId(address_id);
 
-                order.setuId(user.getuId());
+                order.setuId(user);
                 order.setoName(oName);
                 order.setAddress(address);
                 order.setCreateTime(create_time);
@@ -129,7 +128,7 @@ public class OrderFrontManageController {
     //查看单个订单
     @ResponseBody
     @RequestMapping("/seeOrder")
-    public String seeOrder(Integer trade_number, HttpSession session, HttpServletResponse response){
+    public String seeOrder(String trade_number, HttpSession session, HttpServletResponse response){
         System.out.println(trade_number);
         String uname=(String)session.getAttribute("USER_ID");
         if (uname==null||uname.equals("")){
@@ -140,13 +139,8 @@ public class OrderFrontManageController {
                 return orderList;
             }catch (Exception e){
                 e.printStackTrace();
-                try {
-                    response.sendRedirect("frontShow/errorPage/error");
-                } catch (IOException e1) {
-                    e1.printStackTrace();
-                }
+                return "{\"result\":false,\"isLogin\":false}";
             }
-            return "";
         }
     }
 
@@ -179,31 +173,7 @@ public class OrderFrontManageController {
         }
 
     }
-    //查看某个用户的全部订单的状态
-    @ResponseBody
-    @RequestMapping("/seeAllOrderStatus")
-    public String seeAllOrderStatus(@RequestBody String param,Integer status,HttpSession session){
-        System.out.println(param);
-        //当前登陆的用户id
-        String uname=(String)session.getAttribute("USER_ID");
-        if (uname==null||uname.equals("")){
-            return "{\"result\":false,\"isLogin\":false}";
-        }else {
-            try{
-                int u_id=userService.getUserIdByname(uname);
-                //解析json对象
-                String pageSize=String.valueOf(JsonToJsonObject.ToJsonObject(param,"pageSize"));
-                String offset=String.valueOf(JsonToJsonObject.ToJsonObject(param,"offset"));
-                String sort=String.valueOf(JsonToJsonObject.ToJsonObject(param,"sort"));
-                String sortOrder=String.valueOf(JsonToJsonObject.ToJsonObject(param,"sortOrder"));
-                String OrderList = orderService.QueryAllOrderStatus(Integer.parseInt(pageSize),Integer.parseInt(offset),sort,sortOrder,status,u_id);
-                return OrderList;
-            }catch (Exception e){
-                e.printStackTrace();
-                return "redirect:/FrontForward/error";
-            }
-        }
-    }
+
 
     //删除订单（取消订单）
     @ResponseBody

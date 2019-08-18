@@ -3,7 +3,7 @@ package com.mx.mapper;
 import com.mx.pojo.Logistics;
 
 public interface LogisticsMapper {
-    int insert(Logistics record);
 
-    int insertSelective(Logistics record);
+    //向物流表中添加数据
+    int addLogistics(Logistics logistics);
 }

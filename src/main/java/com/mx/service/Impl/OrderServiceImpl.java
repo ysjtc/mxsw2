@@ -1,7 +1,9 @@
 package com.mx.service.Impl;
 
+import com.mx.mapper.LogisticsMapper;
 import com.mx.mapper.OrderMapper;
 import com.mx.mapper.Order_DetailMapper;
+import com.mx.pojo.Logistics;
 import com.mx.pojo.Order;
 import com.mx.pojo.Order_Detail;
 import com.mx.service.OrderService;
@@ -20,6 +22,9 @@ public class OrderServiceImpl implements OrderService {
     @Autowired
     private Order_DetailMapper order_detailMapper;
 
+    @Autowired
+    private LogisticsMapper logisticsMapper;
+
     //生成订单号
     @Override
     public boolean createOrder(Order order) {
@@ -32,40 +37,28 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public boolean createOrderDet(Order_Detail order_detail) {
-        System.out.println("------------"+order_detail);
+//        System.out.println("------------"+order_detail);
         //将订单添加到订单详情表
         int row=order_detailMapper.createOrderDet(order_detail);
         if (row==0){ return false; }
         else return true;
     }
 
-    @Override
-    public String SeeOrder(Integer trade_number) {
-        List orderlist=orderMapper.SeeOrder(trade_number);
-        //将查询结果转换成json数组
-        String str= ConvertJson.ConvertOrder(1,orderlist);
-        return str;
-    }
 
     @Override
     public String SeeAllOrder(Integer pageSize, Integer offset, String sort, String sortOrder,Integer uid) {
         System.out.println(uid);
         List<Order> orderlist=orderMapper.SeeAllOrder(pageSize,offset,sort,sortOrder,uid);
-        System.out.println("++++++++"+orderlist);
+//        System.out.println("++++++++"+orderlist);
         //将查询结果转换成json数组
         int count=orderMapper.AllOrderCount(uid);
-        String str= ConvertJson.ConvertOrder(count,orderlist);
-        System.out.println("----"+str);
-        return str;
-    }
-
-    @Override
-    public String QueryAllOrderStatus(Integer pageSize, Integer offset, String sort, String sortOrder, Integer status, Integer uid) {
-        List orderlist=orderMapper.QueryAllOrderStatus(pageSize,offset,sort,sortOrder,status,uid);
-        //将查询结果转换成json数组
-        int count=orderMapper.AllOrderStatusCount(status,uid);
-        String str= ConvertJson.ConvertOrder(count,orderlist);
-        return str;
+        if (count==0){
+            return "\"result\":false";
+        }else {
+            String str = ConvertJson.ConvertOrder(count, orderlist);
+            System.out.println("----" + str);
+            return str;
+        }
     }
 
     @Override
@@ -74,5 +67,101 @@ public class OrderServiceImpl implements OrderService {
         if (!row){
             return false;
         }else return true;
+    }
+
+
+
+
+    /**
+     * 后台管理
+     */
+
+    @Override
+    public String SeeAllOrderBackManage(Integer pageSize, Integer offset, String sort, String sortOrder, Integer uid) {
+        System.out.println(uid);
+        List<Order> orderlist=orderMapper.SeeAllOrderBackManage(pageSize,offset,sort,sortOrder,uid);
+//        System.out.println("++++++++"+orderlist);
+        //将查询结果转换成json数组
+        int count=orderMapper.AllOrderCount(uid);
+        if (count==0){
+            return "\"result\":false";
+        }else {
+            String str = ConvertJson.ConvertOrderBackManage(count, orderlist);
+            System.out.println("----" + str);
+            return str;
+        }
+    }
+
+
+    @Override
+    public String SeeAllOrders(Integer pageSize, Integer offset, String sort, String sortOrder) {
+        List<Order> orderlist=orderMapper.SeeAllOrders(pageSize,offset,sort,sortOrder);
+        System.out.println("++++++++"+orderlist);
+        //将查询结果转换成json数组
+        int count=orderMapper.AllOrdersCount();
+        if (count==0){
+            return "\"result\":false";
+        }else {
+            String str= ConvertJson.ConvertOrderBackManage(count,orderlist);
+            System.out.println("----"+str);
+            return str;
+        }
+    }
+
+    @Override
+    public String QueryAllOrderStatus(Integer pageSize, Integer offset, String sort, String sortOrder, Integer[] oStatus) {
+        List<Order> orderlist=null;
+        int count=0;
+        //定义一个StringBuilder
+        StringBuilder jsonStrAll = new StringBuilder("{");
+        String str="";
+        for (int i=0;i<oStatus.length;i++)
+            //将查询结果转换成json数组
+        count=count+orderMapper.AllOrderStatusCount(oStatus[i]);
+        jsonStrAll.append("\""+"total"+"\""+":"+count+","+"\""+
+                "rows"+"\""+":[");
+        for (int i=0;i<oStatus.length;i++) {
+            orderlist= orderMapper.QueryAllOrderStatus(pageSize, offset, sort, sortOrder, oStatus[i]);
+            for (int j=0;i<orderlist.size();j++){
+                //把你要拼接的字段放进去
+                jsonStrAll.append(orderlist.get(i).TOJSONBackManage() +",");
+            }
+        }
+        //把最后的，（逗号）截取掉
+        str = jsonStrAll.substring(0, jsonStrAll.length()-1)+"]}";
+        System.out.println("QueryAllOrderStatus:"+str);
+        return str;
+    }
+
+    @Override
+    public boolean updateOrderStatus(Logistics logistics, Integer oStatus) {
+        try{
+            int log=logisticsMapper.addLogistics(logistics);
+            boolean Orderstatus=orderMapper.updateOrderStatus(logistics.getoId(),oStatus);
+            if (log!=0&& Orderstatus==true){ return true; }
+            else return false;
+        }catch (Exception e){
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    @Override
+    public String SeeOrder(String trade_number) {
+        try{
+            List<Order> orderlist=orderMapper.SeeOrder(trade_number);
+            int SeeOrderCount=orderMapper.SeeOrderCount(trade_number);
+            if (SeeOrderCount==0){
+                return "\"result\":false";
+            }else {
+                //将查询结果转换成json数组
+                String str = ConvertJson.ConvertOrderBackManage(1, orderlist);
+                return str;
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+            return "\"result\":false";
+        }
+
     }
 }

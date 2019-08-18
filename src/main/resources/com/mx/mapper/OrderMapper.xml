@@ -4,12 +4,17 @@
   <resultMap id="OrderAndDetailMaps" type="com.mx.pojo.Order">
     <result column="o_id" jdbcType="INTEGER" property="oId" />
     <result column="o_name" jdbcType="VARCHAR" property="oName" />
-    <result property="uId" jdbcType="INTEGER" column="u_id"/>
+    <!--<result property="uId" jdbcType="INTEGER" column="u_id"/>-->
     <result column="create_time" jdbcType="VARCHAR" property="createTime" />
     <result column="number" jdbcType="VARCHAR" property="number" />
     <result column="o_status" jdbcType="VARCHAR" property="oStatus" />
     <result column="note" jdbcType="VARCHAR" property="note" />
     <!--<result column="add_id" jdbcType="VARCHAR" property="address" />-->
+      <!--封装user-->
+      <association property="user" javaType="com.mx.pojo.User">
+          <id property="uId" jdbcType="INTEGER" column="u_id"/>
+          <result property="name" column="Uname"/>
+      </association>
       <!--封装Item-->
       <association property="itemName" javaType="com.mx.pojo.Item">
           <result column="name" property="name"/>
@@ -34,7 +39,7 @@
           <if test="oName != null">
               o_name,
           </if>
-          <if test="uId != null">
+          <if test="user.uId != null">
               u_id,
           </if>
           <if test="address.addId != null">
@@ -57,8 +62,8 @@
           <if test="oName != null">
               #{oName},
           </if>
-          <if test="uId != null">
-              #{uId},
+          <if test="user.uId != null">
+              #{user.uId},
           </if>
           <if test="address.addId != null">
               #{address.addId},
@@ -81,16 +86,9 @@
           select LAST_INSERT_ID()
       </selectKey>
   </insert>
-  <select id="SeeOrder"  resultMap="OrderAndDetailMaps">
-      SELECT t1.o_name ,t1.number,t4.name,t2.count,t3.addr,t1.note,t1.create_time,t2.total_price,
-      CASE t1.`status` WHEN 0 THEN '未处理' WHEN 1 THEN '未支付' WHEN 2 THEN '待收货中' WHEN 3 THEN '收货完成' WHEN 4 THEN '退货中' WHEN 5 THEN '退货完成' END AS `status`
-      FROM  `order` AS t1, order_detail AS t2 , address AS t3 , item AS t4
-      <where>
-      t1.add_id=t3.add_id AND t1.o_id=t2.o_id AND t2.item_id=t4.item_id AND
-        <if test="uId!=null and uId!=''">
-            t1.number=#{trade_number}
-        </if>
-    </where>
+  <select id="SeeOrderCount"  resultType="Integer">
+      SELECT count(*) from `order`
+      where number=#{number}
 
   </select>
   <select id="SeeAllOrder"  resultMap="OrderAndDetailMaps">
@@ -103,7 +101,7 @@
           t1.`add_id`=t3.`add_id` AND
           t1.`o_id`=t2.`o_id` AND
           t2.`item_id`=t4.`item_id` AND
-          <if test="uid!=null">
+          <if test="uid!=null and uid!=''">
               t1.`u_id`=#{uid}
           </if>
           GROUP BY o_id
@@ -116,26 +114,6 @@
   <select id="AllOrderCount" resultType="Integer">
         select count(*) from  `order` where u_id=#{uid}
     </select>
-  <select id="QueryAllOrderStatus"  resultMap="OrderAndDetailMaps">
-      SELECT t1.o_id,t1.o_name ,t1.number,t4.name,t2.count,t3.addr,t1.note,t1.create_time,t2.total_price,
-      CASE t1.`status` WHEN 0 THEN '未处理' WHEN 1 THEN '未支付' WHEN 2 THEN '待收货中' WHEN 3 THEN '收货完成' WHEN 4 THEN '退货中' WHEN 5 THEN '退货完成'  END AS `status`
-      FROM  `order` AS t1, order_detail AS t2 , address AS t3 , item AS t4
-      <where>
-      t1.add_id=t3.add_id AND t1.o_id=t2.o_id AND t2.item_id=t4.item_id AND
-        <if test="uId!=null and uId!=''">
-            t1.u_id=#{uid} and status=#{status}
-        </if>
-          GROUP BY o_id
-        <if test="sort!=null and sortOrder!=null">
-              ORDER BY #{sort} #{sortOrder}
-        </if>
-          limit #{offset},#{pageSize}
-    </where>
-
-  </select>
-  <select id="AllOrderStatusCount" resultType="Integer">
-        select count(*) from  `order` where u_id=#{uid} and status=#{status}
-    </select>
   <delete id="deleteOrder" parameterType="com.mx.pojo.Order">
       delete from `order`
       <where>
@@ -146,4 +124,87 @@
           </trim>
       </where>
   </delete>
+
+
+
+    <!--后台-->
+    <select id="SeeAllOrders"  resultMap="OrderAndDetailMaps">
+        SELECT t1.`o_id` ,t5.name as `Uname`,t1.`number`,t1.o_status,t1.`note`,t1.`create_time`,t2.`total_price`,t4.`name`,t2.`count`,t3.`addr`
+        FROM  `order` AS t1, `order_detail` AS t2 , `address` AS t3 , `item` AS t4 ,user as t5
+        <where>
+            t1.`add_id`=t3.`add_id` AND
+            t1.`o_id`=t2.`o_id` AND
+            t2.`item_id`=t4.`item_id` and
+            t5.`u_id`=t1.`u_id`
+            GROUP BY o_id
+            <if test="sort!=null and sortOrder!=null">
+                ORDER BY #{sort} #{sortOrder}
+            </if>
+            limit #{offset},#{pageSize}
+        </where>
+    </select>
+    <select id="SeeOrder"  resultMap="OrderAndDetailMaps">
+        SELECT t1.`o_id`,t5.`name` as `Uname`,t1.`number`,t1.o_status,t1.`note`,t1.`create_time`,t2.`total_price`,t4.`name`,t2.`count`,t3.`addr`
+        FROM  `order` AS t1, `order_detail` AS t2 , `address` AS t3 , `item` AS t4 ,user as t5
+        <where>
+            t1.`add_id`=t3.`add_id` AND
+            t1.`o_id`=t2.`o_id` AND
+            t2.`item_id`=t4.`item_id` and
+            t5.`u_id`=t1.`u_id` and
+            <if test="number!=null and number!=''">
+                t1.number=#{number}
+            </if>
+        </where>
+
+    </select>
+    <select id="SeeAllOrderBackManage"  resultMap="OrderAndDetailMaps">
+        SELECT t1.`o_id` ,t5.name as `Uname`,t1.`number`,t1.o_status,t1.`note`,t1.`create_time`,t2.`total_price`,t4.`name`,t2.`count`,t3.`addr`
+        FROM  `order` AS t1, `order_detail` AS t2 , `address` AS t3 , `item` AS t4 ,user as t5
+        <where>
+            t1.`add_id`=t3.`add_id` AND
+            t1.`o_id`=t2.`o_id` AND
+            t2.`item_id`=t4.`item_id` and
+            t5.`u_id`=t1.`u_id` AND
+            <if test="uid!=null and uid!=''">
+                t1.`u_id`=#{uid}
+            </if>
+            GROUP BY o_id
+            <if test="sort!=null and sortOrder!=null">
+                ORDER BY #{sort} #{sortOrder}
+            </if>
+            limit #{offset},#{pageSize}
+        </where>
+    </select>
+    <select id="AllOrdersCount" resultType="Integer">
+        select count(*) from `order`
+    </select>
+    <select id="QueryAllOrderStatus"  resultMap="OrderAndDetailMaps">
+        SELECT t1.o_id,t1.o_name ,t1.number,t4.name,t2.count,t3.addr,t1.note,t1.create_time,t2.total_price,
+        t1.o_status
+        FROM  `order` AS t1, order_detail AS t2 , address AS t3 , item AS t4
+        <where>
+            t1.add_id=t3.add_id AND t1.o_id=t2.o_id AND t2.item_id=t4.item_id AND
+            <if test="oStatus!=null and oStatus!=''">
+                o_status=#{oStatus}
+            </if>
+            GROUP BY o_id
+            <if test="sort!=null and sortOrder!=null">
+                ORDER BY #{sort} #{sortOrder}
+            </if>
+            limit #{offset},#{pageSize}
+        </where>
+
+    </select>
+    <select id="AllOrderStatusCount" resultType="Integer">
+        select count(*) from  `order` where  o_status=#{oStatus}
+    </select>
+    <update id="updateOrderStatus" parameterType="com.mx.pojo.Order">
+        update  `order`
+        <set>
+            <if test="oStatus!= null and oStatus!=''">
+                o_status=#{oStatus},
+            </if>
+        </set>
+        where o_id=#{oId}
+    </update>
 </mapper>

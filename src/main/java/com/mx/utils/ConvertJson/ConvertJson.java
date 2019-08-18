@@ -95,7 +95,7 @@ public class ConvertJson {
     }
 
 
-
+    //前台展示
     public static String ConvertOrder(int count,List<Order> list) {
         //定义一个StringBuilder
         StringBuilder jsonStrAll = new StringBuilder("{");
@@ -122,6 +122,27 @@ public class ConvertJson {
         }
 
         str = jsonStrAll+"\"result\":";
+//        System.out.println(str);
+        return str;
+    }
+
+
+
+
+
+    //后台管理
+    public static String ConvertOrderBackManage(int count,List<Order> list) {
+        //定义一个StringBuilder
+        StringBuilder jsonStrAll = new StringBuilder("{");
+        String str=null;
+        jsonStrAll.append("\""+"total"+"\""+":"+count+","+"\""+
+                "rows"+"\""+":[");
+        for (int i=0;i<list.size();i++){
+            //把你要拼接的字段放进去
+            jsonStrAll.append(list.get(i).TOJSONBackManage() +",");
+        }
+        //把最后的，（逗号）截取掉
+        str = jsonStrAll.substring(0, jsonStrAll.length()-1)+"]}";
 //        System.out.println(str);
         return str;
     }

@@ -36,7 +36,7 @@ public class Item implements Serializable {
     private String author;
     //ISBN
     @NotEmpty(message = "ISBN不能为空")
-    @Pattern(regexp = "^[0-9]{10,13}$",message = "只能输入13位数字")
+    @Pattern(regexp = "^[0-9]{10,13}$",message = "只能输入10-13位数字")
     private String isbn;
     //新旧程度
     @NotEmpty(message = "新旧程度不能为空")

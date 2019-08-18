@@ -129,15 +129,21 @@ public class ItemsBackManageController {
     @RequestMapping("/query/AllItems")
     public String queryAll(@RequestBody String param,HttpSession session){
         System.out.println(param);
-        String pageSize=String.valueOf(JsonToJsonObject.ToJsonObject(param,"pageSize"));
-        String offset=String.valueOf(JsonToJsonObject.ToJsonObject(param,"offset"));
-        String sort=String.valueOf(JsonToJsonObject.ToJsonObject(param,"sort"));
-        String sortOrder=String.valueOf(JsonToJsonObject.ToJsonObject(param,"sortOrder"));
-       String itemList = itemsService.queryAll(Integer.parseInt(pageSize),Integer.parseInt(offset),sort,sortOrder);
+        try{
+            String pageSize=String.valueOf(JsonToJsonObject.ToJsonObject(param,"pageSize"));
+            String offset=String.valueOf(JsonToJsonObject.ToJsonObject(param,"offset"));
+            String sort=String.valueOf(JsonToJsonObject.ToJsonObject(param,"sort"));
+            String sortOrder=String.valueOf(JsonToJsonObject.ToJsonObject(param,"sortOrder"));
+            String itemList = itemsService.queryAll(Integer.parseInt(pageSize),Integer.parseInt(offset),sort,sortOrder);
 //        System.out.println(itemList.getName());
 //        System.out.println(itemList);
-        session.setAttribute("items",itemList);
-        return itemList;
+            session.setAttribute("items",itemList);
+            return itemList;
+        }catch (Exception e){
+            e.printStackTrace();
+            return "{\"result\":false}";
+        }
+
     }
 
     //通过商品类别查询

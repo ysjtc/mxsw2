@@ -231,7 +231,7 @@
         })
     }
     //未定位查询前先设定表格显示所有
-    doTable("Items/query/AllItems");
+    doTable("BackManageOrder/seeAllOrders");
 
 
     //订单查询只允许单条件查询
@@ -262,18 +262,21 @@
         var data={};
         if(name!=""){
             data['name']=name;
+            //根据登录id查询订单的接口
+            var url="BackManageOrder/seeAllOrderByuId";
+            // console.log(data);
+            doTable(url,data);
         }else if(number!=""){
             data['trade_number']=number;
+            //根据订单编号查询订单的接口
+            var url="BackManageOrder/seeOrder";
+            // console.log(data);
+            doTable(url,data);
         }
         if(jQuery.isEmptyObject(data)){
             $("#orderQueryIssu-main").html("查询为空！");
             $("#orderQueryIssu").removeAttr("hidden");
             alert("未填写搜索内容！");
-        }else{
-            //根据订单编号，登录id查询订单的接口
-            var url="dasd/dasd";
-            // console.log(data);
-            doTable(url,data);
         }
     });
 

@@ -135,8 +135,17 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public int getUserIdByname(String name) {
-        User user=usermapper.queryUserByname(name);
-        return user.getuId();
+        User user=null;
+        try{
+            user=usermapper.queryUserByname(name);
+            if (user==null){
+                return 0;
+            }
+            return user.getuId();
+        }catch (Exception e){
+            e.printStackTrace();
+            return 0;
+        }
     }
 
     /*查找所有用户*/

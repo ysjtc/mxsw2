@@ -129,7 +129,7 @@ public class ItemsServiceImpl implements ItemsService {
 
     @Override
     public String FrontQueryAll(Integer pageSize, Integer offset, String sort, String sortOrder) {
-        String allData=null;
+        String allData="";
         StringBuilder jsonStrAll = new StringBuilder("{");
         try{
             String str=queryAll(pageSize,offset,sort,sortOrder);
@@ -208,7 +208,7 @@ public class ItemsServiceImpl implements ItemsService {
 
     @Override
     public String FrontQueryItemsByCateId(Integer pageSize, Integer offset, String sort, String sortOrder, Integer cateId) {
-        String CateData=null;
+        String CateData="";
         StringBuilder jsonStrAll = new StringBuilder("{");
         try{
             String str=queryItemsByItemCate(pageSize,offset,sort,sortOrder,cateId);

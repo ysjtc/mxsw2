@@ -23,7 +23,7 @@ public class Order implements Serializable {
     private  Order_Detail order_detail;
 
     //当前登陆的用户id
-    private Integer uId;
+    private User user;
 
     //当前登陆的用户的地址id
     private Address address;
@@ -59,12 +59,12 @@ public class Order implements Serializable {
         this.oName = oName;
     }
 
-    public Integer getuId() {
-        return uId;
+    public User getuId() {
+        return user;
     }
 
-    public void setuId(Integer uId) {
-        this.uId = uId;
+    public void setuId(User user) {
+        this.user = user;
     }
 
     public Address getAddress() {
@@ -124,10 +124,24 @@ public class Order implements Serializable {
         this.order_detail = order_detail;
     }
 
+//    前台展示
     public String TOJSON(){//ipad：2;iphone:1;
         return  "{"+"\""+"oId"+"\":"+"\""+ oId +"\","+
                 "\""+"oName"+"\":"+"\""+oName+"\","+
                 "\""+"Number"+"\":"+"\""+number+"\","+
+                "\""+"ItemName"+"\":"+"\""+itemName.getName()+"\","+
+                "\""+"Address"+"\":"+"\""+address.getAddr()+"\","+
+                "\""+"Note"+"\":"+"\""+note+"\","+
+                "\""+"createTime"+"\":"+"\""+createTime+"\","+
+                "\""+"totalPrice"+"\":"+"\""+order_detail.getTotalPrice()+"\","+
+                "\""+"Status"+"\":"+"\""+oStatus+"\""+
+                "}";
+    }
+//        后台管理
+    public String TOJSONBackManage(){//ipad：2;iphone:1;
+        return  "{"+"\""+"oId"+"\":"+"\""+ oId +"\","+
+                "\""+"Number"+"\":"+"\""+number+"\","+
+                "\""+"Name"+"\":"+"\""+user.getName()+"\","+
                 "\""+"ItemName"+"\":"+"\""+itemName.getName()+"\","+
                 "\""+"Address"+"\":"+"\""+address.getAddr()+"\","+
                 "\""+"Note"+"\":"+"\""+note+"\","+
@@ -144,7 +158,7 @@ public class Order implements Serializable {
                 ", oName='" + oName + '\'' +
                 ", itemName=" + itemName +
                 ", order_detail=" + order_detail +
-                ", uId=" + uId +
+                ", uId=" + user +
                 ", address=" + address +
                 ", createTime='" + createTime + '\'' +
                 ", number='" + number + '\'' +
