@@ -84,10 +84,10 @@
                 </div>
                 <!-- 几个分类按钮（将订单分类） -->
                 <div class="order-btns">
-                    <button onclick="orderBtns(this)" status="1" type="button" class="btn btn-default">未处理订单</button>
-                    <button onclick="orderBtns(this)" status="2" type="button" class="btn btn-default">待收货订单</button>
-                    <button onclick="orderBtns(this)" status="4" type="button" class="btn btn-default">退货中订单</button>
-                    <button onclick="orderBtns(this)" status="3" type="button" class="btn btn-default">已完结订单</button>
+                    <button status="1" type="button" class="btn btn-default orderBtns">未处理订单</button>
+                    <button status="2" type="button" class="btn btn-default orderBtns">待收货订单</button>
+                    <button status="4" type="button" class="btn btn-default orderBtns">退货中订单</button>
+                    <button status="3,5" type="button" class="btn btn-default orderBtns">已完结订单</button>
                 </div>
 
 
@@ -286,6 +286,18 @@
         var oId=$(this).attr("oId");
         console.log(oId);
     });
+
+
+	//点击了那四个按钮时
+    $(".order-btns").on("click",".orderBtns",function(){
+        var status=$(this).attr("status");
+        var url="dasd/dasd";
+        var data={};
+        data['status']=status.toString();
+        doTable(url,data);
+    });
+
+
 
 </script>
 </body>
