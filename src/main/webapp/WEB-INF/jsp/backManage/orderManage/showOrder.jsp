@@ -104,6 +104,35 @@
 </div>
 <!-- 右侧主要内容结束 -->
 
+<!-- 一个关于发货以及查看物流的模态框 -->
+<div class="modal fade" id="logModal" tabindex="-1" role="dialog" aria-labelledby="logModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="logModalLabel">发货信息</h4>
+            </div>
+            <div class="modal-body">
+
+                <div class="form-group">
+                    <label class="control-label">物流公司</label>
+                    <input name="company" type="text" class="form-control" placeholder="请输入物流公司">
+                </div>
+                <div class="form-group">
+                    <label class="control-label">物流单号</label>
+                    <input name="waybillNum" type="text" class="form-control" placeholder="请输入物流单号">
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                <button id="postLog" type="button" class="btn btn-primary">提交</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
 
 
 <!-- 提交筛选 -->
@@ -210,11 +239,12 @@
                         var judgeId=row.Status;
                         var txt="无操作";
                         if (judgeId==1) {
-                            //发货的按钮
                             txt="发货";
-                        }else if(judgeId==2||judgeId==4){
-                            txt="查看物流"
-                        }
+                        }else if(judgeId==2){
+                            txt="查看发货物流";
+                        }else if(judgeId==4){
+							txt="查看退货物流";
+						}
                         return "<button class='btn btn-default btn-xs doOrder' oId='"+row.oId+"'><span class='glyphicon glyphicon-exclamation-sign'></span>"+txt+"</button>";
                        
                     }
@@ -281,10 +311,64 @@
     });
 
 
+
+	//一个缓存oId的变量
+    var oIdCahche="";
+    //一个缓存那四个按钮发送的data的变量
+    var dataCache;
+
+
     //点击了订单的操作时
     $("#orderInfoTable").on("click",".doOrder",function(){
-        var oId=$(this).attr("oId");
-        console.log(oId);
+        oIdCahche=$(this).attr("oId");
+        if(oIdCahche==2){
+            //查看发货物流
+            $("#logModalLabel").html("查看发货物流");
+            //ajax发送请求发货物流的信息
+            $.ajax({
+                url : 'aa/bb',
+                type : 'GET',
+                success : function(data) {
+                    data=JSON.parse(data);
+                    if(data['result']){
+                        //成功后
+                        
+                    }else{
+                        if(data['isLogin']==false){
+                            window.location.href="SuperAdmin/login";
+                        }
+                    }
+                },
+                error : function(data){
+                    alert("请检查网络！");
+                }
+            });
+        }else if(oIdCahche==4){
+            //查看退货物流
+            $("#logModalLabel").html("查看退货物流");
+            //ajax发送请求退货物流的信息
+            $.ajax({
+                url : 'aa/bb',
+                type : 'GET',
+                success : function(data) {
+                    data=JSON.parse(data);
+                    if(data['result']){
+                        //成功后
+                        
+                    }else{
+                        if(data['isLogin']==false){
+                            window.location.href="SuperAdmin/login";
+                        }
+                    }
+                },
+                error : function(data){
+                    alert("请检查网络！");
+                }
+            });
+        }
+        if(oIdCahche==1||oIdCahche==2||oIdCahche==4){
+            $('#logModal').modal('toggle');
+        }
     });
 
 
@@ -294,10 +378,58 @@
         var url="BackManageOrder/seeAllOrdersStatus";
         var data={};
         data['status']=status.toString();
+		dataCache=data;
         doTable(url,data);
     });
 
-
+	//点击了模态框确认时
+    $("#postLog").click(function(){
+        //发货
+        //获取模态框的input的值
+        var data={};
+        data['oId']=oIdCahche;
+        data['company']=$("#logModal input[name='company']").val();
+        data['waybillNum']=$("#logModal input[name='waybillNum']").val();
+        console.log(data);
+        var postFlag=true;
+        $.each(data,function(key,value){
+            if(value==""){
+                postFlag=false;
+            }
+        });
+        if(postFlag){
+             //ajax发送发货请求
+            $.ajax({
+                url : 'aa/bb',
+                data:data,
+                type : 'POST',
+                success : function(data) {
+                    data=JSON.parse(data);
+                    if(data['result']){
+                        //判断刷新哪个区间的表格
+                        if(jQuery.isEmptyObject(dataCache)){
+                            //刷新无选择条件时的表格
+                            doTable("BackManageOrder/seeAllOrders");
+                        }else{
+                            doTable("BackManageOrder/seeAllOrdersStatus",dataCache);
+                        }
+                        
+                    }else{
+                        if(data['isLogin']==false){
+                            window.location.href="SuperAdmin/login";
+                        }
+                        alert("意外错误！请重试！");
+                    }
+                },
+                error : function(data){
+                    alert("请检查网络！");
+                }
+            });
+        }else{
+            alert("请检查是否信息完整！");
+        }
+       
+    });
 
 </script>
 </body>
