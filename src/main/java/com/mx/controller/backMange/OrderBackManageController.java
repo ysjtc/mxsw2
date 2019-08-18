@@ -128,7 +128,7 @@ public class OrderBackManageController {
 
     //查看全部用户的全部订单的状态
     @ResponseBody
-    @RequestMapping("/seeAllOrderStatus")
+    @RequestMapping("/seeAllOrdersStatus")
     public String seeAllOrderStatus(@RequestBody String param,HttpSession session){
         System.out.println(param);
         //当前登陆的用户id
@@ -142,11 +142,14 @@ public class OrderBackManageController {
                 String sort=String.valueOf(JsonToJsonObject.ToJsonObject(param,"sort"));
                 String sortOrder=String.valueOf(JsonToJsonObject.ToJsonObject(param,"sortOrder"));
                 String Status=String.valueOf(JsonToJsonObject.ToJsonObject(param,"status"));
-                System.out.println(Status);//String a="[1,2]"   String b=a.split("[")[1].split();
-//                JSONArray status = new JSONArray(Status);
-//                String OrderList = orderService.QueryAllOrderStatus(Integer.parseInt(pageSize),Integer.parseInt(offset),sort,sortOrder,status);
-//                return OrderList;
-                return null;
+                String[] newStatus=Status.split(",");
+                Integer[] status=new Integer[newStatus.length];
+                for (int i=0;i<newStatus.length;i++){
+                    status[i]=Integer.parseInt(newStatus[i]);
+                    System.out.println("iii:"+status[i]);
+                }
+                String OrderList = orderService.QueryAllOrderStatus(Integer.parseInt(pageSize),Integer.parseInt(offset),sort,sortOrder,status);
+                return OrderList;
             }catch (Exception e){
                 e.printStackTrace();
                 return "{\"result\":false}";
@@ -158,8 +161,8 @@ public class OrderBackManageController {
     //管理员更新订单的状态
     @ResponseBody
     @RequestMapping("/updateOrderStatus")
-    public String updateOrderStatus(@Valid Logistics logistics, BindingResult result, Integer status, HttpSession session){
-        System.out.println(logistics+"-----"+status);
+    public String updateOrderStatus(@Valid Logistics logistics, BindingResult result, HttpSession session){
+//        System.out.println(logistics+"-----"+status);
         String truejson="{\"result\": true }";
         String falsejson="{\"result\":false}";
         //当前登陆的用户id
@@ -169,7 +172,7 @@ public class OrderBackManageController {
             try{
                 //判断传入的数据是否存在null
                 if (Validator.checkErrors(result, session)) {
-                    boolean Order = orderService.updateOrderStatus(logistics,status);
+                    boolean Order = orderService.updateOrderStatus(logistics,2);
                     if (Order){
                         return truejson;
                     }else

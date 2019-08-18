@@ -124,7 +124,7 @@
             pageNumber: 1, // 首页页码
             sidePagination: 'server', // 设置为服务器端分页
             sortable: true,          //列排序
-            sortName: 'Status', // 要排序的字段
+            sortName: 'o_status', // 要排序的字段
             sortOrder: 'asc', // 排序规则
             queryParams:function(params){
                 //alert(JSON.stringify(queryData));
@@ -291,7 +291,7 @@
 	//点击了那四个按钮时
     $(".order-btns").on("click",".orderBtns",function(){
         var status=$(this).attr("status");
-        var url="dasd/dasd";
+        var url="BackManageOrder/seeAllOrdersStatus";
         var data={};
         data['status']=status.toString();
         doTable(url,data);

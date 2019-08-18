@@ -102,6 +102,7 @@ public class OrderServiceImpl implements OrderService {
         if (count==0){
             return "\"result\":false";
         }else {
+//            int num=orderMapper.queryItemsCountByOrder();
             String str= ConvertJson.ConvertOrderBackManage(count,orderlist);
             System.out.println("----"+str);
             return str;
@@ -121,10 +122,12 @@ public class OrderServiceImpl implements OrderService {
         jsonStrAll.append("\""+"total"+"\""+":"+count+","+"\""+
                 "rows"+"\""+":[");
         for (int i=0;i<oStatus.length;i++) {
+            System.out.println("ostatus:::"+oStatus[i]);
             orderlist= orderMapper.QueryAllOrderStatus(pageSize, offset, sort, sortOrder, oStatus[i]);
-            for (int j=0;i<orderlist.size();j++){
+            for (int j=0;j<orderlist.size();j++){
                 //把你要拼接的字段放进去
-                jsonStrAll.append(orderlist.get(i).TOJSONBackManage() +",");
+//                int num=orderMapper.queryItemsCountByOrder(orderlist.get(j).getoId());
+                jsonStrAll.append(orderlist.get(j).TOJSONBackManage() +",");
             }
         }
         //把最后的，（逗号）截取掉

@@ -49,4 +49,7 @@ public interface OrderMapper {
 
     //更新订单的状态
     boolean updateOrderStatus(@Param("oId") Integer oId,@Param("oStatus") Integer oStatus);
+
+    //查询订单详情表的商品数量
+    int queryItemsCountByOrder(@Param("oId") Integer oId);
 }

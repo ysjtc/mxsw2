@@ -179,12 +179,14 @@
         select count(*) from `order`
     </select>
     <select id="QueryAllOrderStatus"  resultMap="OrderAndDetailMaps">
-        SELECT t1.o_id,t1.o_name ,t1.number,t4.name,t2.count,t3.addr,t1.note,t1.create_time,t2.total_price,
-        t1.o_status
-        FROM  `order` AS t1, order_detail AS t2 , address AS t3 , item AS t4
+        SELECT t1.`o_id` ,t5.name as `Uname`,t1.`number`,t1.o_status,t1.`note`,t1.`create_time`,t2.`total_price`,t4.`name`,t2.`count`,t3.`addr`
+        FROM  `order` AS t1, `order_detail` AS t2 , `address` AS t3 , `item` AS t4 ,user as t5
         <where>
-            t1.add_id=t3.add_id AND t1.o_id=t2.o_id AND t2.item_id=t4.item_id AND
-            <if test="oStatus!=null and oStatus!=''">
+            t1.`add_id`=t3.`add_id` AND
+            t1.`o_id`=t2.`o_id` AND
+            t2.`item_id`=t4.`item_id` and
+            t5.`u_id`=t1.`u_id` AND
+            <if test="oStatus!=null">
                 o_status=#{oStatus}
             </if>
             GROUP BY o_id
@@ -207,4 +209,7 @@
         </set>
         where o_id=#{oId}
     </update>
+    <select id="queryItemsCountByOrder" resultType="Integer">
+        select count from  order_detail where  o_id=#{oId}
+    </select>
 </mapper>

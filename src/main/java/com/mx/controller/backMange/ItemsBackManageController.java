@@ -299,9 +299,9 @@ public class ItemsBackManageController {
     @ResponseBody
     @RequestMapping("/updateItem")
     public String updateItemByName(@RequestParam(value = "picFiles")MultipartFile[] multipartFiles, HttpSession session, Integer[] delPicId, Item item, Model model, HttpServletRequest request ){
-//        System.out.println("item是不是空的:"+ IsEmpty.checkIsNull(item));
-//        System.out.println("+++" + multipartFiles.length);
-//        System.out.println("-----" +delPicId);
+        System.out.println("item是不是空的:"+ IsEmpty.checkIsNull(item));
+        System.out.println("+++" + multipartFiles.length);
+        System.out.println("+++" + delPicId.length);
         String truejson="{\"result\": true }";
         String falsejson="{\"result\":false}";
         //先判断是否有管理员登陆，在进行更新
@@ -310,14 +310,15 @@ public class ItemsBackManageController {
             System.out.println("当前没有管理员登陆");
             //存储错误信息
             model.addAttribute("loginErr", "请先登录");
-            return "backManage/login/login";
+            return "{\"result\":false,\"isLogin\":false}";
         }else {
             if (multipartFiles.length == 0) {
-                if (delPicId==null){
+                if (delPicId.length==0){
                     if (IsEmpty.checkIsNull(item)){
                         return falsejson;
                     }else {
                         boolean updateData = itemsService.updateItemsInfo(item);
+                        System.out.println(updateData);
                         if (updateData) {
                             return truejson;
                         } else
@@ -347,8 +348,12 @@ public class ItemsBackManageController {
             } else {
 //            System.out.println(delPicId+"------"+multipartFiles);
                 boolean updateData=true;
+                boolean deletepic=false;
                 if (!IsEmpty.checkIsNull(item)){
                    updateData =itemsService.updateItemsInfo(item);
+                }
+                for(int i=0;i<delPicId.length;i++){
+                    deletepic=itemPicService.deletePic(delPicId[i]);
                 }
                 //上传图片
                 String path = request.getServletContext().getRealPath("/static/upload/images") + File.separator;
@@ -374,7 +379,7 @@ public class ItemsBackManageController {
                     //存入数据库
                     addItemPic = itemPicService.addItemsPic(ipic);
                 }
-                if (updateData&&addItemPic) {
+                if (updateData&&addItemPic&&deletepic) {
                     model.addAttribute("deleteinfo", "更新成功!");
                     return truejson;
                 } else {
