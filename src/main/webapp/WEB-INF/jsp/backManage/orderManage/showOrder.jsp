@@ -10,7 +10,7 @@
     <%--引入bt-table--%>
     <%@ include file="./../../common/bt_table.jsp"%>
     <%--引入showUser页的资源--%>
-    <link rel="stylesheet" href="static/css/backManage/showUser.css">
+    <link rel="stylesheet" href="static/css/backManage/showOrder.css">
 
 </head>
 
@@ -45,7 +45,7 @@
                                 <div class="form-inline" role="form" id="findOrder">
                                     <div class="form-group">
                                         <label>用户ID：</label>
-                                        <input name="u_id" type="text" class="form-control">
+                                        <input name="name" type="text" class="form-control">
                                     </div>
                                     &emsp;&emsp;
                                     <div class="form-group">
@@ -84,9 +84,9 @@
                 </div>
                 <!-- 几个分类按钮（将订单分类） -->
                 <div class="order-btns">
-                    <button onclick="orderBtns(this)" status="0" type="button" class="btn btn-default">未处理订单</button>
-                    <button onclick="orderBtns(this)" status="1" type="button" class="btn btn-default">待收货订单</button>
-                    <button onclick="orderBtns(this)" status="2" type="button" class="btn btn-default">退货中订单</button>
+                    <button onclick="orderBtns(this)" status="1" type="button" class="btn btn-default">未处理订单</button>
+                    <button onclick="orderBtns(this)" status="2" type="button" class="btn btn-default">待收货订单</button>
+                    <button onclick="orderBtns(this)" status="4" type="button" class="btn btn-default">退货中订单</button>
                     <button onclick="orderBtns(this)" status="3" type="button" class="btn btn-default">已完结订单</button>
                 </div>
 
@@ -124,8 +124,7 @@
             pageNumber: 1, // 首页页码
             sidePagination: 'server', // 设置为服务器端分页
             sortable: true,          //列排序
-            sortName: 'item_id', // 要排序的字段
-            uniqueId:'item_id',
+            sortName: 'Status', // 要排序的字段
             sortOrder: 'asc', // 排序规则
             queryParams:function(params){
                 //alert(JSON.stringify(queryData));
@@ -136,61 +135,71 @@
                     sortOrder: params.order, // 排序规则
                 };
                 if(!jQuery.isEmptyObject(queryData)){
-                    // alert(queryData);
-                    param['queryData']=queryData;
-
-                    //alert(JSON.stringify(param));
+                    $.each(queryData,function(key,value){
+                        param[key]=value;
+                    });
                 }
-                // alert(JSON.stringify(param));
+                // console.log(param);
                 return param;
             },
             columns:
                 [
-                    {
-                        field: 'o_id', // 返回json数据中的name
-                        title: '订单ID', // 表格表头显示文字
-                        align: 'center', // 左右居中
-                        valign: 'middle', // 上下居中
-                        width: '100',
+                {
+                    field: 'Number', // 返回json数据中的name
+                    title: '订单编号', // 表格表头显示文字
+                    align: 'center', // 左右居中
+                    valign: 'middle', // 上下居中
+                    width: '150',
                     }, {
-                    field: 'u_id',
+                    field: 'Name',
                     title: '用户ID',
                     align: 'center',
                     valign: 'middle',
-                    width: '100',
+                    width: '80',
                 }, {
-                    field: 'number',
-                    title: '订单编号',
+                    field: 'ItemName',
+                    title: '商品',
                     align: 'center',
                     valign: 'middle',
-                    width: '100',
+                    width: '150',
                 }, {
-                    field: 'create_time',
-                    title: '创建时间',
+                    field: 'Address',
+                    title: '地址',
                     align: 'center',
                     valign: 'middle',
-                    width: '100',
-                }, {
-                    visible: false,
-                    field: 'add_info',
-                    title: '地址信息',
-                    align: 'center',
-                    valign: 'middle',
-                    width: '100',
-                }, {
-                    field: 'note',
+                    width: '200',
+                },{
+                    field: 'Note',
                     title: '备注',
                     align: 'center',
                     valign: 'middle',
+                    width: '200',
+                },{
+                    field: 'createTime',
+                    title: '创建时间',
+                    align: 'center',
+                    valign: 'middle',
+                    width: '80',
+                },{
+                    field: 'totalPrice',
+                    title: '订单总价',
+                    align: 'center',
+                    valign: 'middle',
+                }, {
+                    visible: false,
+                    field: 'oId',
+                    title: '订单id',
+                    align: 'center',
+                    valign: 'middle',
                     width: '100',
                 }, {
-                    field: 'status',
+                    field: 'Status',
                     title: '状态',
                     align: 'center',
                     valign: 'middle',
                     width: '100',
                     formatter:function(value, row, index){
-                        return value=="0"? "未处理":value=="1"? "待收货":value=="2"? "退货中":value=="3"? "收货完成":"退货完成";
+                        return value=="0"? "未支付":value=="1"? "未处理":value=="2"? "待收货":value=="3"? "收货完成":value=="4"? "退货中":"退货完成";
                     }
                 }, {
                     title: "操作",
@@ -198,19 +207,16 @@
                     valign: 'middle',
                     width: '70',
                     formatter:function(value, row, index){
-                        var txt;
-                        var status=row.status;
-                        if(status=="0"){
+                        var judgeId=row.Status;
+                        var txt="无操作";
+                        if (judgeId==1) {
+                            //发货的按钮
                             txt="发货";
-                        }else if(status=="1"||status=="2"){
-                            txt="查看物流";
-                        }else{
-                            txt="无";
+                        }else if(judgeId==2||judgeId==4){
+                            txt="查看物流"
                         }
-                        if(txt!="无"){
-                            return "<button onclick='doOrder(this)' class='btn btn-default btn-xs' o_id='"+row.o_id+"' txt='"+txt+"'><span class='glyphicon glyphicon-exclamation-sign'></span>"+txt+"</button>";
-                        }
-                        return txt;
+                        return "<button class='btn btn-default btn-xs doOrder' oId='"+row.oId+"'><span class='glyphicon glyphicon-exclamation-sign'></span>"+txt+"</button>";
+                       
                     }
                 }
                 ],
@@ -227,52 +233,58 @@
     //未定位查询前先设定表格显示所有
     doTable("Items/query/AllItems");
 
-    // 筛选提交ajax
-    $("#findOrder button").click(function(){
-        var u_id=$.trim($("#findOrder input[name='u_id']").val());
-        var name=$.trim($("#findOrder input[name='number']").val());
-        if(u_id!=""||name!=""){
-            var data={};
-            data['u_id']=u_id;
-            data['number']=name;
-            // 查询接口地址
-            var url="dasd/dasd";
-            // alert(JSON.stringify(data));
-            doTable(url,data);
 
+    //订单查询只允许单条件查询
+    $("input[name='name']").unbind('blur').bind('blur', function(){
+        if($(this).val()!=""){
+            //将另一个input设为disable
+            $("input[name='number']").val("");
+            $("input[name='number']").attr("disabled","disabled");
         }else{
+            $("input[name='number']").removeAttr("disabled");
+        }
+    });
+    $("input[name='number']").unbind('blur').bind('blur', function(){
+        if($(this).val()!=""){
+            //将另一个input设为disable
+            $("input[name='name']").val("");
+            $("input[name='name']").attr("disabled","disabled");
+        }else{
+            $("input[name='name']").removeAttr("disabled");
+        }
+    });
+    
+
+    // 定向搜索订单
+    $("#findOrder button").click(function(){
+        var name=$.trim($("#findOrder input[name='name']").val());
+        var number=$.trim($("#findOrder input[name='number']").val());
+        var data={};
+        if(name!=""){
+            data['name']=name;
+        }else if(number!=""){
+            data['trade_number']=number;
+        }
+        if(jQuery.isEmptyObject(data)){
             $("#orderQueryIssu-main").html("查询为空！");
             $("#orderQueryIssu").removeAttr("hidden");
+            alert("未填写搜索内容！");
+        }else{
+            //根据订单编号，登录id查询订单的接口
+            var url="dasd/dasd";
+            // console.log(data);
+            doTable(url,data);
         }
     });
 
 
-
-    // 订单的操作
-    function doOrder(obj){
-        // 获取订单id（非订单编号）
-        var o_id=$(obj).attr("o_id");
-        //获取操作类型
-        var txt=$(obj).attr("txt");
-        //弹出模态框
-    }
-
-
-    // 订单筛选
-    function orderBtns(obj){
-        //获取筛选特征
-        var status=$(obj).attr("status");
-        // 根据订单状态筛选的接口
-        var url="";
-        var data={};
-        data['status']=status;
-        // 发送表格请求
-        doTable(url,data);
-    }
-
+    //点击了订单的操作时
+    $("#orderInfoTable").on("click",".doOrder",function(){
+        var oId=$(this).attr("oId");
+        console.log(oId);
+    });
 
 </script>
-
 </body>
 
 </html>
