@@ -245,7 +245,7 @@
                         }else if(judgeId==4){
 							txt="查看退货物流";
 						}
-                        return "<button class='btn btn-default btn-xs doOrder' oId='"+row.oId+"'><span class='glyphicon glyphicon-exclamation-sign'></span>"+txt+"</button>";
+                        return "<button class='btn btn-default btn-xs doOrder' judgeId='"+judgeId+"' oId='"+row.oId+"'><span class='glyphicon glyphicon-exclamation-sign'></span>"+txt+"</button>";
                        
                     }
                 }
@@ -321,7 +321,8 @@
     //点击了订单的操作时
     $("#orderInfoTable").on("click",".doOrder",function(){
         oIdCahche=$(this).attr("oId");
-        if(oIdCahche==2){
+        var judgeId=$(this).attr("judgeId");
+        if(judgeId==2){
             //查看发货物流
             $("#logModalLabel").html("查看发货物流");
             //ajax发送请求发货物流的信息
@@ -343,7 +344,7 @@
                     alert("请检查网络！");
                 }
             });
-        }else if(oIdCahche==4){
+        }else if(judgeId==4){
             //查看退货物流
             $("#logModalLabel").html("查看退货物流");
             //ajax发送请求退货物流的信息
@@ -366,7 +367,7 @@
                 }
             });
         }
-        if(oIdCahche==1||oIdCahche==2||oIdCahche==4){
+        if(judgeId==1||judgeId==2||judgeId==4){
             $('#logModal').modal('toggle');
         }
     });
@@ -400,7 +401,7 @@
         if(postFlag){
              //ajax发送发货请求
             $.ajax({
-                url : 'aa/bb',
+                url : 'BackManageOrder/updateOrderStatus',
                 data:data,
                 type : 'POST',
                 success : function(data) {
@@ -409,8 +410,10 @@
                         //判断刷新哪个区间的表格
                         if(jQuery.isEmptyObject(dataCache)){
                             //刷新无选择条件时的表格
+                            $('#logModal').modal('hide');
                             doTable("BackManageOrder/seeAllOrders");
                         }else{
+                            $('#logModal').modal('hide');
                             doTable("BackManageOrder/seeAllOrdersStatus",dataCache);
                         }
                         

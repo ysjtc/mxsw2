@@ -129,7 +129,7 @@ public class Order implements Serializable {
         return  "{"+"\""+"oId"+"\":"+"\""+ oId +"\","+
                 "\""+"oName"+"\":"+"\""+oName+"\","+
                 "\""+"Number"+"\":"+"\""+number+"\","+
-                "\""+"ItemName"+"\":"+"\""+itemName.getName()+" X"+order_detail.getCount()+"\","+
+                "\""+"ItemName"+"\":"+"\""+itemName.getName()+"("+order_detail.getCount()+") \","+
                 "\""+"Address"+"\":"+"\""+address.getAddr()+"\","+
                 "\""+"Note"+"\":"+"\""+note+"\","+
                 "\""+"createTime"+"\":"+"\""+createTime+"\","+
