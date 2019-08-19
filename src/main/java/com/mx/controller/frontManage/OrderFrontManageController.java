@@ -37,11 +37,12 @@ public class OrderFrontManageController {
     @Autowired
     private  ItemsService itemsService;
 
+
     /**
      *      -------接受的参数
      *      1.商品id  2.商品数量
      *      5.收货地址的id  6.订单名称 7.备注
-     *订单状态（0表示未处理，1未支付，2待收货中，4收货完成，3退货中，，5退货完成）
+     *订单状态（0表示未处理,1未支付,2待收货中，4退货中，3收货完成，5退货完成，6审核中，7审核通过，8审核失败）
      *
      1--订单名称（当前登陆id+time）<‘name’是用户登陆用的id，还有一个‘uname’，他是用户的昵称，还有一个uid，是用于用户表自增的id>
      2--商品id
@@ -139,7 +140,7 @@ public class OrderFrontManageController {
                 return orderList;
             }catch (Exception e){
                 e.printStackTrace();
-                return "{\"result\":false,\"isLogin\":false}";
+                return "{\"result\":false}";
             }
         }
     }
@@ -167,7 +168,7 @@ public class OrderFrontManageController {
             }catch (Exception e){
                 e.printStackTrace();
                 //重定向到404
-                return "{\"result\":false,\"isLogin\":false}";
+                return "{\"result\":false}";
             }
 
         }
@@ -205,12 +206,35 @@ public class OrderFrontManageController {
     }
 
 
-    //更新订单状态
+    //更新订单状态-----订单状态（0表示未处理,1未支付,2待收货中，4退货中，3收货完成，5退货完成，6审核中，7审核通过，8审核失败）
     @ResponseBody
-    @RequestMapping("/updateOrder")
-    public String updateOrder(Integer oId, String what,HttpSession session){
-        System.out.println(oId+what);
-      return null;
+    @RequestMapping("/updateOrderStatus")
+    public String updateOrderStatus(Integer oId, String what,String reason,HttpSession session){
+        String truejson="{\"result\":true}";
+        String falsejson="{\"result\":false}";
+        //当前登陆的用户id
+        String uname=(String)session.getAttribute("USER_ID");
+        if (uname==null||uname.equals("")){
+            return "{\"result\":false,\"isLogin\":false}";
+        }else {
+            if (oId!=null&&what!=null&&!what.equals("")){
+                boolean update=false;
+                if (what.equals("refuse")){
+                     update=orderService.updateFrontOrderStatus(oId,4);
+                }else if(what.equals("accept")){
+                     update=orderService.updateFrontOrderStatus(oId,3);
+                }
+                else if(what.equals("apply")){
+                    System.out.println("what.equals(apply)::::::"+oId);
+                    update=orderService.applyOrder(oId,6,reason);
+                }else {
+                    return falsejson;
+                }
+                if (update){
+                    return truejson;
+                }else return falsejson;
+            }else return falsejson;
+        }
     }
 
 

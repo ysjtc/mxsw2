@@ -78,7 +78,7 @@ public class CartServiceImpl implements CartService {
         try{
             Cart repeat= cartMapper.repeatToCart(uid,item_id);
             System.out.println("rep:"+repeat);
-           if (repeat.getCart_id()==null){
+           if (repeat==null){
                //不存在
                return true;
            }else {

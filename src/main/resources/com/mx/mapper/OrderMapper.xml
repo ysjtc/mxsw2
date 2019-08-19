@@ -212,4 +212,5 @@
     <select id="queryItemsCountByOrder" resultType="Integer">
         select count from  order_detail where  o_id=#{oId}
     </select>
+
 </mapper>

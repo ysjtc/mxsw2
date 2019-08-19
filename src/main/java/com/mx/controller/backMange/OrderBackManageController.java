@@ -158,7 +158,7 @@ public class OrderBackManageController {
     }
 
 
-    //管理员更新订单的状态
+    //管理员更新订单物流的状态
     @ResponseBody
     @RequestMapping("/updateOrderStatus")
     public String updateOrderStatus(@Valid Logistics logistics, BindingResult result, HttpSession session){
@@ -192,5 +192,25 @@ public class OrderBackManageController {
     @RequestMapping("/updateOrder")
     public String updateOrder(Integer trade_number, Model model,HttpSession session){
       return null;
+    }
+
+    //更新审核状态
+    @ResponseBody
+    @RequestMapping("/updateApplyStatus")
+    public String updateApplyStatus(Integer oId,HttpSession session){
+        String truejson="{\"result\": true }";
+        String falsejson="{\"result\":false}";
+        //当前登陆的用户id
+        if (session.getAttribute("SUPERADMIN_ID")==null||session.getAttribute("SUPERADMIN_ID").equals("")){
+            return "{\"result\":false,\"isLogin\":false}";
+        }else {
+            try {
+                boolean appStatus=orderService.updateApplyStatus(oId,1);
+                return truejson;
+            }catch (Exception e){
+                e.printStackTrace();
+                return falsejson;
+            }
+        }
     }
 }

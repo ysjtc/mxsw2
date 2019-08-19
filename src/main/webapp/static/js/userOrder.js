@@ -265,6 +265,7 @@ $(document).ready(function() {
 		//准备数据
 		var data={};
 		data['oId']=applyOid;
+		data['what']="apply";
 		data['reason']=$("#frontApplyModal textarea[name='reason']").val();
 		var postFlag=true;
 		$.each(data,function(k,v){
@@ -277,7 +278,7 @@ $(document).ready(function() {
 		}else{
 			//ajax发送申请
 			$.ajax({
-				url : 'aa/bb',
+				url : 'FrontManageOrder/updateOrderStatus',
 				data:data,
 				type : 'POST',
 				success : function(data) {
@@ -303,11 +304,12 @@ $(document).ready(function() {
 	//申请通过后填写物流returnLog
 	$("#userOrderInfoTable").on("click",".returnLog",function(){
 		applyOid=$(this).attr("oId");
+		// console.log(applyOid);
 		//弹出模态框
-		$("#frontApplyModal").modal('toggle');
+		$("#frontLogModal").modal('toggle');
 		//将模态框变为可编辑状态，并且显示提交按钮
 		$("#frontLogModal input").removeAttr("disabled");
-		$(".modal-footer").css("display","inline");
+		$(".modal-footer").css("display","");
 	});
 	$("#postReLog").click(function(){
 		//获取数据
@@ -333,7 +335,7 @@ $(document).ready(function() {
 					data=JSON.parse(data);
 					if(data['result']){
 						//后台受理成功，刷新订单
-						$("#frontApplyModal").modal('hide');
+						$("#frontLogModal").modal('hide');
 						doTable("FrontManageOrder/seeAllOrder");
 					}else{
 						if(data['isLogin']==false){

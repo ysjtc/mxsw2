@@ -52,4 +52,6 @@ public interface OrderMapper {
 
     //查询订单详情表的商品数量
     int queryItemsCountByOrder(@Param("oId") Integer oId);
+
+
 }

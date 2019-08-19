@@ -19,6 +19,12 @@ public interface OrderService {
     //取消订单
     boolean deleteOrder(Integer o_id);
 
+    //更新订单状态
+    boolean updateFrontOrderStatus(Integer oId, Integer status);
+
+    //退换货申请
+    boolean applyOrder(Integer oId, Integer status,String reason);
+
     /*
     后台
      */
@@ -35,4 +41,7 @@ public interface OrderService {
 
     //更新订单状态
     boolean updateOrderStatus(Logistics logistics, Integer status);
+
+    //退换货申请
+    boolean updateApplyStatus(Integer oId, Integer status);
 }

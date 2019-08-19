@@ -1,11 +1,10 @@
 package com.mx.service.Impl;
 
+import com.mx.mapper.Apply_returnMapper;
 import com.mx.mapper.LogisticsMapper;
 import com.mx.mapper.OrderMapper;
 import com.mx.mapper.Order_DetailMapper;
-import com.mx.pojo.Logistics;
-import com.mx.pojo.Order;
-import com.mx.pojo.Order_Detail;
+import com.mx.pojo.*;
 import com.mx.service.OrderService;
 import com.mx.utils.ConvertJson.ConvertJson;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +23,9 @@ public class OrderServiceImpl implements OrderService {
 
     @Autowired
     private LogisticsMapper logisticsMapper;
+
+    @Autowired
+    private Apply_returnMapper apply_returnMapper;
 
     //生成订单号
     @Override
@@ -69,7 +71,49 @@ public class OrderServiceImpl implements OrderService {
         }else return true;
     }
 
+    @Override
+    public boolean updateFrontOrderStatus(Integer oId, Integer oStatus) {
+        try{
+            boolean Orderstatus=orderMapper.updateOrderStatus(oId,oStatus);
+            if (Orderstatus){ return true; }
+            else return false;
+        }catch (Exception e){
+            e.printStackTrace();
+            return false;
+        }
+    }
 
+    @Override
+    public boolean applyOrder(Integer oId, Integer status, String reason) {
+        try{
+            //实例化一个apply—return对象和order对象
+            Apply_return app=new Apply_return();
+            Order order=new Order();
+            order.setoId(oId);
+            app.setOrder(order);
+            app.setApplyStatus(0);
+            app.setReason(reason);
+
+            //判断用户是否是第一次提交
+            //判断oid是不是在表中
+            Apply_return repeat= apply_returnMapper.repeatApply(oId);
+            System.out.println("rep:"+repeat);
+            if (repeat==null){
+                //不存在
+                int apply=apply_returnMapper.insertApply(app);
+                boolean Orderstatus=orderMapper.updateOrderStatus(oId,status);
+                if (apply==0&&!Orderstatus){ return false; }
+                else return true;
+            }else {
+                //存在,拒绝重复申请
+                return false;
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+            //异常(查不到数据)
+            return false;
+        }
+    }
 
 
     /**
@@ -142,6 +186,18 @@ public class OrderServiceImpl implements OrderService {
             int log=logisticsMapper.addLogistics(logistics);
             boolean Orderstatus=orderMapper.updateOrderStatus(logistics.getoId(),oStatus);
             if (log!=0&& Orderstatus==true){ return true; }
+            else return false;
+        }catch (Exception e){
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    @Override
+    public boolean updateApplyStatus(Integer oId, Integer status) {
+        try{
+            boolean Appstatus=apply_returnMapper.updateApplyStatus(oId,status);
+            if (Appstatus){ return true; }
             else return false;
         }catch (Exception e){
             e.printStackTrace();
