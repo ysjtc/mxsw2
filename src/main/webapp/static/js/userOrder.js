@@ -219,14 +219,16 @@ $(document).ready(function() {
 		var postConfirm;
 		if($(this).hasClass("rejectLog")){
 			postConfirm=confirm("确定已拒收？");
+			data['what']="refuse";
 		}else{
-			postConfirm=confirm("确认收货？")
+			postConfirm=confirm("确认收货？");
+			data['what']="accept";
 		}
 		
 		if(postConfirm){
 			//直接发送一个确认收货的ajax请求
 			$.ajax({
-				url : 'aa/bb',
+				url : 'FrontManageOrder/updateOrderStatus',
 				data:data,
 				type : 'POST',
 				success : function(data) {

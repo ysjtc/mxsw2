@@ -205,10 +205,11 @@ public class OrderFrontManageController {
     }
 
 
-    //更新订单
+    //更新订单状态
     @ResponseBody
     @RequestMapping("/updateOrder")
-    public String updateOrder(Integer trade_number, Model model,HttpSession session){
+    public String updateOrder(Integer oId, String what,HttpSession session){
+        System.out.println(oId+what);
       return null;
     }
 

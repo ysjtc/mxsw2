@@ -7,28 +7,43 @@ import java.io.Serializable;
  *
  */
 public class Cart implements Serializable {
-    private Integer userId;
 
-    private Integer itemId;
+    private Integer cartId;
 
+    //某用户
+    private User user;
+
+    //某商品
+    private Item item;
+
+    //数量
     private Integer count;
 
     private static final long serialVersionUID = 1L;
 
-    public Integer getUserId() {
-        return userId;
+
+    public Integer getCart_id() {
+        return cartId;
     }
 
-    public void setUserId(Integer userId) {
-        this.userId = userId;
+    public void setCart_id(Integer cart_id) {
+        this.cartId = cart_id;
     }
 
-    public Integer getItemId() {
-        return itemId;
+    public User getUser() {
+        return user;
     }
 
-    public void setItemId(Integer itemId) {
-        this.itemId = itemId;
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public Item getItem() {
+        return item;
+    }
+
+    public void setItem(Item item) {
+        this.item = item;
     }
 
     public Integer getCount() {
@@ -37,5 +52,26 @@ public class Cart implements Serializable {
 
     public void setCount(Integer count) {
         this.count = count;
+    }
+
+
+    @Override
+    public String toString() {
+        return "Cart{" +
+                "cartId=" + cartId +
+                ", user=" + user +
+                ", item=" + item +
+                ", count=" + count +
+                '}';
+    }
+
+    public String TOJSONFrontManage() {//1.商品名+商品数量
+        return  "{"+
+                "\""+"CartId"+"\":"+"\""+cartId+"\","+
+                "\""+"ItemName"+"\":"+"\""+item.getName()+"\","+
+                "\""+"ItemPrice"+"\":"+"\""+item.getPrice()+"\","+
+                "\""+"ItemCount"+"\":"+"\""+count+"\","+
+                "\""+"ItemPic"+"\":"+"\""+item.getItem_pic()+"\","+
+                "}";
     }
 }

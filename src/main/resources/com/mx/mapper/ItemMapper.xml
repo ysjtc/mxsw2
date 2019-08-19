@@ -537,7 +537,7 @@
   <select id="QueryItemsCounts" resultType="Integer">
     SELECT COUNT(*) FROM item WHERE   c_id=#{cateId}
   </select>
- <select id="FrontQueryItemById" resultMap="ItemMap">
+  <select id="FrontQueryItemById" resultMap="ItemMap">
      select
      t1.`name`,t1.`price`,t1.`count`,t1.`author`,t1.`ISBN`,t1.`old_level`,t1.`compare`,t1.`describe`,t1.`publish_time`,t1.`publish`,t1.`place`
      from inkroom.item as t1

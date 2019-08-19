@@ -1,8 +1,5 @@
 package com.mx.utils.ConvertJson;
-import com.mx.pojo.Address;
-import com.mx.pojo.Item;
-import com.mx.pojo.Item_Pic;
-import com.mx.pojo.Order;
+import com.mx.pojo.*;
 
 import java.util.List;
 
@@ -140,6 +137,22 @@ public class ConvertJson {
         for (int i=0;i<list.size();i++){
             //把你要拼接的字段放进去
             jsonStrAll.append(list.get(i).TOJSONBackManage() +",");
+        }
+        //把最后的，（逗号）截取掉
+        str = jsonStrAll.substring(0, jsonStrAll.length()-1)+"]}";
+//        System.out.println(str);
+        return str;
+    }
+
+    public static String ConvertCart(int count, List<Cart> cartlist) {
+        //定义一个StringBuilder
+        StringBuilder jsonStrAll = new StringBuilder("{");
+        String str=null;
+        jsonStrAll.append("\""+"total"+"\""+":"+count+","+"\""+
+                "rows"+"\""+":[");
+        for (int i=0;i<cartlist.size();i++){
+            //把你要拼接的字段放进去
+            jsonStrAll.append(cartlist.get(i).TOJSONFrontManage() +",");
         }
         //把最后的，（逗号）截取掉
         str = jsonStrAll.substring(0, jsonStrAll.length()-1)+"]}";

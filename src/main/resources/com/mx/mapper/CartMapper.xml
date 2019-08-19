@@ -1,24 +1,28 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.mx.mapper.CartMapper">
-  <resultMap id="BaseResultMap" type="com.mx.pojo.Cart">
-    <result column="user_id" jdbcType="INTEGER" property="userId" />
-    <result column="item_id" jdbcType="INTEGER" property="itemId" />
+  <resultMap id="CartMaps" type="com.mx.pojo.Cart">
+    <id column="cart_id" property="cartId" jdbcType="INTEGER"/>
     <result column="count" jdbcType="INTEGER" property="count" />
+    <!--封装user-->
+    <association property="user" javaType="com.mx.pojo.User">
+      <id property="uId" column="u_id" jdbcType="INTEGER"/>
+      <result property="name" column="Uname" jdbcType="VARCHAR"/>
+    </association>
+    <!--封装item-->
+    <association property="item" javaType="com.mx.pojo.Item">
+      <id property="itemId" column="item_id" jdbcType="INTEGER"/>
+      <result property="name" column="name" jdbcType="VARCHAR"/>
+    </association>
   </resultMap>
-  <insert id="insert" parameterType="com.mx.pojo.Cart">
-    insert into cart (user_id, item_id, count
-      )
-    values (#{userId,jdbcType=INTEGER}, #{itemId,jdbcType=INTEGER}, #{count,jdbcType=INTEGER}
-      )
-  </insert>
-  <insert id="insertSelective" parameterType="com.mx.pojo.Cart">
+  <!--前台部分-->
+  <insert id="addCart" parameterType="com.mx.pojo.Cart">
     insert into cart
     <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="userId != null">
+      <if test="user.uId != null">
         user_id,
       </if>
-      <if test="itemId != null">
+      <if test="item.itemId != null">
         item_id,
       </if>
       <if test="count != null">
@@ -26,15 +30,63 @@
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
-      <if test="userId != null">
-        #{userId,jdbcType=INTEGER},
+      <if test="user.uId != null">
+        #{user.uId},
       </if>
-      <if test="itemId != null">
-        #{itemId,jdbcType=INTEGER},
+      <if test="item.itemId != null">
+        #{item.itemId},
       </if>
       <if test="count != null">
-        #{count,jdbcType=INTEGER},
+        #{count},
       </if>
     </trim>
   </insert>
+  <select id="SeeCart" resultMap="CartMaps">
+    select t1.cart_id,t2.name,t2.price,t3.pic_path
+    from  cart as t1,item as t2,item_pic as t3
+    <where>
+       t2.item_id=t3.item_id AND
+       t1.item_id=t2.item_id
+       <if test="user.uId !=null">
+         AND  user_id=#{uid}
+       </if>
+      GROUP BY item_id
+      <if test="sort!=null and sortOrder!=null">
+        ORDER BY #{sort} #{sortOrder}
+      </if>
+      limit #{offset},#{pageSize}
+    </where>
+  </select>
+  <select id="SeeCartCount" resultType="Integer">
+    select count(*) from cart
+    where  user_id=#{uid}
+  </select>
+  <delete id="delCartItem" parameterType="com.mx.pojo.Item">
+    delete from cart
+    <where>
+      <trim>
+        <if test="itemId!=null">
+          cart_id=#{cartId}
+        </if>
+      </trim>
+    </where>
+  </delete>
+  <update id="editCount">
+    update cart
+    <set>
+      <if test="count !=null and count!=''">
+        count=#{count},
+      </if>
+    </set>
+    <where>
+        <if test="cartId !=null and cartId !=''">
+          cart_id=#{cartId}
+        </if>
+    </where>
+  </update>
+  <select id="repeatToCart" resultMap="CartMaps">
+    select cart_id
+    from cart
+    where  user_id=#{uid} and item_id=#{itemId}
+  </select>
 </mapper>
