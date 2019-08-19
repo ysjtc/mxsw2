@@ -180,5 +180,111 @@ $(document).ready(function() {
 	});
 	
 	
+	//点击显示物流时showLog,弹出模态框
+	$("#userOrderInfoTable").on("click",".showLog",function(){
+		var oId=$(this).attr("oId");
+		var data={};
+		data['oId']=oId;
+		console.log(data);
+		//ajax发送获取物流信息的请求
+		$.ajax({
+			url : 'aa/bb',
+			data:data,
+			type : 'POST',
+			success : function(data) {
+				data=JSON.parse(data);
+				if(data['result']){
+					//获取成功后,将数据渲染到模态框并弹出模态框
+					$("#frontLogModal input[name='company']").val(data['company']);
+					$("#frontLogModal input[name='waybillNum']").val(data['waybillNum']);
+					$("#frontLogModal").modal('toggle');
+				}else{
+					if(data['isLogin']==false){
+						window.location.href="SuperAdmin/login";
+					}
+					alert("失败，请重试！");
+				}
+			},
+			error : function(data){
+				alert("请检查网络！");
+			}
+		});
+		
+	});
+	
+	//点击了确认收货时confirmOrder或点击了拒收订单时rejectLog
+	$("#userOrderInfoTable").on("click",".confirmOrder,.rejectLog",function(){
+		var data={};
+		data['oId']=$(this).attr("oId");
+		var postConfirm;
+		if($(this).hasClass("rejectLog")){
+			postConfirm=confirm("确定已拒收？");
+		}else{
+			postConfirm=confirm("确认收货？")
+		}
+		
+		if(postConfirm){
+			//直接发送一个确认收货的ajax请求
+			$.ajax({
+				url : 'aa/bb',
+				data:data,
+				type : 'POST',
+				success : function(data) {
+					data=JSON.parse(data);
+					if(data['result']){
+						//后台受理成功，刷新订单
+						doTable("FrontManageOrder/seeAllOrder");
+					}else{
+						if(data['isLogin']==false){
+							window.location.href="SuperAdmin/login";
+						}
+						alert("失败，请重试！");
+					}
+				},
+				error : function(data){
+					alert("请检查网络！");
+				}
+			});
+		}
+	});
+	
+	//一个暂存oId的变量
+	var applyOid;
+	//点击了申请退换applayLog，弹出模态框
+	$("#userOrderInfoTable").on("click",".applayLog",function(){
+		applyOid=$(this).attr("oId");
+		//弹出模态框
+		$("#frontApplyModal").modal('toggle');
+	});
+	
+	//点击了退换提交,完事后关闭模态框
+	$("#postApply").click(function(){
+		//准备数据
+		var data={};
+		data['oId']=applyOid;
+		data['reason']=$("#frontApplyModal textarea[name='reason']").val();
+		//ajax发送申请
+		$.ajax({
+			url : 'aa/bb',
+			data:data,
+			type : 'POST',
+			success : function(data) {
+				data=JSON.parse(data);
+				if(data['result']){
+					//后台受理成功，刷新订单
+					$("#frontApplyModal").modal('hide');
+					doTable("FrontManageOrder/seeAllOrder");
+				}else{
+					if(data['isLogin']==false){
+						window.location.href="SuperAdmin/login";
+					}
+					alert("失败，请重试！");
+				}
+			},
+			error : function(data){
+				alert("请检查网络！");
+			}
+		});
+	});
 	
 });
