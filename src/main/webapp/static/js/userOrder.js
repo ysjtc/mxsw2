@@ -85,7 +85,7 @@ $(document).ready(function() {
                     valign: 'middle',
 					width:'80',
                     formatter:function(value, row, index){
-                        return value=="0"? "未支付":value=="1"? "未处理":value=="2"? "待收货":value=="3"? "收货完成":value=="4"? "退货中":"退货完成";
+                        return value=="0"? "未支付":value=="1"? "未处理":value=="2"? "待收货":value=="3"? "收货完成":value=="4"? "退货中":value=="5"? "退货完成":value=="6"? "审核中":value=="7"? "申请通过":"申请失败";
                     }
                 }, {
                     title: "操作",
@@ -98,8 +98,10 @@ $(document).ready(function() {
 							return "<button class='btn btn-default btn-xs delOrder' oId='"+row.oId+"'><span class='glyphicon glyphicon-exclamation-sign'></span>订单取消</button><br/><button style='margin-top:7px' class='btn btn-default btn-xs payOrder' body='"+row.Note+"' total_amount='"+row.totalPrice+"' subject='"+row.oName+"' Number='"+row.Number+"'><span class='glyphicon glyphicon-ok'></span>订单付款</button>";
 						}else if(statusId==2){
 							return "<button class='btn btn-default btn-xs showLog' oId='"+row.oId+"'><span class='glyphicon glyphicon-eye-open'></span>查看物流</button><br/><button style='margin-top:7px' class='btn btn-default btn-xs confirmOrder' oId='"+row.oId+"'><span class='glyphicon glyphicon-ok'></span>确认收货</button><br/><button style='margin-top:7px' class='btn btn-default btn-xs rejectLog' oId='"+row.oId+"'><span class='glyphicon glyphicon-ban-circle'></span>拒收订单</button>";
-						}else if(statusId==1||statusId==3){
+						}else if(statusId==1||statusId==3||statusId==8){
 							return "<button class='btn btn-default btn-xs applayLog' oId='"+row.oId+"'><span class='glyphicon glyphicon-edit'></span>退换申请</button>";
+						}else if(statusId==7){
+							return "<button class='btn btn-default btn-xs returnLog' oId='"+row.oId+"'>填写物流</button>";
 						}else{
 							return "<button class='btn btn-default btn-xs' oId='"+row.oId+"'><span class='glyphicon glyphicon-exclamation-sign'></span>无操作</button>";
 						}
@@ -257,36 +259,95 @@ $(document).ready(function() {
 		applyOid=$(this).attr("oId");
 		//弹出模态框
 		$("#frontApplyModal").modal('toggle');
+		//点击了退换提交,完事后关闭模态框
 	});
-	
-	//点击了退换提交,完事后关闭模态框
 	$("#postApply").click(function(){
 		//准备数据
 		var data={};
 		data['oId']=applyOid;
 		data['reason']=$("#frontApplyModal textarea[name='reason']").val();
-		//ajax发送申请
-		$.ajax({
-			url : 'aa/bb',
-			data:data,
-			type : 'POST',
-			success : function(data) {
-				data=JSON.parse(data);
-				if(data['result']){
-					//后台受理成功，刷新订单
-					$("#frontApplyModal").modal('hide');
-					doTable("FrontManageOrder/seeAllOrder");
-				}else{
-					if(data['isLogin']==false){
-						window.location.href="SuperAdmin/login";
-					}
-					alert("失败，请重试！");
-				}
-			},
-			error : function(data){
-				alert("请检查网络！");
+		var postFlag=true;
+		$.each(data,function(k,v){
+			if(v==""){
+				postFlag==false;
 			}
 		});
+		if(!postFlag){
+			alert("请检查是否填写了信息！");
+		}else{
+			//ajax发送申请
+			$.ajax({
+				url : 'aa/bb',
+				data:data,
+				type : 'POST',
+				success : function(data) {
+					data=JSON.parse(data);
+					if(data['result']){
+						//后台受理成功，刷新订单
+						$("#frontApplyModal").modal('hide');
+						doTable("FrontManageOrder/seeAllOrder");
+					}else{
+						if(data['isLogin']==false){
+							window.location.href="SuperAdmin/login";
+						}
+						alert("请勿重复提交！");
+					}
+				},
+				error : function(data){
+					alert("请检查网络！");
+				}
+			});
+		}
+	});
+	
+	//申请通过后填写物流returnLog
+	$("#userOrderInfoTable").on("click",".returnLog",function(){
+		applyOid=$(this).attr("oId");
+		//弹出模态框
+		$("#frontApplyModal").modal('toggle');
+		//将模态框变为可编辑状态，并且显示提交按钮
+		$("#frontLogModal input").removeAttr("disabled");
+		$(".modal-footer").css("display","inline");
+	});
+	$("#postReLog").click(function(){
+		//获取数据
+		var data={};
+		data['oId']=applyOid;
+		data['company']=$("#frontLogModal input[name='company']").val();
+		data['waybillNum']=$("#frontLogModal input[name='waybillNum']").val();
+		var postFlag=true;
+		$.each(data,function (index,value) {
+			if(value==""){
+				postFlag=false;
+			}
+		});
+		if(!postFlag){
+			alert("请填写完成的信息");
+		}else{
+			//ajax发送数据
+			$.ajax({
+				url : 'aa/bb',
+				data:data,
+				type : 'POST',
+				success : function(data) {
+					data=JSON.parse(data);
+					if(data['result']){
+						//后台受理成功，刷新订单
+						$("#frontApplyModal").modal('hide');
+						doTable("FrontManageOrder/seeAllOrder");
+					}else{
+						if(data['isLogin']==false){
+							window.location.href="SuperAdmin/login";
+						}
+						alert("请勿重复提交！");
+					}
+				},
+				error : function(data){
+					alert("请检查网络！");
+				}
+			});
+		}
+
 	});
 	
 });

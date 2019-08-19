@@ -108,7 +108,10 @@
                     <label class="control-label">物流单号</label>
                     <input name="waybillNum" type="text" class="form-control" value="" disabled="disabled" />
                 </div>
-
+                <div class="modal-footer" style="display: none">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                    <button id="postReLog" type="button" class="btn btn-primary">提交更改</button>
+                </div>
             </div>
         </div>
     </div>
