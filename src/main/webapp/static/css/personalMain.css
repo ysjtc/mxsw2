@@ -148,7 +148,8 @@
     border-radius:50%;
     border:1px solid #B8B4B4;
     display:inline-block;
-    cursor:pointer
+    cursor:pointer;
+    margin-top: 67%;
 }
 .product-ckb .product-xz {
     background:url(./../images/gouico.png) no-repeat 0 0;
@@ -216,7 +217,8 @@
     color:#7A7979;
     border-right:1px solid #dbdbdb;
     text-align:center;
-    cursor:pointer
+    cursor:pointer;
+    font-size: 20px;
 }
 .product_gw .product-num {
     display:block;
@@ -238,7 +240,7 @@
     width:1.15rem;
     display:inline-block;
     float:right;
-    margin-top:1px;
+    margin-top:5px;
     margin-right:7px;
     cursor:pointer
 }
@@ -273,7 +275,8 @@
     border-radius:50%;
     border:1px solid #B8B4B4;
     display:inline-block;
-    cursor:pointer
+    cursor:pointer;
+    margin-top: 33%;
 }
 .product-js .product-all .product-all-on {
     background:url(./../images/gouico.png) no-repeat 0 0;
@@ -287,11 +290,13 @@
 .product-all-qx {
     color:#797979;
     float: left;
+    position: absolute;
 }
 .all-sl {
     color:#797979;
     display:inline-block;
-    margin-left:8px
+    margin-left: 3px;
+    float: left;
 }
 .product-all-sl {
     /*float: left;*/
