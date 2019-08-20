@@ -335,7 +335,7 @@
     padding-bottom:20px;
     box-sizing:border-box;
     text-align:center;
-    background:red;
+    /*background:red;*/
     display:table;
     z-index:100
 }

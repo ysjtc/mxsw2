@@ -398,8 +398,12 @@ $(document).ready(function() {
         //准备订单数据
         var orderForm={};
         var myDate = new Date();
-        orderForm['item_id']=orderItemId;
-        orderForm['count']=$("#orderItemCount").val();
+		var itemArray=[];
+		var cacheJson={};
+		cacheJson['item_id']=orderItemId;
+		cacheJson['count']=$("#orderItemCount").val();
+		itemArray.push(cacheJson);
+		orderForm['item']=itemArray;
         orderForm['oName']=myDate.getTime();
         orderForm['note']=$("#orderNote").val();
         orderForm['address_id']=$("#orderAddr").val();

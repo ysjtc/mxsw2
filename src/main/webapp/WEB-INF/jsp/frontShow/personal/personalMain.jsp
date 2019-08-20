@@ -86,6 +86,48 @@
     <%--引入模态框--%>
     <%@ include file="./../../common/frontShow/userMainModal.jsp"%>
 
+	<!--模态开始（一个用于选择订单的模态框）-->
+    <div style="width:30%;margin-left:auto;margin-right:auto;" class="modal fade" id="cartOrderModal" tabindex="-1" role="dialog" aria-labelledby="orderLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                        &times;
+                    </button>
+                    <h4 class="modal-title" id="orderLabel">
+                        下单
+                    </h4>
+                </div>
+                <div class="modal-body" style="padding:10px;">
+                    <div style="margin-left: auto;margin-right: auto;">
+                        <div class="form-group">
+                            <label>购买数量</label>
+                            <div class="input-group input-group-sm" style="width:65%;">
+                                <span id="countCut" class="input-group-addon">-</span>
+                                <input id="orderItemCount" type="number" class="form-control" value="5">
+                                <span id="countAdd" class="input-group-addon">+</span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>备注</label>
+                            <textarea id="orderNote" class="form-control" row="3"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label>收货人</label>
+                            <select id="orderAddr" class="form-control"></select>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭
+                    </button>
+                    <button id="cartOrderPost" type="button" class="btn btn-primary">
+                        提交订单
+                    </button>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal -->
+    </div>
 
 
 </body>
