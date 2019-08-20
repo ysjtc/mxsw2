@@ -179,7 +179,7 @@
     float:left
 }
 .product-sx .product-name {
-    font-size:.8rem;
+    font-size:1.2rem;
     color:#000;
     /*max-width:80%;*/
     overflow:hidden;
@@ -187,12 +187,13 @@
     display:-webkit-box;
     -webkit-box-orient:vertical;
     -webkit-line-clamp:2;
-    padding-left:10px
+    padding-left:13px;
+    /*! font-size: ; */
 }
 .product-sx .product-price {
     font-size:1rem;
     color:#e46b7e;
-    margin:18px 0 0 14px;
+    margin:12px 0 0 14px;
     display:inline-block;
     float:left
 }
@@ -240,7 +241,7 @@
     width:1.15rem;
     display:inline-block;
     float:right;
-    margin-top:5px;
+    /*! margin-top:1px; */
     margin-right:7px;
     cursor:pointer
 }

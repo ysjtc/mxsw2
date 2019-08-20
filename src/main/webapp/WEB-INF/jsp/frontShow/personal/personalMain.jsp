@@ -62,7 +62,14 @@
 
                 <div class="col-xs-12 personal-info">
                     <!-- 导航栏 -->
-                    <%@ include file="./../../common/frontShow/personalNav.jsp"%>
+                    <ul class="nav nav-tabs nav-justified">
+                        <li class="active"><a href="FrontForward/personalMain">购物车</a></li>
+                        <li><a href="FrontForward/userOrder">订单</a></li>
+                        <li><a href="#">物流</a></li>
+                        <li><a href="#">退换货</a></li>
+                        <li><a href="FrontForward/addAddr">收货人信息</a></li>
+                    </ul>
+
                     <!-- 导航栏下的内容 -->
                     <div class="main-content">
                         <%--引入购物车的主内容--%>
@@ -82,7 +89,7 @@
     <%@ include file="./../../common/frontShow/userMainModal.jsp"%>
 
 	<!--模态开始（一个用于选择订单的模态框）-->
-    <div style="width:30%;margin-left:auto;margin-right:auto;" class="modal fade" id="cartOrderModal" tabindex="-1" role="dialog" aria-labelledby="orderLabel" aria-hidden="true">
+    <div  class="modal fade" id="cartOrderModal" tabindex="-1" role="dialog" aria-labelledby="orderLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">

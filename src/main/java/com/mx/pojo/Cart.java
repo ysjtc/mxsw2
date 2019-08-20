@@ -68,6 +68,7 @@ public class Cart implements Serializable {
     public String TOJSONFrontManage() {//1.商品名+商品数量
         return  "{"+
                 "\""+"CartId"+"\":"+"\""+cartId+"\","+
+                "\""+"ItemId"+"\":"+"\""+item.getItemId()+"\","+
                 "\""+"ItemName"+"\":"+"\""+item.getName()+"\","+
                 "\""+"ItemPrice"+"\":"+"\""+item.getPrice()+"\","+
                 "\""+"ItemCount"+"\":"+"\""+count+"\","+

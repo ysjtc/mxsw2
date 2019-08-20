@@ -119,7 +119,7 @@ public class CartFrontController {
     //修改商品数量
     @ResponseBody
     @RequestMapping("/UpdateItemCount")
-    public String UpdateItemCount(Integer cart_id,Integer count,HttpSession session) {
+    public String UpdateItemCount(Integer cartId,Integer count,HttpSession session) {
 //        System.out.println("---------"+item_id);
         String truejson = "{\"result\":true}";
         String falsejson = "{\"result\":false}";
@@ -133,7 +133,7 @@ public class CartFrontController {
                 if (uid==0){
                     return falsejson;
                 }
-                boolean edit=cartService.editCount(cart_id,count);
+                boolean edit=cartService.editCount(cartId,count);
                 if (edit){
                     return truejson;
                 }else return falsejson;

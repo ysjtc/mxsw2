@@ -12,18 +12,19 @@ $(function() {
         //ajax发送增指令
         var data={};
         data['count']=b;
+        data['cartId']=$(this).closest(".product-box").find("input.product-num").attr("cartId");
         $.ajax({
-            url : 'aa/bb',
+            url : 'CartFrontManage/UpdateItemCount',
             data:data,
             type : 'POST',
             success : function(data) {
                 data=JSON.parse(data);
                 if(data['result']){
-                    //成功后重定向到个人中心的订单页面
-                    window.location.href="FrontForward/userOrder";
+                    //成功后啥也不做
                 }else{
                     if(data['isLogin']==false){
                         window.location.href="FrontForward/loginMain";
+                        return;
                     }
                     alert("下单失败！请重试！");
                 }
@@ -44,18 +45,19 @@ $(function() {
         //ajax发送增指令
         var data={};
         data['count']=b;
+        data['cartId']=$(this).closest(".product-box").find("input.product-num").attr("cartId");
         $.ajax({
-            url : 'aa/bb',
+            url : 'CartFrontManage/UpdateItemCount',
             data:data,
             type : 'POST',
             success : function(data) {
                 data=JSON.parse(data);
                 if(data['result']){
-                    //成功后重定向到个人中心的订单页面
-                    window.location.href="FrontForward/userOrder";
+                    //成功后啥也不做；
                 }else{
                     if(data['isLogin']==false){
                         window.location.href="FrontForward/loginMain";
+                        return;
                     }
                     alert("下单失败！请重试！");
                 }
@@ -69,9 +71,11 @@ $(function() {
             $(this).closest(".product-box").remove();
             //ajax发送删除购物车
             var data={};
-            data['cartId']=$(this).closest(".product-box").find("input.product-num").attr("cartId");
+            var cartIdArray=[];
+            cartIdArray.push($(this).closest(".product-box").find("input.product-num").attr("cartId"));
+            data['cartId']=cartIdArray;
             $.ajax({
-                url : 'aa/bb',
+                url : 'CartFrontManage/deleteCartItem',
                 data:data,
                 type : 'POST',
                 success : function(data) {
@@ -81,6 +85,7 @@ $(function() {
                     }else{
                         if(data['isLogin']==false){
                             window.location.href="FrontForward/loginMain";
+                            return;
                         }
                         alert("下单失败！请重试！");
                     }
@@ -166,7 +171,7 @@ $(function() {
                 itemArray.push(itemInfo);
             }
         }
-        data['item']=itemArray;
+        data['item']=JSON.stringify(itemArray)//itemArray;
         data['oName']=myDate.getTime();
         data['note']=$("#orderNote").val();
         data['address_id']=$("#orderAddr").val();
@@ -203,25 +208,26 @@ $(function() {
 	
     //ajax请求购物车信息
     $.ajax({
-        url : 'http:www.baidu.com',
+        url : 'CartFrontManage/SeeCart',
         type : 'GET',
         async: false,
         // data : data,
         success : function(data) {
-            data={"result":true,"rows":[{"CartId":"3","ItemName":"九阴真经","ItemPrice":"100.0","ItemCount":"5","ItemPic":"static/upload/images/2019-08-18/0fbf9575e49c81eb21ac90f7fce770d01566141441393.jpg"},{"CartId":"4","ItemName":"测试3","ItemPrice":"100.0","ItemCount":"2","ItemPic":"static/upload/images/2019-08-18/20180330211927_1 - 副本1566142234443.jpg"}]};
-            // data=JSON.parse(data);
+            // data={"result":true,"rows":[{"CartId":"3","ItemName":"九阴真经","ItemPrice":"100.0","ItemCount":"5","ItemPic":"static/upload/images/2019-08-18/0fbf9575e49c81eb21ac90f7fce770d01566141441393.jpg"},{"CartId":"4","ItemName":"测试3","ItemPrice":"100.0","ItemCount":"2","ItemPic":"static/upload/images/2019-08-18/20180330211927_1 - 副本1566142234443.jpg"}]};
+            data=JSON.parse(data);
             
             if(data['result']){
                 //成功后
                 $(".addedCart").remove();   //必须放一个购物项才能用
                 $.each(data['rows'],function(i,v){//还少一个item_id
-                    var addCartTag="<div class='product-box addedCart'><div class='product-ckb'><em class='product-em'></em></div><div class='product-sx'><a style='text-decoration:none'><img src='"+v['ItemPic']+"' class='product-img' /><span class='product-name'>"+v['ItemName']+"</span></a><span class='product-price'>单价：¥&thinsp;<span class='price'>"+v['ItemPrice']+"</span></span><div class='product-amount'><div class='product_gw'><em class='product-jian'>-</em><input cartId='"+v['CartId']+"' item_id='23' value='"+v['ItemCount']+"' type='text' class='product-num' /><em class='product-add'>+</em></div></div><div class='product-del'><img src='static/images/deleteico.png' /></div></div></div>";
+                    var addCartTag="<div class='product-box addedCart'><div class='product-ckb'><em class='product-em'></em></div><div class='product-sx'><a style='text-decoration:none'><img src='"+v['ItemPic']+"' class='product-img' /><span class='product-name'>"+v['ItemName']+"</span></a><span class='product-price'>单价：¥&thinsp;<span class='price'>"+v['ItemPrice']+"</span></span><div class='product-amount'><div class='product_gw'><em class='product-jian'>-</em><input item_id='"+v['ItemId']+"' cartId='"+v['CartId']+"' item_id='23' value='"+v['ItemCount']+"' type='text' class='product-num' /><em class='product-add'>+</em></div></div><div class='product-del'><img src='static/images/deleteico.png' /></div></div></div>";
                     $(".product").append(addCartTag);
 
                 });
             }else{
                 if(data['isLogin']==false){
-                    window.location.href="SuperAdmin/login";
+                    window.location.href="FrontForward/loginMain";
+                    return;
                 }
                 //购物车为空
                 // alert("购物车为空");

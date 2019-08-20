@@ -403,7 +403,7 @@ $(document).ready(function() {
 		cacheJson['item_id']=orderItemId;
 		cacheJson['count']=$("#orderItemCount").val();
 		itemArray.push(cacheJson);
-		orderForm['item']=itemArray;
+		orderForm['item']=JSON.stringify(itemArray);
         orderForm['oName']=myDate.getTime();
         orderForm['note']=$("#orderNote").val();
         orderForm['address_id']=$("#orderAddr").val();
@@ -447,7 +447,7 @@ $(document).ready(function() {
 		data['count']=1;
 		//ajax发送添加购物车请求
 		$.ajax({
-			url : 'aa/bbb',
+			url : 'CartFrontManage/addItemToCart',
 			type : 'POST',
 			data : data,
 			success : function(data) {
@@ -457,9 +457,11 @@ $(document).ready(function() {
 					alert("添加成功！");
 				}else{
 					if(data['isLogin']==false){
-						window.location.href="SuperAdmin/login";
-					}
-					alert("意外错误！请重试！");
+					    alert("还没有登陆？");
+						window.location.href="FrontForward/loginMain";
+					}else{
+                        alert("添加失败！请重试！");
+                    }
 				}
 			},
 			error : function(data){

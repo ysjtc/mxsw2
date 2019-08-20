@@ -65,7 +65,14 @@
 
             <div class="col-xs-12 personal-info">
                 <!-- 导航栏 -->
-                <%@ include file="./../../common/frontShow/personalNav.jsp"%>
+                <ul class="nav nav-tabs nav-justified">
+                    <li><a href="FrontForward/personalMain">购物车</a></li>
+                    <li class="active"><a href="FrontForward/userOrder">订单</a></li>
+                    <li><a href="#">物流</a></li>
+                    <li><a href="#">退换货</a></li>
+                    <li><a href="FrontForward/addAddr">收货人信息</a></li>
+                </ul>
+
                 <!-- 导航栏下的内容 -->
                 <div class="main-content">
                     <%--引入购物车的主内容--%>
