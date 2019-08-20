@@ -317,6 +317,7 @@ $(document).ready(function() {
 		data['oId']=applyOid;
 		data['company']=$("#frontLogModal input[name='company']").val();
 		data['waybillNum']=$("#frontLogModal input[name='waybillNum']").val();
+		console.log(data);
 		var postFlag=true;
 		$.each(data,function (index,value) {
 			if(value==""){
@@ -328,7 +329,7 @@ $(document).ready(function() {
 		}else{
 			//ajax发送数据
 			$.ajax({
-				url : 'aa/bb',
+				url : 'FrontManageOrder/applyReturn',
 				data:data,
 				type : 'POST',
 				success : function(data) {

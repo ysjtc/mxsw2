@@ -13,4 +13,6 @@ public interface Apply_returnMapper {
 
     //更新申请退换货表的状态
     boolean updateApplyStatus(@Param("oId")Integer oId,@Param("status") Integer status);
+
+
 }

@@ -31,17 +31,9 @@ public class CartServiceImpl implements CartService {
     }
 
     @Override
-    public String queryCart(Integer pageSize, Integer offset, String sort, String sortOrder,Integer uid) {
+    public String queryCart(Integer uid) {
         try{
-            //实例化一个user和item
-//            User user=new User();
-//            Item item=new Item();
-//            Cart cart=new Cart();
-//            user.setuId(uid);
-//            cart.setUser(user);
-//            cart.setItem(item);
-//            System.out.println(cart);
-            List<Cart> cartlist=cartMapper.SeeCart(pageSize,offset,sort,sortOrder,uid);
+            List<Cart> cartlist=cartMapper.SeeCart(uid);
             System.out.println(cartlist);
             //将查询结果转换成json数组
             int count=cartMapper.SeeCartCount(uid);

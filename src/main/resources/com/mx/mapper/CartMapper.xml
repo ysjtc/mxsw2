@@ -54,10 +54,6 @@
        t1.item_id=t2.item_id
          AND  user_id=#{uid}
       GROUP BY t3.item_id
-      <if test="sort!=null and sortOrder!=null">
-        ORDER BY #{sort} #{sortOrder}
-      </if>
-      limit #{offset},#{pageSize}
     </where>
   </select>
   <select id="SeeCartCount" resultType="Integer">

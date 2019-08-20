@@ -1,9 +1,6 @@
 package com.mx.service.Impl;
 
-import com.mx.mapper.Apply_returnMapper;
-import com.mx.mapper.LogisticsMapper;
-import com.mx.mapper.OrderMapper;
-import com.mx.mapper.Order_DetailMapper;
+import com.mx.mapper.*;
 import com.mx.pojo.*;
 import com.mx.service.OrderService;
 import com.mx.utils.ConvertJson.ConvertJson;
@@ -26,6 +23,9 @@ public class OrderServiceImpl implements OrderService {
 
     @Autowired
     private Apply_returnMapper apply_returnMapper;
+
+    @Autowired
+    private Logistics_ReturnMapper logistics_returnMapper;
 
     //生成订单号
     @Override
@@ -202,6 +202,40 @@ public class OrderServiceImpl implements OrderService {
         }catch (Exception e){
             e.printStackTrace();
             return false;
+        }
+    }
+
+    @Override
+    public boolean appReturnOrder(Logistics_Return logistics_return) {
+        try{
+            //判断用户是否是第一次提交
+            //判断oid是不是在表中
+            Logistics_Return repeat= logistics_returnMapper.repeatApply(logistics_return.getoId());
+            System.out.println("rep:"+repeat);
+            //说明是第一次提交
+            if (repeat==null){
+                int appReturn=logistics_returnMapper.createLog(logistics_return);
+                boolean Orderstatus=orderMapper.updateOrderStatus(logistics_return.getoId(),4);
+                if (appReturn!=0 && Orderstatus==true){
+                    return true;
+                }
+                else return false;
+            }else return false;
+        }catch (Exception e){
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    @Override
+    public int applogIdByOid(Integer oId) {
+        try{
+            Logistics appReturn=logisticsMapper.applogIdByOid(oId);
+            if (appReturn==null){ return 0; }
+            else return appReturn.getlId();
+        }catch (Exception e){
+            e.printStackTrace();
+            return 0;
         }
     }
 
