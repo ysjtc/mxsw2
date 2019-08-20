@@ -10,7 +10,7 @@
     <%--引入bt-table--%>
     <%@ include file="./../../common/bt_table.jsp"%>
     <%--引入showUser页的资源--%>
-    <link rel="stylesheet" href="static/css/backManage/showUser.css">
+    <link rel="stylesheet" href="static/css/backManage/showOrder.css">
 
 </head>
 
@@ -139,12 +139,12 @@
             },
             columns:
                 [
-                    {
-                        field: 'o_id', // 返回json数据中的name
-                        title: '订单ID', // 表格表头显示文字
-                        align: 'center', // 左右居中
-                        valign: 'middle', // 上下居中
-                        width: '100',
+                {
+					field: 'applyId', // 返回json数据中的name
+					title: '申请表的id', // 表格表头显示文字
+					align: 'center', // 左右居中
+					valign: 'middle', // 上下居中
+					visible: false,
                     }, {
                     field: 'u_id',
                     title: '用户ID',
@@ -164,18 +164,17 @@
                     valign: 'middle',
                     width: '100',
                 }, {
-                    visible: false,
-                    field: 'add_info',
-                    title: '地址信息',
+                    field: 'item',
+                    title: '商品信息',
                     align: 'center',
                     valign: 'middle',
-                    width: '100',
+                    width: '150',
                 }, {
-                    field: 'note',
-                    title: '备注',
+                    field: 'reason',
+                    title: '申请理由',
                     align: 'center',
                     valign: 'middle',
-                    width: '100',
+                    width: '200',
                 }, {
                     field: 'status',
                     title: '状态',
@@ -183,7 +182,7 @@
                     valign: 'middle',
                     width: '100',
                     formatter:function(value, row, index){
-                        return value=="0"? "未处理":value=="1"? "待收货":value=="2"? "退货中":value=="3"? "收货完成":"退货完成";
+                        return value=="0"? "未处理":value=="1"? "拒绝":"通过";
                     }
                 }, {
                     title: "操作",
@@ -191,19 +190,9 @@
                     valign: 'middle',
                     width: '70',
                     formatter:function(value, row, index){
-                        var txt;
-                        var status=row.status;
-                        if(status=="0"){
-                            txt="发货";
-                        }else if(status=="1"||status=="2"){
-                            txt="查看物流";
-                        }else{
-                            txt="无";
-                        }
-                        if(txt!="无"){
-                            return "<button onclick='doOrder(this)' class='btn btn-default btn-xs' o_id='"+row.o_id+"' txt='"+txt+"'><span class='glyphicon glyphicon-exclamation-sign'></span>"+txt+"</button>";
-                        }
-                        return txt;
+                        
+                        return "<button class='btn btn-default btn-xs refuseApply' status='1' applyId='"+row.applyId+"'>"+拒绝+"</button><br/><button style='margin-top:8px' class='btn btn-default btn-xs okApply' status='2' applyId='"+row.applyId+"'>"+通过+"</button>";
+                        
                     }
                 }
                 ],
@@ -222,27 +211,37 @@
 
 
 
-    // 筛选提交ajax
-    $("#findOrder button").click(function(){
-        var u_id=$.trim($("#findOrder input[name='u_id']").val());
-        var name=$.trim($("#findOrder input[name='number']").val());
-        if(u_id!=""||name!=""){
-            var data={};
-            data['u_id']=u_id;
-            data['number']=name;
-            // 查询接口地址
-            var url="dasd/dasd";
-            // alert(JSON.stringify(data));
-            doTable(url,data);
-
-        }else{
-            $("#orderQueryIssu-main").html("查询为空！");
-            $("#orderQueryIssu").removeAttr("hidden");
-        }
-    });
-
-
-
+    //拒绝申请,通过申请
+	$("#returnTable").on("click",".refuseApply,.okApply",function(){
+		var data={};
+		data['status']=$(this).attr("status");
+		data['applyId']=$(this).attr("applyId");
+		//ajax发送数据
+		$.ajax({
+			url : 'aa/bb',
+			data:data,
+			type : 'POST',
+			success : function(data) {
+				data=JSON.parse(data);
+				if(data['result']){
+					//后台受理成功，刷新订单
+					alert("操作成功！");
+					doTable("FrontManageOrder/seeAllOrder");
+				}else{
+					if(data['isLogin']==false){
+						window.location.href="SuperAdmin/login";
+						return;
+					}
+					alert("失败！");
+				}
+			},
+			error : function(data){
+				alert("请检查网络！");
+			}
+		});
+	});
+  
+	
 </script>
 
 </body>

@@ -228,7 +228,7 @@
                     valign: 'middle',
                     width: '100',
                     formatter:function(value, row, index){
-                        return value=="0"? "未支付":value=="1"? "未处理":value=="2"? "待收货":value=="3"? "收货完成":value=="4"? "退货中":"退货完成";
+                        return value=="0"? "未支付":value=="1"? "未处理":value=="2"? "待收货":value=="3"? "收货完成":value=="4"? "退货中":value=="5"? "退货完成":value=="6"? "审核中":value=="7"? "申请通过":"申请失败";
                     }
                 }, {
                     title: "操作",
