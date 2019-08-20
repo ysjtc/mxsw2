@@ -71,7 +71,7 @@ public class Cart implements Serializable {
                 "\""+"ItemName"+"\":"+"\""+item.getName()+"\","+
                 "\""+"ItemPrice"+"\":"+"\""+item.getPrice()+"\","+
                 "\""+"ItemCount"+"\":"+"\""+count+"\","+
-                "\""+"ItemPic"+"\":"+"\""+item.getItem_pic()+"\","+
+                "\""+"ItemPic"+"\":"+"\""+item.getItem_pic().getPicPath()+"\""+
                 "}";
     }
 }

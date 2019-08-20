@@ -239,8 +239,9 @@ public class Item implements Serializable {
     @Override
     public String toString() {
         return "Item{" +
-                " name='" + name + '\'' +
-                ", CateId=" + CateId+
+                "itemId=" + itemId +
+                ", name='" + name + '\'' +
+                ", CateId=" + CateId +
                 ", price=" + price +
                 ", count=" + count +
                 ", author='" + author + '\'' +
@@ -251,7 +252,8 @@ public class Item implements Serializable {
                 ", publishTime='" + publishTime + '\'' +
                 ", publish='" + publish + '\'' +
                 ", place='" + place + '\'' +
-                ", label=" + label +
+                ", label='" + label + '\'' +
+                ", item_pic=" + item_pic +
                 '}';
     }
 }

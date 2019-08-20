@@ -5,14 +5,19 @@
     <id column="cart_id" property="cartId" jdbcType="INTEGER"/>
     <result column="count" jdbcType="INTEGER" property="count" />
     <!--封装user-->
-    <association property="user" javaType="com.mx.pojo.User">
+    <association property="user" column="user_id" javaType="com.mx.pojo.User">
       <id property="uId" column="u_id" jdbcType="INTEGER"/>
       <result property="name" column="Uname" jdbcType="VARCHAR"/>
     </association>
     <!--封装item-->
-    <association property="item" javaType="com.mx.pojo.Item">
+    <association property="item"  column="item_id" javaType="com.mx.pojo.Item">
       <id property="itemId" column="item_id" jdbcType="INTEGER"/>
       <result property="name" column="name" jdbcType="VARCHAR"/>
+      <result property="price" column="price" jdbcType="VARCHAR"/>
+      <association property="item_pic" javaType="com.mx.pojo.Item_Pic">
+        <id column="Item_id" property="itemId"/>
+        <result column="pic_path" property="picPath"/>
+      </association>
     </association>
   </resultMap>
   <!--前台部分-->
@@ -42,15 +47,13 @@
     </trim>
   </insert>
   <select id="SeeCart" resultMap="CartMaps">
-    select t1.cart_id,t2.name,t2.price,t3.pic_path
-    from  cart as t1,item as t2,item_pic as t3
+    select t1.cart_id,t2.item_id,t2.name,t1.`count`,t2.price, t3.pic_path
+    from  cart as t1,inkroom.item as t2,inkroom.item_pic as t3
     <where>
        t2.item_id=t3.item_id AND
        t1.item_id=t2.item_id
-       <if test="user.uId !=null">
          AND  user_id=#{uid}
-       </if>
-      GROUP BY item_id
+      GROUP BY t3.item_id
       <if test="sort!=null and sortOrder!=null">
         ORDER BY #{sort} #{sortOrder}
       </if>

@@ -7,8 +7,10 @@ import com.mx.service.CartService;
 import com.mx.service.CategoryService;
 import com.mx.service.ItemsService;
 import com.mx.service.UserService;
+import com.mx.utils.ConvertJson.JsonToJsonObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -89,7 +91,7 @@ public class CartFrontController {
     //查看购物车
     @ResponseBody
     @RequestMapping("/SeeCart")
-    public String SeeCart(HttpSession session) {
+    public String SeeCart(@RequestBody String param,HttpSession session) {
 //        System.out.println("---------"+item_id);
         String truejson = "{\"result\":true}";
         String falsejson = "{\"result\":false}";
@@ -103,7 +105,11 @@ public class CartFrontController {
                 if (uid==0){
                     return falsejson;
                 }
-                String cart=cartService.queryCart(uid);
+                String pageSize=String.valueOf(JsonToJsonObject.ToJsonObject(param,"pageSize"));
+                String offset=String.valueOf(JsonToJsonObject.ToJsonObject(param,"offset"));
+                String sort=String.valueOf(JsonToJsonObject.ToJsonObject(param,"sort"));
+                String sortOrder=String.valueOf(JsonToJsonObject.ToJsonObject(param,"sortOrder"));
+                String cart=cartService.queryCart(Integer.parseInt(pageSize),Integer.parseInt(offset),sort,sortOrder,uid);
                 if (cart==null){
                     return falsejson;
                 }else {
@@ -152,6 +158,7 @@ public class CartFrontController {
     public String deleteCartItem(Integer[] cart_id,HttpSession session) {
         String truejson = "{\"result\":true}";
         String falsejson = "{\"result\":false}";
+        System.out.println(cart_id.length);
         //1.获取uid
         String name = (String) session.getAttribute("USER_ID");
         if (name == null || name.equals("")) {

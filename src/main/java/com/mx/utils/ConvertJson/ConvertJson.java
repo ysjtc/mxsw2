@@ -115,7 +115,7 @@ public class ConvertJson {
         String str=null;
         for (int i=0;i<addressList.size();i++){
             //把你要拼接的字段放进去
-            jsonStrAll.append("\""+addressList.get(i).getAddId()+"\":[\""+addressList.get(i).getName()+"\",\""+addressList.get(i).getAddr()+"\"],");
+            jsonStrAll.append("\""+addressList.get(i).getAddId()+"\":[\""+addressList.get(i).getName()+"\",\""+addressList.get(i).getAddr().substring(0,3)+"..."+addressList.get(i).getAddr().substring(addressList.get(i).getAddr().length()-6,addressList.get(i).getAddr().length())+"\"],");
         }
 
         str = jsonStrAll+"\"result\":";

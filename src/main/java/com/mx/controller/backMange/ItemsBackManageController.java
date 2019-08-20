@@ -69,7 +69,7 @@ public class ItemsBackManageController {
 //            System.out.println("superID="+superID);
             return "redirect:/SuperAdmin/ToLogin";
         }else {
-            //判断传入的数据是否存在null
+            //判断传入的数据是否为null
             if (Validator.checkErrors(result, session)) {
                 //判断是否存在的商品类型
                 List<Integer> l = categoryService.querycid();
@@ -295,13 +295,13 @@ public class ItemsBackManageController {
 //             return "redirect:/Items/updateItem"+id;
 //    }
 
-    //通过id修改商品信息
+    //修改商品信息
     @ResponseBody
     @RequestMapping("/updateItem")
     public String updateItemByName(@RequestParam(value = "picFiles")MultipartFile[] multipartFiles, HttpSession session, Integer[] delPicId, Item item, Model model, HttpServletRequest request ){
         System.out.println("item是不是空的:"+ IsEmpty.checkIsNull(item));
-        System.out.println("+++" + multipartFiles.length);
-        System.out.println("+++" + delPicId.length);
+//        System.out.println("+++" + multipartFiles.length);
+//        System.out.println("+++" + delPicId.length);
         String truejson="{\"result\": true }";
         String falsejson="{\"result\":false}";
         //先判断是否有管理员登陆，在进行更新
@@ -349,8 +349,12 @@ public class ItemsBackManageController {
 //            System.out.println(delPicId+"------"+multipartFiles);
                 boolean updateData=true;
                 boolean deletepic=false;
+                System.out.println(delPicId.length);
                 if (!IsEmpty.checkIsNull(item)){
                    updateData =itemsService.updateItemsInfo(item);
+                }
+                if (delPicId.length==0){
+                    deletepic=true;
                 }
                 for(int i=0;i<delPicId.length;i++){
                     deletepic=itemPicService.deletePic(delPicId[i]);
@@ -379,10 +383,12 @@ public class ItemsBackManageController {
                     //存入数据库
                     addItemPic = itemPicService.addItemsPic(ipic);
                 }
+                System.out.println(updateData&&addItemPic&&deletepic);
                 if (updateData&&addItemPic&&deletepic) {
                     model.addAttribute("deleteinfo", "更新成功!");
                     return truejson;
                 } else {
+
                     model.addAttribute("deleteinfo", "更新失败!");
                     return falsejson;
                 }

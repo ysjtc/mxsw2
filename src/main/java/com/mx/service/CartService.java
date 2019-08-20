@@ -14,7 +14,7 @@ public interface CartService {
 
 
     //查询购物车
-    String queryCart(Integer uid);
+    String queryCart(Integer pageSize, Integer offset, String sort, String sortOrder,Integer uid);
 
 
     //修改商品数量
