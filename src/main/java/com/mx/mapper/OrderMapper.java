@@ -19,6 +19,10 @@ public interface OrderMapper {
     //查询某个人的全部订单
     List<Order> SeeAllOrder(@Param("pageSize")int pageSize,@Param("offset") int offset,@Param("sort") String sort,@Param("sortOrder") String sortOrder,@Param("uid") Integer uid);
 
+//    //由于itemName又多个，group_concat函数不生效
+//    List<Order> queryAllOid(@Param("uid") Integer uid);
+//    List<Order> queryItemNames(@Param("oId") Integer oId);
+
     //查询某个人的全部订单的数量
     int AllOrderCount(@Param("uid") Integer uid);
 

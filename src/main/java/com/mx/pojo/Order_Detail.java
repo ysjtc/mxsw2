@@ -14,7 +14,7 @@ public class Order_Detail implements Serializable {
 
     private Integer itemId;
 
-    private Integer count;
+    private Integer itemCount;
 
     private Float totalPrice;
 
@@ -47,12 +47,12 @@ public class Order_Detail implements Serializable {
         this.itemId = itemId;
     }
 
-    public Integer getCount() {
-        return count;
+    public Integer getItemCount() {
+        return itemCount;
     }
 
-    public void setCount(Integer count) {
-        this.count = count;
+    public void setItemCount(Integer itemCount) {
+        this.itemCount = itemCount;
     }
 
     public Float getTotalPrice() {
@@ -70,7 +70,7 @@ public class Order_Detail implements Serializable {
                 "odId=" + odId +
                 ", oId=" + oId +
                 ", itemId=" + itemId +
-                ", count=" + count +
+                ", itemCount=" + itemCount +
                 ", totalPrice=" + totalPrice +
                 '}';
     }

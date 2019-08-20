@@ -28,7 +28,7 @@
       <association property="order_detail" javaType="com.mx.pojo.Order_Detail">
           <id property="odId" jdbcType="INTEGER" column="od_id"/>
           <result column="item_id" jdbcType="INTEGER" property="itemId" />
-          <result column="count" jdbcType="INTEGER" property="count" />
+          <result column="count" jdbcType="INTEGER" property="itemCount" />
           <result column="total_price" jdbcType="REAL" property="totalPrice" />
       </association>
   </resultMap>
@@ -95,7 +95,7 @@
       SELECT t1.`o_id`,t1.`o_name` ,t1.`number`
 --       ,CASE t1.`o_status` WHEN 0 THEN '未处理' WHEN 1 THEN '未支付' WHEN 2 THEN '待收货中' WHEN 3 THEN '收货完成' WHEN 4 THEN '退货中' WHEN 5 THEN '退货完成' END AS `oStatus`
       ,t1.o_status
-      ,t1.`note`,t1.`create_time`,t2.`total_price`,t4.`name`,t2.`count`,t3.`addr`
+      ,t1.`note`,t1.`create_time`,t2.`total_price`,GROUP_CONCAT(t4.`name`,'(',t2.`count`,')') as name,t3.`addr`
       FROM  `order` AS t1, `order_detail` AS t2 , `address` AS t3 , `item` AS t4
       <where>
           t1.`add_id`=t3.`add_id` AND
@@ -111,6 +111,15 @@
           limit #{offset},#{pageSize}
       </where>
   </select>
+    <!--<select id="queryAllOid" resultMap="OrderAndDetailMaps">-->
+        <!--select o_id from `order`-->
+        <!--where u_id=#{uid}-->
+    <!--</select>-->
+    <!--<select id="queryItemNames" resultMap="OrderAndDetailMaps">-->
+        <!--select  t1.name,t2.count-->
+        <!--from item as t1,order_detail as t2-->
+        <!--where t1.item_id=t2.item_id and t2.o_id=#{oId}-->
+    <!--</select>-->
   <select id="AllOrderCount" resultType="Integer">
         select count(*) from  `order` where u_id=#{uid}
     </select>

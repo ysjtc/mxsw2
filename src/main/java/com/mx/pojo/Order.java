@@ -129,7 +129,7 @@ public class Order implements Serializable {
         return  "{"+"\""+"oId"+"\":"+"\""+ oId +"\","+
                 "\""+"oName"+"\":"+"\""+oName+"\","+
                 "\""+"Number"+"\":"+"\""+number+"\","+
-                "\""+"ItemName"+"\":"+"\""+itemName.getName()+"("+order_detail.getCount()+") \","+
+                "\""+"ItemName"+"\":"+"\""+itemName.getName()+"\","+
                 "\""+"Address"+"\":"+"\""+address.getAddr()+"\","+
                 "\""+"Note"+"\":"+"\""+note+"\","+
                 "\""+"createTime"+"\":"+"\""+createTime+"\","+
@@ -142,7 +142,7 @@ public class Order implements Serializable {
         return  "{"+"\""+"oId"+"\":"+"\""+ oId +"\","+
                 "\""+"Number"+"\":"+"\""+number+"\","+
                 "\""+"Name"+"\":"+"\""+user.getName()+"\","+
-                "\""+"ItemName"+"\":"+"\""+itemName.getName()+"("+order_detail.getCount()+") \","+
+                "\""+"ItemName"+"\":"+"\""+itemName.getName()+"("+order_detail.getItemCount()+") \","+
                 "\""+"Address"+"\":"+"\""+address.getAddr()+"\","+
                 "\""+"Note"+"\":"+"\""+note+"\","+
                 "\""+"createTime"+"\":"+"\""+createTime+"\","+

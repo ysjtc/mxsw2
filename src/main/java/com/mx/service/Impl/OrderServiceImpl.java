@@ -49,17 +49,23 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public String SeeAllOrder(Integer pageSize, Integer offset, String sort, String sortOrder,Integer uid) {
-        System.out.println(uid);
-        List<Order> orderlist=orderMapper.SeeAllOrder(pageSize,offset,sort,sortOrder,uid);
-//        System.out.println("++++++++"+orderlist);
-        //将查询结果转换成json数组
-        int count=orderMapper.AllOrderCount(uid);
-        if (count==0){
+//        System.out.println(uid);
+        try{
+            String str="";
+            List<Order> orderlist=orderMapper.SeeAllOrder(pageSize,offset,sort,sortOrder,uid);
+            System.out.println("++++++++"+orderlist);
+            //将查询结果转换成json数组
+            int count=orderMapper.AllOrderCount(uid);
+            if (count==0){
+                return "\"result\":false";
+            }else {
+                str = ConvertJson.ConvertOrder(count,orderlist);
+                System.out.println("----" + str);
+                return str;
+            }
+        }catch (Exception e){
+            e.printStackTrace();
             return "\"result\":false";
-        }else {
-            String str = ConvertJson.ConvertOrder(count, orderlist);
-            System.out.println("----" + str);
-            return str;
         }
     }
 

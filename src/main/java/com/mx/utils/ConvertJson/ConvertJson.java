@@ -100,11 +100,14 @@ public class ConvertJson {
         jsonStrAll.append("\""+"total"+"\""+":"+count+","+"\""+
                 "rows"+"\""+":[");
         for (int i=0;i<list.size();i++){
-            //把你要拼接的字段放进去
-            jsonStrAll.append(list.get(i).TOJSON() +",");
+            //把你要拼接的字段放进去"\""+"ItemName"+"\":"+"\""+itemName.getName()+"("+order_detail.getCount()+") \","+
+            jsonStrAll.append(list.get(i).TOJSON()+ ",");
+//            jsonStrAll.append("\""+"ItemName"+"\":");
+//            str=jsonStrAll.substring(0,jsonStrAll.lastIndexOf(";"))+jsonStrAll.append("},");
         }
         //把最后的，（逗号）截取掉
         str = jsonStrAll.substring(0, jsonStrAll.length()-1)+"]}";
+
 //        System.out.println(str);
         return str;
     }

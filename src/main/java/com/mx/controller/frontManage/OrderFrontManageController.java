@@ -1,11 +1,12 @@
 package com.mx.controller.frontManage;
 
-import com.mx.pojo.Logistics_Return;
+import com.mx.pojo.*;
 import com.mx.service.AddressService;
 import com.mx.service.ItemsService;
 import com.mx.service.OrderService;
 import com.mx.service.UserService;
 import com.mx.utils.ConvertJson.JsonToJsonObject;
+import net.sf.json.JSONArray;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -16,6 +17,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 @Controller
 @RequestMapping("/FrontManageOrder")
@@ -54,11 +57,7 @@ public class OrderFrontManageController {
 //        System.out.println("itemid:"+item_id+"count:"+count+"address_id:"+address_id+"oName="+oName+"-----note="+note+"uid:"+session.getAttribute("USER_ID"));
         String truejson="{\"result\":true}";
         String falsejson="{\"result\":false}";
-        System.out.println(items);
-//        JSONArray ItemArray=new JSONArray(items);
-        items=items.substring(1,items.lastIndexOf("]"));
-        Integer item_id = Integer.parseInt(String.valueOf(JsonToJsonObject.ToJsonObject(items, "item_id")));
-        System.out.println(item_id);
+        JSONArray ItemArray=JSONArray.fromObject(items);
         //当前登陆的用户id
         String uname = (String) session.getAttribute("USER_ID");
         if (uname == null || uname.equals("")) {
@@ -66,68 +65,73 @@ public class OrderFrontManageController {
         } else {
             boolean createOrder = false;
             boolean createOrderDet = false;
+            int oId=0;
+            Float totalPrice=0f;
             //遍历item【】
-//            for (int i = 0; i < item.length; i++) {
-//                //解析前台发送的item数组
-//                Integer item_id = Integer.parseInt(String.valueOf(JsonToJsonObject.ToJsonObject(item[i], "item_id")));
-//                Integer count = Integer.parseInt(String.valueOf(JsonToJsonObject.ToJsonObject(item[i], "count")));
-//                System.out.println("item:"+item[i]);
-//                System.out.println("itemID:::"+item_id+"count:::"+count);
-//                if (count != null && count > 0 && oName != null && !oName.equals("") && address_id != null && address_id > 0) {
-//                    int u_id = userService.getUserIdByname(uname);
-//                    //订单创建时间
-//                    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-//                    String create_time = dateFormat.format(new Date());
-//                    System.out.println("订单创建时间：" + create_time);
-//                    //订单编号(自动生成)
-//                    StringBuilder trade_number = new StringBuilder();
-//                    trade_number.append("mx" + new Date().getTime());
-//                    //            System.out.println("订单创建时间:::::::"+trade_number);  //mx1566050992765//mx1566051018661
-//                    //实例化一个Order对象和一个Order_detail对象
-//                    Order order = new Order();
-//                    Order_Detail order_detail = new Order_Detail();
-//                    //实例化一个User对象
-//                    User user = new User();
-//                    user.setuId(u_id);
-//                    //实例化一个Address对象
-//                    //当前登陆的用户的地址表id
-//                    Address address = new Address();
-//                    address.setAddId(address_id);
-//
-//                    order.setuId(user);
-//                    order.setoName(oName);
-//                    order.setAddress(address);
-//                    order.setCreateTime(create_time);
-//                    order.setNumber(String.valueOf(trade_number));
-//                    order.setoStatus("0");
-//                    order.setNote(note);
-//
-//
-//
-//                    try {
-//                        //数据插入订单表
-//                        createOrder = orderService.createOrder(order);
-//
-//                        order_detail.setoId(order.getoId());
-//                        System.out.println(order.getoId());
-//                        order_detail.setCount(count);
-//                        order_detail.setItemId(item_id);
-//                        Float price = itemsService.queryItemsPriceByItemId(item_id);
-//                        //                System.out.println("price:"+price);
-//                        Float totalPrice = count * price;
-//                        //                System.out.println("totalPrice:"+totalPrice);
-//                        order_detail.setTotalPrice(totalPrice);
-//                        //数据插入订单详情表
-//                        createOrderDet = orderService.createOrderDet(order_detail);
-//                    } catch (Exception e) {
-//                        e.printStackTrace();
-//                        return falsejson;
-//                    }
-//                }else {
-//                    System.out.println("非法的传入数据");
-//                    return falsejson;
-//                }
-//            }
+            for (int i = 0; i <ItemArray.size(); i++) {
+                //解析前台发送的item数组
+                Integer item_id = Integer.parseInt(String.valueOf(JsonToJsonObject.ToJsonObject(ItemArray.get(i).toString(), "item_id")));
+                Integer count = Integer.parseInt(String.valueOf(JsonToJsonObject.ToJsonObject(ItemArray.get(i).toString(), "count")));
+                System.out.println("item:"+ItemArray.get(i).toString());
+                System.out.println("itemID:::"+item_id+"count:::"+count);
+                if (count != null && count > 0 && oName != null && !oName.equals("") && address_id != null && address_id > 0) {
+                    int u_id = userService.getUserIdByname(uname);
+                    String create_time="";
+                    //订单编号(自动生成)
+                    StringBuilder trade_number = new StringBuilder();
+                    if (i==0){
+                        //订单创建时间
+                        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                         create_time = dateFormat.format(new Date());
+                        System.out.println("订单创建时间：" + create_time);
+                        trade_number.append("mx" + new Date().getTime());
+                        //            System.out.println("订单创建时间:::::::"+trade_number);  //mx1566050992765//mx1566051018661
+                    }
+                    //实例化一个Order对象和一个Order_detail对象
+                    Order order = new Order();
+                    Order_Detail order_detail = new Order_Detail();
+                    //实例化一个User对象
+                    User user = new User();
+                    user.setuId(u_id);
+                    //实例化一个Address对象
+                    //当前登陆的用户的地址表id
+                    Address address = new Address();
+                    address.setAddId(address_id);
+
+                    order.setuId(user);
+                    order.setoName(oName);
+                    order.setAddress(address);
+                    order.setCreateTime(create_time);
+                    order.setNumber(String.valueOf(trade_number));
+                    order.setoStatus("0");
+                    order.setNote(note);
+
+                    try {
+                        //数据插入订单表只插入一次
+                        if (i==0){
+                            createOrder = orderService.createOrder(order);
+                             oId=order.getoId();
+                        }
+                        order_detail.setoId(oId);
+                        System.out.println("订单表最后一次插入的oid是"+oId);
+                        order_detail.setItemCount(count);
+                        order_detail.setItemId(item_id);
+                        Float price = itemsService.queryItemsPriceByItemId(item_id);
+                        //                System.out.println("price:"+price);
+                         totalPrice = totalPrice+count * price;
+                        //                System.out.println("totalPrice:"+totalPrice);
+                        order_detail.setTotalPrice(totalPrice);
+                        //数据插入订单详情表插入i次
+                        createOrderDet = orderService.createOrderDet(order_detail);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        return falsejson;
+                    }
+                }else {
+                    System.out.println("非法的传入数据");
+                    return falsejson;
+                }
+            }
             //判断创建订单是否成功
             if (createOrder && createOrderDet) {
                 return truejson;
