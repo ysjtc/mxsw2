@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.mx.mapper.LogisticsMapper">
-  <resultMap id="BaseResultMap" type="com.mx.pojo.Logistics">
+  <resultMap id="LogMaps" type="com.mx.pojo.Logistics">
     <result column="l_id" jdbcType="INTEGER" property="lId" />
     <result column="o_id" jdbcType="INTEGER" property="oId" />
     <result column="waybill_num" jdbcType="VARCHAR" property="waybillNum" />
@@ -34,4 +34,8 @@
       </if>
     </trim>
   </insert>
+  <select id="applogIdByOid" resultMap="LogMaps">
+    select l_id from logistics
+    where o_id=#{oId}
+  </select>
 </mapper>

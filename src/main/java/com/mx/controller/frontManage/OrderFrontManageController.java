@@ -1,9 +1,6 @@
 package com.mx.controller.frontManage;
 
-import com.mx.pojo.Address;
-import com.mx.pojo.Order;
-import com.mx.pojo.Order_Detail;
-import com.mx.pojo.User;
+import com.mx.pojo.*;
 import com.mx.service.AddressService;
 import com.mx.service.ItemsService;
 import com.mx.service.OrderService;
@@ -238,6 +235,32 @@ public class OrderFrontManageController {
     }
 
 
+    //用户退换货后的填写物流操作
+    @ResponseBody
+    @RequestMapping("/applyReturn")
+    public String applyReturn(Logistics_Return logistics_return,HttpSession session){
+        String truejson="{\"result\":true}";
+        String falsejson="{\"result\":false}";
+        //当前登陆的用户id
+        String uname=(String)session.getAttribute("USER_ID");
+        if (uname==null||uname.equals("")){
+            return "{\"result\":false,\"isLogin\":false}";
+        }else {
+            try {
+                //获取物流表中要退货的id
+                int lid=orderService.applogIdByOid(logistics_return.getoId());
+                logistics_return.setlId(lid);
+                System.out.println(logistics_return);
+                boolean appReturn=orderService.appReturnOrder(logistics_return);
+                if (appReturn){
+                    return truejson;
+                }else return falsejson;
+            }catch (Exception e){
+                e.printStackTrace();
+                return falsejson;
+            }
+        }
+    }
 
 
     //查询收货人

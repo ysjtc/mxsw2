@@ -148,8 +148,7 @@ public class ConvertJson {
         //定义一个StringBuilder
         StringBuilder jsonStrAll = new StringBuilder("{");
         String str=null;
-        jsonStrAll.append("\""+"total"+"\""+":"+count+","+"\""+
-                "rows"+"\""+":[");
+        jsonStrAll.append("\"result\":true,"+"\"rows"+"\""+":[");
         for (int i=0;i<cartlist.size();i++){
             //把你要拼接的字段放进去
             jsonStrAll.append(cartlist.get(i).TOJSONFrontManage() +",");

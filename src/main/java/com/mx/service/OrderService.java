@@ -1,6 +1,7 @@
 package com.mx.service;
 
 import com.mx.pojo.Logistics;
+import com.mx.pojo.Logistics_Return;
 import com.mx.pojo.Order;
 import com.mx.pojo.Order_Detail;
 
@@ -44,4 +45,10 @@ public interface OrderService {
 
     //退换货申请
     boolean updateApplyStatus(Integer oId, Integer status);
+
+    //退换货物流信息
+    boolean appReturnOrder(Logistics_Return logistics_return);
+
+    //获取物流表中要退货的id
+    int applogIdByOid(Integer oId);
 }

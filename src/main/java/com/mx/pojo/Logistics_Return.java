@@ -7,15 +7,21 @@ import java.io.Serializable;
  *
  */
 public class Logistics_Return implements Serializable {
+
+    //退换货表id
     private Integer lrId;
 
+    //退货订单id
     private Integer oId;
 
+    //物流表id
     private Integer lId;
 
-    private String lrNum;
+    //退货单号
+    private String waybillNum;
 
-    private String reason;
+    //退货原因
+    private String company;
 
     private static final long serialVersionUID = 1L;
 
@@ -43,19 +49,30 @@ public class Logistics_Return implements Serializable {
         this.lId = lId;
     }
 
-    public String getLrNum() {
-        return lrNum;
+    public String getWaybillNum() {
+        return waybillNum;
     }
 
-    public void setLrNum(String lrNum) {
-        this.lrNum = lrNum == null ? null : lrNum.trim();
+    public void setWaybillNum(String waybillNum) {
+        this.waybillNum = waybillNum;
     }
 
-    public String getReason() {
-        return reason;
+    public String getCompany() {
+        return company;
     }
 
-    public void setReason(String reason) {
-        this.reason = reason == null ? null : reason.trim();
+    public void setCompany(String company) {
+        this.company = company;
+    }
+
+    @Override
+    public String toString() {
+        return "Logistics_Return{" +
+                "lrId=" + lrId +
+                ", oId=" + oId +
+                ", lId=" + lId +
+                ", waybillNum='" + waybillNum + '\'' +
+                ", company='" + company + '\'' +
+                '}';
     }
 }

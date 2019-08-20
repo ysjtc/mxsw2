@@ -16,7 +16,7 @@ public interface CartMapper {
     int addCart(Cart cart);
 
     //查看购物车
-    List<Cart> SeeCart(@Param("pageSize")int pageSize, @Param("offset") int offset, @Param("sort") String sort, @Param("sortOrder") String sortOrder, @Param("uid") Integer uid);
+    List<Cart> SeeCart( @Param("uid") Integer uid);
 
     //查看某用户的购物车的总商品数
     int SeeCartCount(@Param("uid") Integer uid);

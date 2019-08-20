@@ -1,16 +1,13 @@
 package com.mx.controller.frontManage;
 
 import com.mx.pojo.Cart;
-import com.mx.pojo.Item;
 import com.mx.pojo.User;
 import com.mx.service.CartService;
 import com.mx.service.CategoryService;
 import com.mx.service.ItemsService;
 import com.mx.service.UserService;
-import com.mx.utils.ConvertJson.JsonToJsonObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -40,8 +37,8 @@ public class CartFrontController {
     //加入购物车
     @ResponseBody
     @RequestMapping("/addItemToCart")
-    public String addItemToCart(Cart cart, Integer item_id,HttpSession session){
-        System.out.println("count:"+cart.getCount()+"ItemID::::"+item_id);
+    public String addItemToCart(Cart cart,HttpSession session){
+//        System.out.println("count:"+cart.getCount()+"ItemID::::"+item_id);
         String truejson="{\"result\":true}";
         String falsejson="{\"result\":false}";
         //1.获取uid
@@ -49,8 +46,8 @@ public class CartFrontController {
         if (name==null||name.equals("")){
             return "{\"result\":false,\"isLogin\":false}";
         }else {
-//            if (cart.getCount()!=null&&cart.getItem().getItemId()!=null){
-            if (cart.getCount()!=null&&item_id!=null){
+            if (cart.getCount()!=null&&cart.getItem().getItemId()!=null){
+//            if (cart.getCount()!=null&&item_id!=null){
                 try{
                     int uid=userService.getUserIdByname(name);
                     if (uid==0){
@@ -60,15 +57,15 @@ public class CartFrontController {
                     User user=new User();
                     user.setuId(uid);
 //                    //实例化一个item
-                    Item item=new Item();
-                    item.setItemId(item_id);
+//                    Item item=new Item();
+//                    item.setItemId(item_id);
 
                     cart.setUser(user);
-                    cart.setItem(item);
+//                    cart.setItem(item);
 
                     System.out.println("cart:"+cart);
                     //由于数据库中uid和itemid没有作为联合主键，所以这里进行判断是否存在同一个用户对同一个商品重复下单
-                    boolean repeat=cartService.repeatToCart(uid,item_id);
+                    boolean repeat=cartService.repeatToCart(uid,cart.getItem().getItemId());
                     if (repeat){
                         boolean addItemToCart=cartService.addItemToCart(cart);
                         if (addItemToCart){
@@ -91,7 +88,7 @@ public class CartFrontController {
     //查看购物车
     @ResponseBody
     @RequestMapping("/SeeCart")
-    public String SeeCart(@RequestBody String param,HttpSession session) {
+    public String SeeCart(HttpSession session) {
 //        System.out.println("---------"+item_id);
         String truejson = "{\"result\":true}";
         String falsejson = "{\"result\":false}";
@@ -105,11 +102,7 @@ public class CartFrontController {
                 if (uid==0){
                     return falsejson;
                 }
-                String pageSize=String.valueOf(JsonToJsonObject.ToJsonObject(param,"pageSize"));
-                String offset=String.valueOf(JsonToJsonObject.ToJsonObject(param,"offset"));
-                String sort=String.valueOf(JsonToJsonObject.ToJsonObject(param,"sort"));
-                String sortOrder=String.valueOf(JsonToJsonObject.ToJsonObject(param,"sortOrder"));
-                String cart=cartService.queryCart(Integer.parseInt(pageSize),Integer.parseInt(offset),sort,sortOrder,uid);
+                String cart=cartService.queryCart(uid);
                 if (cart==null){
                     return falsejson;
                 }else {
