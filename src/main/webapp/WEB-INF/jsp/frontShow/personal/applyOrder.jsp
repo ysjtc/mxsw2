@@ -17,7 +17,7 @@
     <link rel="stylesheet" type="text/css" href="static/css/personalMain.css">
     <script src="static/js/userMain.js"></script>
     <%--用户订单的js--%>
-    <script src="static/js/userOrder.js"></script>
+    <script src="static/js/userApplyOrder.js"></script>
 </head>
 
 <body>
@@ -67,16 +67,15 @@
                 <!-- 导航栏 -->
                 <ul class="nav nav-tabs nav-justified">
                     <li><a href="FrontForward/personalMain">购物车</a></li>
-                    <li class="active"><a href="FrontForward/userOrder">订单</a></li>
-                    <li><a href="#">物流</a></li>
-                    <li><a href="#">退换货</a></li>
+                    <li><a href="FrontForward/userOrder">订单</a></li>
+                    <li class="active"><a href="#">我的退换货</a></li>
                     <li><a href="FrontForward/addAddr">收货人信息</a></li>
                 </ul>
 
                 <!-- 导航栏下的内容 -->
                 <div class="main-content">
-                    <%--引入订单的主内容--%>
-                    <%@ include file="./../../common/frontShow/userOrderMain.jsp"%>
+                    <%--引入购物车的主内容--%>
+                    <%@ include file="./../../common/frontShow/userApplyOrderMain.jsp"%>
                 </div>
 
             </div>
@@ -90,56 +89,6 @@
 <!-- 外层包装结束 -->
 <%--引入模态框--%>
 <%@ include file="./../../common/frontShow/userMainModal.jsp"%>
-
-<!-- 一个关于显示物流的模态框 -->
-<div class="modal fade" id="frontLogModal" tabindex="-1" role="dialog" aria-labelledby="frontLogModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                <h4 class="modal-title" id="frontLogModalLabel">发货物流信息</h4>
-            </div>
-            <div class="modal-body">
-
-                <div class="form-group">
-                    <label class="control-label">物流公司</label>
-                    <input name="company" type="text" class="form-control" value="" disabled="disabled" />
-                </div>
-                <div class="form-group">
-                    <label class="control-label">物流单号</label>
-                    <input name="waybillNum" type="text" class="form-control" value="" disabled="disabled" />
-                </div>
-                <div class="modal-footer" style="display: none">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
-                    <button id="postReLog" type="button" class="btn btn-primary">提交更改</button>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-
-<!--一个关于填写申请的模态框-->
-<div class="modal fade" id="frontApplyModal" tabindex="-1" role="dialog" aria-labelledby="frontApplyModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                <h4 class="modal-title" id="frontApplyModalLabel">填写退换信息</h4>
-            </div>
-            <div class="modal-body">
-
-                <div class="form-group">
-                    <label class="control-label">申请理由</label>
-                    <textarea name="reason" class="form-control" rows="4" ></textarea>
-                </div>
-            </div>
-			<div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
-                <button id="postApply" type="button" class="btn btn-primary">提交</button>
-            </div>
-        </div>
-    </div>
-</div>
 
 </body>
 

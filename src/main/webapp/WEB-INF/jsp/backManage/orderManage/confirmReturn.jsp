@@ -117,8 +117,7 @@
             pageNumber: 1, // 首页页码
             sidePagination: 'server', // 设置为服务器端分页
             sortable: true,          //列排序
-            sortName: 'item_id', // 要排序的字段
-            uniqueId:'item_id',
+            sortName: 'applyId', // 要排序的字段
             sortOrder: 'asc', // 排序规则
             queryParams:function(params){
                 //alert(JSON.stringify(queryData));
@@ -146,7 +145,7 @@
 					valign: 'middle', // 上下居中
 					visible: false,
                     }, {
-                    field: 'u_id',
+                    field: 'name',
                     title: '用户ID',
                     align: 'center',
                     valign: 'middle',
@@ -209,7 +208,48 @@
     //查看所有退货申请的接口
     doTable("Items/query/AllItems");
 
-
+	//订单查询只允许单条件查询
+    $("input[name='name']").unbind('blur').bind('blur', function(){
+        if($(this).val()!=""){
+            //将另一个input设为disable
+            $("input[name='number']").val("");
+            $("input[name='number']").attr("disabled","disabled");
+        }else{
+            $("input[name='number']").removeAttr("disabled");
+        }
+    });
+    $("input[name='number']").unbind('blur').bind('blur', function(){
+        if($(this).val()!=""){
+            //将另一个input设为disable
+            $("input[name='name']").val("");
+            $("input[name='name']").attr("disabled","disabled");
+        }else{
+            $("input[name='name']").removeAttr("disabled");
+        }
+    });
+    
+	// 定向搜索订单
+    $("#findOrder button").click(function(){
+        var name=$.trim($("#findOrder input[name='name']").val());
+        var number=$.trim($("#findOrder input[name='number']").val());
+        var data={};
+        if(name!=""){
+            data['name']=name;
+            //根据登录id查询订单的接口
+            var url="BackManageOrder/seeAllOrderByuId";
+            // console.log(data);
+            doTable(url,data);
+        }else if(number!=""){
+            data['trade_number']=number;
+            //根据订单编号查询订单的接口
+            var url="BackManageOrder/seeOrder";
+            // console.log(data);
+            doTable(url,data);
+        }
+        if(jQuery.isEmptyObject(data)){
+            alert("未填写搜索内容！");
+        }
+    });
 
     //拒绝申请,通过申请
 	$("#returnTable").on("click",".refuseApply,.okApply",function(){
