@@ -101,14 +101,6 @@
                 <div class="modal-body" style="padding:10px;">
                     <div style="margin-left: auto;margin-right: auto;">
                         <div class="form-group">
-                            <label>购买数量</label>
-                            <div class="input-group input-group-sm" style="width:65%;">
-                                <span id="countCut" class="input-group-addon">-</span>
-                                <input id="orderItemCount" type="number" class="form-control" value="5">
-                                <span id="countAdd" class="input-group-addon">+</span>
-                            </div>
-                        </div>
-                        <div class="form-group">
                             <label>备注</label>
                             <textarea id="orderNote" class="form-control" row="3"></textarea>
                         </div>
