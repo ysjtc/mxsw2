@@ -1,35 +1,5 @@
 $(document).ready(function() {
 
-    //TODO:用不到淦哥就删了
-
-
-    //打字机效果开始
-    //使用方法：在需要打字的标签上添加id，然后调用typing('你的id');
-    // var str;
-    // var i = 0;
-    // function typing(id){
-    //   var s = document.getElementById(id);
-    //   if(i==0){
-    //     str=s.innerHTML.trim().replace(/\s/g,"");
-    //     s.innerHTML="";
-    //   }
-    //   var myInterval=setInterval(show,300);
-    //   i=0;
-    //   function show(){
-    //     //alert(i++);
-    //     s.innerHTML=str.slice(0, i++)+'_';
-    //     //alert(i);
-    //     if(i>=str.length){
-    //       clearInterval(myInterval);
-    //       s.innerHTML=str;
-    //     }
-    //   }
-    // }
-    // typing('saohua');
-    //打字机效果结束
-
-
-
 
 
     //设置RangeSlider插件的一些参数---开始
@@ -464,4 +434,36 @@ $(document).ready(function() {
             });
         }
     });
+
+
+	//点击了假如购物车时addCart
+	$(".left-show").on("click",".addCart",function(){
+		var data={};
+		data['item.itemId']=$(this).attr("item_id");
+		data['count']=1;
+		//ajax发送添加购物车请求
+		$.ajax({
+			url : 'aa/bbb',
+			type : 'POST',
+			data : data,
+			success : function(data) {
+				data=JSON.parse(data);
+				if(data['result']){
+					//成功后
+					alert("添加成功！");
+				}else{
+					if(data['isLogin']==false){
+						window.location.href="SuperAdmin/login";
+					}
+					alert("意外错误！请重试！");
+				}
+			},
+			error : function(data){
+				alert("请检查网络！");
+			}
+		});
+	});
+
+
+
 });
