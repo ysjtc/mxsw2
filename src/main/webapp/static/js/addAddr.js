@@ -177,7 +177,7 @@ $(document).ready(function() {
                     width: '70',
                     formatter:function(value, row, index){
 
-                        return "<button class='btn btn-default btn-xs delAddr' add_id='"+row.add_id+"'><span class='glyphicon glyphicon-exclamation-sign'></span>删除</button><br/><button class='btn btn-default btn-xs editAddr' add_id='"+row.add_id+"'><span class='glyphicon glyphicon-pencil'></span>修改</button>";
+                        return "<button class='btn btn-default btn-xs delAddr' add_id='"+row.add_id+"'><span class='glyphicon glyphicon-exclamation-sign'></span>删除</button><br/><button style='margin-top:8px' class='btn btn-default btn-xs editAddr' add_id='"+row.add_id+"'><span class='glyphicon glyphicon-pencil'></span>修改</button>";
                     }
                 }
                 ],
@@ -186,4 +186,64 @@ $(document).ready(function() {
     }
     //未定位查询前先设定表格显示所有
     doTable("Address/getAlladdress");
+	
+	//点击删除该地址
+	$(".product").on("click",".delAddr",function(){
+		var data={};
+		data['add_id']=$(this).attr("attr");
+		$.ajax({
+			url : 'aa/bb',
+			data : postData,
+			type : 'POST',
+			success : function(data) {
+				var data=JSON.parse(data);
+				if(data['result']){
+					//修改成功后刷新下方表格
+					doTable("Address/getAlladdress");
+					alert("添加成功");
+				}else{
+					alert("意外错误，请重试！");
+				}
+			}
+		});
+	});
+	
+	//点击修改时editAddr
+	$(".product").on("click",".delAddr",function(){
+		//弹出模态框
+		$("#applyEditModal").modal('toggle');
+	});
+	
+	//点击了模态框的提交按钮时postApplyEdit
+	$("#postApplyEdit").click(function(){
+		//接收参数
+		var postData={};
+		postData['name']=$("#applyEditModal input[name='name']").val();
+		postData['tel']=$("#applyEditModal input[name='tel']").val();
+		postData['postcode']=$("#applyEditModal input[name='postcode']").val();
+		postData['province']=$("#applyEditModal select[name='province']  option:selected").val();
+		postData['addr']=$("#applyEditModal textarea[name='addr']").val();
+		//ajax发送数据
+		$.ajax({
+			url : 'aa/bb',//访问后台的上传方法路径
+			data : postData,
+			type : 'POST',
+			success : function(data) {
+				var data=JSON.parse(data);
+				if(data['result']){
+					//修改成功后刷新下方表格
+					doTable("Address/getAlladdress");
+					alert("修改成功！");
+				}else{
+					alert("意外错误，请重试！");
+				}
+			}
+		});
+	});
+	
+	
+	
+	
+	
+	
 });
