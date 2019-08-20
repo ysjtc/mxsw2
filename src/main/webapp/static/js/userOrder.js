@@ -304,6 +304,7 @@ $(document).ready(function() {
 	//申请通过后填写物流returnLog
 	$("#userOrderInfoTable").on("click",".returnLog",function(){
 		applyOid=$(this).attr("oId");
+		$("#frontLogModalLabel"),html("退换货物流信息");
 		// console.log(applyOid);
 		//弹出模态框
 		$("#frontLogModal").modal('toggle');
