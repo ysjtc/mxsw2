@@ -218,7 +218,17 @@ public class OrderServiceImpl implements OrderService {
     public boolean updateApplyStatus(Integer applyId, Integer status) {
         try{
             boolean Appstatus=apply_returnMapper.updateApplyStatus(applyId,status);
-            if (Appstatus){ return true; }
+            Apply_return oId=apply_returnMapper.queryoIdByapplyId(applyId);
+            boolean Orderstatus=false;
+            if (status==1){
+                 Orderstatus=orderMapper.updateOrderStatus(oId.getOrder().getoId(),8);
+            }else  if (status==2){
+                Orderstatus=orderMapper.updateOrderStatus(oId.getOrder().getoId(),7);
+            }else {
+                return false;
+            }
+
+            if (Appstatus&&Orderstatus){ return true; }
             else return false;
         }catch (Exception e){
             e.printStackTrace();
@@ -285,7 +295,7 @@ public class OrderServiceImpl implements OrderService {
         Map logmaps=new HashMap();
         try{
             Logistics logisticslist=logisticsMapper.checkLogistics(oId);
-
+            logmaps.put("result",true);
             logmaps.put("company",logisticslist.getCompany());
             logmaps.put("waybillNum",logisticslist.getWaybillNum());
             return logmaps;

@@ -26,9 +26,9 @@ $(document).ready(function() {
                     sortOrder: params.order, // 排序规则
                 };
                 if(!jQuery.isEmptyObject(queryData)){
-                    // alert(queryData);
-                    param['queryData']=queryData;
-
+                    $.each(queryData,function(key,value){
+                        param[key]=value;
+                    });
                     //alert(JSON.stringify(param));
                 }
                 // alert(JSON.stringify(param));
@@ -93,7 +93,7 @@ $(document).ready(function() {
 
         })
     }
-    //查看所有退货申请的接口
-    doTable("Items/query/AllItems");
+    //查看所有退货申请的接口这是哪个页面的？
+    doTable("");
 
 });

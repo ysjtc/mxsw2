@@ -157,7 +157,7 @@ $(document).ready(function() {
 		data['subject']=$(this).attr("subject");
 		data['total_amount']=$(this).attr("total_amount");
 		data['body']=$(this).attr("body");
-		var confirmPost=confirm("确定取消此订单？");
+		var confirmPost=confirm("确定付款此订单？");
 		if(confirmPost==true){
 			//ajax发送订单取消的请求
 			$.ajax({
@@ -187,7 +187,7 @@ $(document).ready(function() {
 		var oId=$(this).attr("oId");
 		var data={};
 		data['oId']=oId;
-		console.log(data);
+		console.log("发送的oid："+data);
 		//ajax发送获取物流信息的请求
 		$.ajax({
 			url : 'aa/bb',
@@ -304,7 +304,7 @@ $(document).ready(function() {
 	//申请通过后填写物流returnLog
 	$("#userOrderInfoTable").on("click",".returnLog",function(){
 		applyOid=$(this).attr("oId");
-		$("#frontLogModalLabel"),html("退换货物流信息");
+		$("#frontLogModalLabel").html("退换货物流信息");
 		// console.log(applyOid);
 		//弹出模态框
 		$("#frontLogModal").modal('toggle');

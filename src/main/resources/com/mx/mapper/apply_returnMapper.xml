@@ -47,4 +47,7 @@
     </set>
     where apply_id=#{applyId}
   </update>
+  <select id="queryoIdByapplyId" resultMap="ApplyMaps">
+    select o_id from apply_return where apply_id=#{applyId}
+  </select>
 </mapper>

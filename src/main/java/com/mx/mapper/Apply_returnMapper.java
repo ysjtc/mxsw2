@@ -14,5 +14,6 @@ public interface Apply_returnMapper {
     //更新申请退换货表的状态
     boolean updateApplyStatus(@Param("applyId")Integer applyId,@Param("status") Integer status);
 
-
+    //通过applyId查询oid
+    Apply_return queryoIdByapplyId(@Param("applyId")Integer applyId);
 }

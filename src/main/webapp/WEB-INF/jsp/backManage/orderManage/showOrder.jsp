@@ -328,16 +328,22 @@
             //ajax发送请求发货物流的信息
             $.ajax({
                 url : 'BackManageOrder/checkLogistics',
-                type : 'GET',
+                type : 'POST',
+                data : {"oId":oIdCahche},
                 success : function(data) {
-                    data=JSON.parse(data);
+                    // console.log(data);
+                    // data=JSON.parse(data);
                     if(data['result']){
                         //成功后
-                        
+                        $("#logModal input[name='company']").val(data['company']);
+                        $("#logModal input[name='waybillNum']").val(data['waybillNum']);
+                        $("#logModal input").attr("disabled","disabled");
                     }else{
                         if(data['isLogin']==false){
                             window.location.href="SuperAdmin/login";
+                            return;
                         }
+                        alert("意外错误！请重试！");
                     }
                 },
                 error : function(data){
@@ -350,16 +356,22 @@
             //ajax发送请求退货物流的信息
             $.ajax({
                 url : 'BackManageOrder/checkLogistics',
-                type : 'GET',
+                type : 'POST',
+                data: {"oId":oIdCahche},
                 success : function(data) {
-                    data=JSON.parse(data);
+                    // console.log(data);
+                    // data=JSON.parse(data);
                     if(data['result']){
-                        //成功后
-                        
+                        //成功后,这些物流信息你就返回：物流单号和物流公司信息就行了
+                        $("#logModal input[name='company']").val(data['company']);
+                        $("#logModal input[name='waybillNum']").val(data['waybillNum']);
+                        $("#logModal input").attr("disabled","disabled");
                     }else{
                         if(data['isLogin']==false){
                             window.location.href="SuperAdmin/login";
+                            return;
                         }
+                        alert("意外错误！请重试！");
                     }
                 },
                 error : function(data){
@@ -368,6 +380,7 @@
             });
         }
         if(judgeId==1||judgeId==2||judgeId==4){
+            $("#logModal input").removeAttr("disabled");
             $('#logModal').modal('toggle');
         }
     });

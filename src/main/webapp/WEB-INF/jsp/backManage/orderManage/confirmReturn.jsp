@@ -191,7 +191,11 @@
                     width: '70',
                     formatter:function(value, row, index){
                         //btn btn-default btn-xs refuseApply
-                        return "<button class='btn btn-default btn-xs refuseApply' status='1' applyId='"+row.applyId+"'>拒绝"+"</button><br/><button style='margin-top:8px' class='btn btn-default btn-xs okApply' status='2' applyId='"+row.applyId+"'>通过"+"</button>";
+                        if(row.status==0){
+                            return "<button class='btn btn-default btn-xs refuseApply' status='1' applyId='"+row.applyId+"'>拒绝"+"</button><br/><button style='margin-top:8px' class='btn btn-default btn-xs okApply' status='2' applyId='"+row.applyId+"'>通过"+"</button>";
+                        }
+                        return "<button class='btn btn-default btn-xs '>无</button>";
+
                         
                     }
                 }
@@ -275,6 +279,7 @@
                             window.location.href="SuperAdmin/login";
                             return;
                         }
+                        console.log(data);
                         alert("失败！");
                     }
                 },
