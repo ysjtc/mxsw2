@@ -12,7 +12,7 @@ public interface Apply_returnMapper {
     Apply_return repeatApply(@Param("oid") Integer oid);
 
     //更新申请退换货表的状态
-    boolean updateApplyStatus(@Param("oId")Integer oId,@Param("status") Integer status);
+    boolean updateApplyStatus(@Param("applyId")Integer applyId,@Param("status") Integer status);
 
 
 }

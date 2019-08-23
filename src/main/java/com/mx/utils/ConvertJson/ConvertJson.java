@@ -102,8 +102,6 @@ public class ConvertJson {
         for (int i=0;i<list.size();i++){
             //把你要拼接的字段放进去"\""+"ItemName"+"\":"+"\""+itemName.getName()+"("+order_detail.getCount()+") \","+
             jsonStrAll.append(list.get(i).TOJSON()+ ",");
-//            jsonStrAll.append("\""+"ItemName"+"\":");
-//            str=jsonStrAll.substring(0,jsonStrAll.lastIndexOf(";"))+jsonStrAll.append("},");
         }
         //把最后的，（逗号）截取掉
         str = jsonStrAll.substring(0, jsonStrAll.length()-1)+"]}";
@@ -131,16 +129,26 @@ public class ConvertJson {
 
 
     //后台管理
-    public static String ConvertOrderBackManage(int count,List<Order> list) {
+    public static String ConvertOrderBackManage(int count,List<Order> list,String what) {
         //定义一个StringBuilder
         StringBuilder jsonStrAll = new StringBuilder("{");
         String str=null;
         jsonStrAll.append("\""+"total"+"\""+":"+count+","+"\""+
                 "rows"+"\""+":[");
-        for (int i=0;i<list.size();i++){
-            //把你要拼接的字段放进去
-            jsonStrAll.append(list.get(i).TOJSONBackManage() +",");
+        if (what.equals("queryOrder")){
+            for (int i=0;i<list.size();i++){
+                //把你要拼接的字段放进去
+                jsonStrAll.append(list.get(i).TOJSONBackManage() +",");
+            }
+        }else if (what.equals("queryOrderReturn")){
+            for (int i=0;i<list.size();i++){
+                //把你要拼接的字段放进去
+                jsonStrAll.append(list.get(i).TOJSONBackManageReturn() +",");
+            }
+        }else {
+            return "\"result\";false";
         }
+
         //把最后的，（逗号）截取掉
         str = jsonStrAll.substring(0, jsonStrAll.length()-1)+"]}";
 //        System.out.println(str);

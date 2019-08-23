@@ -45,6 +45,6 @@
         apply_status=#{status},
       </if>
     </set>
-    where o_id=#{oId}
+    where apply_id=#{applyId}
   </update>
 </mapper>

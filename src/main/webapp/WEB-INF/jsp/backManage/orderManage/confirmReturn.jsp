@@ -45,7 +45,7 @@
                                 <div class="form-inline" role="form" id="findOrder">
                                     <div class="form-group">
                                         <label>用户ID：</label>
-                                        <input name="u_id" type="text" class="form-control">
+                                        <input name="name" type="text" class="form-control">
                                     </div>
                                     &emsp;&emsp;
                                     <div class="form-group">
@@ -117,7 +117,7 @@
             pageNumber: 1, // 首页页码
             sidePagination: 'server', // 设置为服务器端分页
             sortable: true,          //列排序
-            sortName: 'applyId', // 要排序的字段
+            sortName: 'apply_id', // 要排序的字段
             sortOrder: 'asc', // 排序规则
             queryParams:function(params){
                 //alert(JSON.stringify(queryData));
@@ -128,12 +128,12 @@
                     sortOrder: params.order, // 排序规则
                 };
                 if(!jQuery.isEmptyObject(queryData)){
-                    // alert(queryData);
-                    param['queryData']=queryData;
-
-                    //alert(JSON.stringify(param));
+                    $.each(queryData,function(key,value){
+                        param[key]=value;
+                    });
                 }
                 // alert(JSON.stringify(param));
+                console.log(param);
                 return param;
             },
             columns:
@@ -181,6 +181,7 @@
                     valign: 'middle',
                     width: '100',
                     formatter:function(value, row, index){
+                        console.log(value);
                         return value=="0"? "未处理":value=="1"? "拒绝":"通过";
                     }
                 }, {
@@ -189,8 +190,8 @@
                     valign: 'middle',
                     width: '70',
                     formatter:function(value, row, index){
-                        
-                        return "<button class='btn btn-default btn-xs refuseApply' status='1' applyId='"+row.applyId+"'>"+拒绝+"</button><br/><button style='margin-top:8px' class='btn btn-default btn-xs okApply' status='2' applyId='"+row.applyId+"'>"+通过+"</button>";
+                        //btn btn-default btn-xs refuseApply
+                        return "<button class='btn btn-default btn-xs refuseApply' status='1' applyId='"+row.applyId+"'>拒绝"+"</button><br/><button style='margin-top:8px' class='btn btn-default btn-xs okApply' status='2' applyId='"+row.applyId+"'>通过"+"</button>";
                         
                     }
                 }
@@ -206,7 +207,7 @@
         })
     }
     //查看所有退货申请的接口
-    doTable("Items/query/AllItems");
+    doTable("BackManageOrder/CheckReturn");
 
 	//订单查询只允许单条件查询
     $("input[name='name']").unbind('blur').bind('blur', function(){
@@ -236,13 +237,13 @@
         if(name!=""){
             data['name']=name;
             //根据登录id查询订单的接口
-            var url="BackManageOrder/seeAllOrderByuId";
+            var url="BackManageOrder/seeAllOrderReturnByuId";
             // console.log(data);
             doTable(url,data);
         }else if(number!=""){
             data['trade_number']=number;
             //根据订单编号查询订单的接口
-            var url="BackManageOrder/seeOrder";
+            var url="BackManageOrder/seeOrderReturn";
             // console.log(data);
             doTable(url,data);
         }
@@ -256,29 +257,33 @@
 		var data={};
 		data['status']=$(this).attr("status");
 		data['applyId']=$(this).attr("applyId");
-		//ajax发送数据
-		$.ajax({
-			url : 'aa/bb',
-			data:data,
-			type : 'POST',
-			success : function(data) {
-				data=JSON.parse(data);
-				if(data['result']){
-					//后台受理成功，刷新订单
-					alert("操作成功！");
-					doTable("FrontManageOrder/seeAllOrder");
-				}else{
-					if(data['isLogin']==false){
-						window.location.href="SuperAdmin/login";
-						return;
-					}
-					alert("失败！");
-				}
-			},
-			error : function(data){
-				alert("请检查网络！");
-			}
-		});
+		var confirmPost=confirm("确认此操作？");
+		if(confirmPost==true){
+            //ajax发送数据
+            $.ajax({
+                url : 'BackManageOrder/updateApplyStatus',
+                data:data,
+                type : 'POST',
+                success : function(data) {
+                    data=JSON.parse(data);
+                    if(data['result']){
+                        //后台受理成功，刷新订单
+                        alert("操作成功！");
+                        doTable("BackManageOrder/CheckReturn");
+                    }else{
+                        if(data['isLogin']==false){
+                            window.location.href="SuperAdmin/login";
+                            return;
+                        }
+                        alert("失败！");
+                    }
+                },
+                error : function(data){
+                    alert("请检查网络！");
+                }
+            });
+        }
+
 	});
   
 	

@@ -327,7 +327,7 @@
             $("#logModalLabel").html("查看发货物流");
             //ajax发送请求发货物流的信息
             $.ajax({
-                url : 'aa/bb',
+                url : 'BackManageOrder/checkLogistics',
                 type : 'GET',
                 success : function(data) {
                     data=JSON.parse(data);
@@ -349,7 +349,7 @@
             $("#logModalLabel").html("查看退货物流");
             //ajax发送请求退货物流的信息
             $.ajax({
-                url : 'aa/bb',
+                url : 'BackManageOrder/checkLogistics',
                 type : 'GET',
                 success : function(data) {
                     data=JSON.parse(data);

@@ -7,7 +7,9 @@ import com.mx.utils.ConvertJson.ConvertJson;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class OrderServiceImpl implements OrderService {
@@ -53,7 +55,7 @@ public class OrderServiceImpl implements OrderService {
         try{
             String str="";
             List<Order> orderlist=orderMapper.SeeAllOrder(pageSize,offset,sort,sortOrder,uid);
-            System.out.println("++++++++"+orderlist);
+//            System.out.println("++++++++"+orderlist);
             //将查询结果转换成json数组
             int count=orderMapper.AllOrderCount(uid);
             if (count==0){
@@ -129,34 +131,47 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public String SeeAllOrderBackManage(Integer pageSize, Integer offset, String sort, String sortOrder, Integer uid) {
         System.out.println(uid);
-        List<Order> orderlist=orderMapper.SeeAllOrderBackManage(pageSize,offset,sort,sortOrder,uid);
+        try{
+            List<Order> orderlist=orderMapper.SeeAllOrderBackManage(pageSize,offset,sort,sortOrder,uid);
 //        System.out.println("++++++++"+orderlist);
-        //将查询结果转换成json数组
-        int count=orderMapper.AllOrderCount(uid);
-        if (count==0){
+            //将查询结果转换成json数组
+            int count=orderMapper.AllOrderCount(uid);
+            if (count==0){
+                return "\"result\":false";
+            }else {
+                String str = ConvertJson.ConvertOrderBackManage(count, orderlist,"queryOrder");
+                System.out.println("----" + str);
+                return str;
+            }
+        }catch (Exception e){
+            e.printStackTrace();
             return "\"result\":false";
-        }else {
-            String str = ConvertJson.ConvertOrderBackManage(count, orderlist);
-            System.out.println("----" + str);
-            return str;
         }
+
     }
 
 
     @Override
     public String SeeAllOrders(Integer pageSize, Integer offset, String sort, String sortOrder) {
-        List<Order> orderlist=orderMapper.SeeAllOrders(pageSize,offset,sort,sortOrder);
-        System.out.println("++++++++"+orderlist);
-        //将查询结果转换成json数组
-        int count=orderMapper.AllOrdersCount();
-        if (count==0){
-            return "\"result\":false";
-        }else {
-//            int num=orderMapper.queryItemsCountByOrder();
-            String str= ConvertJson.ConvertOrderBackManage(count,orderlist);
-            System.out.println("----"+str);
-            return str;
+
+        try{
+            List<Order> orderlist=orderMapper.SeeAllOrders(pageSize,offset,sort,sortOrder);
+    //        System.out.println("++++++++"+orderlist);
+            //将查询结果转换成json数组
+            int count=orderMapper.AllOrdersCount();
+            if (count==0){
+                return "\"result\":false";
+            }else {
+    //            int num=orderMapper.queryItemsCountByOrder();
+                String str= ConvertJson.ConvertOrderBackManage(count,orderlist,"queryOrder");
+    //            System.out.println("----"+str);
+                return str;
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+            return  "\"result\":false";
         }
+
     }
 
     @Override
@@ -200,9 +215,9 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public boolean updateApplyStatus(Integer oId, Integer status) {
+    public boolean updateApplyStatus(Integer applyId, Integer status) {
         try{
-            boolean Appstatus=apply_returnMapper.updateApplyStatus(oId,status);
+            boolean Appstatus=apply_returnMapper.updateApplyStatus(applyId,status);
             if (Appstatus){ return true; }
             else return false;
         }catch (Exception e){
@@ -246,6 +261,92 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
+    public String CheckReturn(int pageSize, int offset, String sort, String sortOrder) {
+        try{
+            List<Order> CheckReturn=orderMapper.CheckReturn(pageSize,offset,sort,sortOrder);
+            System.out.println("++++++++"+CheckReturn);
+            //将查询结果转换成json数组
+            int count=orderMapper.CheckReturnCount();
+            if (count==0){
+                return "\"result\":false";
+            }else {
+                String str = ConvertJson.ConvertOrderBackManage(count, CheckReturn,"queryOrderReturn");
+                System.out.println("----" + str);
+                return str;
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+            return "\"result\":false";
+        }
+    }
+
+    @Override
+    public Map checkLogistics(Integer oId) {
+        Map logmaps=new HashMap();
+        try{
+            Logistics logisticslist=logisticsMapper.checkLogistics(oId);
+
+            logmaps.put("company",logisticslist.getCompany());
+            logmaps.put("waybillNum",logisticslist.getWaybillNum());
+            return logmaps;
+        }catch (Exception e){
+            e.printStackTrace();
+            logmaps.put("result",false);
+            return logmaps;
+        }
+    }
+
+    @Override
+    public String SeeAllOrderReurnBackManage(int pageSize, int offset, String sort, String sortOrder, int uid) {
+        try{
+            List<Order> orderlist=orderMapper.SeeAllOrderReturnBackManage(pageSize,offset,sort,sortOrder,uid);
+//        System.out.println("++++++++"+orderlist);
+           //某人的全部订单
+            List<Order> SBorderlist=orderMapper.SeeAllOrderBackManage(pageSize,offset,sort,sortOrder,uid);
+            //所有的退单
+            List<Order> AllorderReturnlist=orderMapper.CheckReturn(pageSize,offset,sort,sortOrder);
+            int count=0;
+            for (int i=0;i<SBorderlist.size();i++) {
+                for (int J = 0; J < AllorderReturnlist.size(); J++) {
+                   if ( SBorderlist.get(i).getoId().equals(AllorderReturnlist.get(J).getoId())){
+                       count++;
+                   }
+                }
+            }
+//            System.out.println("count:::::::::::"+count);
+            if (count==0){
+                return "\"result\":false";
+            }else {
+                //将查询结果转换成json数组
+                String str = ConvertJson.ConvertOrderBackManage(count, orderlist,"queryOrderReturn");
+//                System.out.println("----" + str);
+                return str;
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+            return "\"result\":false";
+        }
+    }
+
+    @Override
+    public String SeeOrderReturn(String trade_number) {
+        try{
+            List<Order> orderlist=orderMapper.SeeOrderReturn(trade_number);
+            int SeeOrderCount=orderMapper.SeeOrderReturnCount(trade_number);
+            if (SeeOrderCount==0){
+                return "\"result\":false";
+            }else {
+                //将查询结果转换成json数组
+                String str = ConvertJson.ConvertOrderBackManage(1, orderlist,"queryOrderReturn");
+                return str;
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+            return "\"result\":false";
+        }
+    }
+
+    @Override
     public String SeeOrder(String trade_number) {
         try{
             List<Order> orderlist=orderMapper.SeeOrder(trade_number);
@@ -254,7 +355,7 @@ public class OrderServiceImpl implements OrderService {
                 return "\"result\":false";
             }else {
                 //将查询结果转换成json数组
-                String str = ConvertJson.ConvertOrderBackManage(1, orderlist);
+                String str = ConvertJson.ConvertOrderBackManage(1, orderlist,"queryOrder");
                 return str;
             }
         }catch (Exception e){

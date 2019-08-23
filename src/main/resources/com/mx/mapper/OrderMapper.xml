@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.mx.mapper.OrderMapper">
-  <resultMap id="OrderAndDetailMaps" type="com.mx.pojo.Order">
+  <resultMap id="OrderAndDetailMaps" type="com.mx.pojo.Order" >
     <result column="o_id" jdbcType="INTEGER" property="oId" />
     <result column="o_name" jdbcType="VARCHAR" property="oName" />
     <!--<result property="uId" jdbcType="INTEGER" column="u_id"/>-->
@@ -30,6 +30,11 @@
           <result column="item_id" jdbcType="INTEGER" property="itemId" />
           <result column="count" jdbcType="INTEGER" property="itemCount" />
           <result column="total_price" jdbcType="REAL" property="totalPrice" />
+      </association>
+      <association property="apply_return" javaType="com.mx.pojo.Apply_return">
+          <id property="applyId" jdbcType="INTEGER" column="apply_id"/>
+          <result property="reason" jdbcType="VARCHAR" column="reason"/>
+          <result property="applyStatus" jdbcType="VARCHAR" column="apply_status"/>
       </association>
   </resultMap>
 
@@ -86,11 +91,6 @@
           select LAST_INSERT_ID()
       </selectKey>
   </insert>
-  <select id="SeeOrderCount"  resultType="Integer">
-      SELECT count(*) from `order`
-      where number=#{number}
-
-  </select>
   <select id="SeeAllOrder"  resultMap="OrderAndDetailMaps">
       SELECT t1.`o_id`,t1.`o_name` ,t1.`number`
 --       ,CASE t1.`o_status` WHEN 0 THEN '未处理' WHEN 1 THEN '未支付' WHEN 2 THEN '待收货中' WHEN 3 THEN '收货完成' WHEN 4 THEN '退货中' WHEN 5 THEN '退货完成' END AS `oStatus`
@@ -111,15 +111,6 @@
           limit #{offset},#{pageSize}
       </where>
   </select>
-    <!--<select id="queryAllOid" resultMap="OrderAndDetailMaps">-->
-        <!--select o_id from `order`-->
-        <!--where u_id=#{uid}-->
-    <!--</select>-->
-    <!--<select id="queryItemNames" resultMap="OrderAndDetailMaps">-->
-        <!--select  t1.name,t2.count-->
-        <!--from item as t1,order_detail as t2-->
-        <!--where t1.item_id=t2.item_id and t2.o_id=#{oId}-->
-    <!--</select>-->
   <select id="AllOrderCount" resultType="Integer">
         select count(*) from  `order` where u_id=#{uid}
     </select>
@@ -138,22 +129,24 @@
 
     <!--后台-->
     <select id="SeeAllOrders"  resultMap="OrderAndDetailMaps">
-        SELECT t1.`o_id` ,t5.name as `Uname`,t1.`number`,t1.o_status,t1.`note`,t1.`create_time`,t2.`total_price`,t4.`name`,t2.`count`,t3.`addr`
-        FROM  `order` AS t1, `order_detail` AS t2 , `address` AS t3 , `item` AS t4 ,user as t5
+        SELECT t1.`o_id`,t1.`number`,t5.`name` as `Uname`
+        --       ,CASE t1.`o_status` WHEN 0 THEN '未处理' WHEN 1 THEN '未支付' WHEN 2 THEN '待收货中' WHEN 3 THEN '收货完成' WHEN 4 THEN '退货中' WHEN 5 THEN '退货完成' END AS `oStatus`
+        ,t1.o_status,t1.`note`,t1.`create_time`,t2.`total_price`,GROUP_CONCAT(t4.`name`,'(',t2.`count`,')') as name,t3.`addr`
+        FROM  `order` AS t1, `order_detail` AS t2 , `address` AS t3 , `item` AS t4,user as t5
         <where>
-            t1.`add_id`=t3.`add_id` AND
-            t1.`o_id`=t2.`o_id` AND
-            t2.`item_id`=t4.`item_id` and
-            t5.`u_id`=t1.`u_id`
-            GROUP BY o_id
-            <if test="sort!=null and sortOrder!=null">
-                ORDER BY #{sort} #{sortOrder}
-            </if>
-            limit #{offset},#{pageSize}
+        t1.`add_id`=t3.`add_id` AND
+        t1.`o_id`=t2.`o_id` AND
+        t2.`item_id`=t4.`item_id` AND
+        t5.`u_id`=t1.`u_id`
+        GROUP BY o_id
+        <if test="sort!=null and sortOrder!=null">
+            ORDER BY #{sort} #{sortOrder}
+        </if>
+        limit #{offset},#{pageSize}
         </where>
     </select>
     <select id="SeeOrder"  resultMap="OrderAndDetailMaps">
-        SELECT t1.`o_id`,t5.`name` as `Uname`,t1.`number`,t1.o_status,t1.`note`,t1.`create_time`,t2.`total_price`,t4.`name`,t2.`count`,t3.`addr`
+        SELECT t1.`o_id`,t5.`name` as `Uname`,t1.`number`,t1.o_status,t1.`note`,t1.`create_time`,t2.`total_price`,GROUP_CONCAT(t4.`name`,'(',t2.`count`,')') as name,t3.`addr`
         FROM  `order` AS t1, `order_detail` AS t2 , `address` AS t3 , `item` AS t4 ,user as t5
         <where>
             t1.`add_id`=t3.`add_id` AND
@@ -166,8 +159,32 @@
         </where>
 
     </select>
+    <select id="SeeOrderCount"  resultType="Integer">
+      SELECT count(*) from `order`
+      where number=#{number}
+
+  </select>
+    <select id="SeeOrderReturnCount"  resultType="Integer">
+      SELECT count(*) from `order`
+      where number=#{number}
+
+  </select>
+    <select id="SeeOrderReturn"  resultMap="OrderAndDetailMaps">
+        SELECT t1.`o_id`,t3.apply_id ,t5.name as `Uname`,t1.`number`,t3.apply_status,t3.reason,t1.`create_time`,GROUP_CONCAT(t4.`name`,'(',t2.`count`,')') as name
+        FROM  `order` AS t1, `order_detail` AS t2 ,apply_return as t3, `item` AS t4 ,`user` as t5
+        <where>
+            t1.`o_id`=t3.`o_id` AND
+            t1.`o_id`=t2.`o_id` AND
+            t2.`item_id`=t4.`item_id` and
+            t5.`u_id`=t1.`u_id` and
+            <if test="number!=null and number!=''">
+                t1.number=#{number}
+            </if>
+        </where>
+
+    </select>
     <select id="SeeAllOrderBackManage"  resultMap="OrderAndDetailMaps">
-        SELECT t1.`o_id` ,t5.name as `Uname`,t1.`number`,t1.o_status,t1.`note`,t1.`create_time`,t2.`total_price`,t4.`name`,t2.`count`,t3.`addr`
+        SELECT t1.`o_id` ,t5.name as `Uname`,t1.`number`,t1.o_status,t1.`note`,t1.`create_time`,t2.`total_price`,GROUP_CONCAT(t4.`name`,'(',t2.`count`,')') as name,t3.`addr`
         FROM  `order` AS t1, `order_detail` AS t2 , `address` AS t3 , `item` AS t4 ,user as t5
         <where>
             t1.`add_id`=t3.`add_id` AND
@@ -188,7 +205,7 @@
         select count(*) from `order`
     </select>
     <select id="QueryAllOrderStatus"  resultMap="OrderAndDetailMaps">
-        SELECT t1.`o_id` ,t5.name as `Uname`,t1.`number`,t1.o_status,t1.`note`,t1.`create_time`,t2.`total_price`,t4.`name`,t2.`count`,t3.`addr`
+        SELECT t1.`o_id` ,t5.name as `Uname`,t1.`number`,t1.o_status,t1.`note`,t1.`create_time`,t2.`total_price`,GROUP_CONCAT(t4.`name`,'(',t2.`count`,')') as name,t3.`addr`
         FROM  `order` AS t1, `order_detail` AS t2 , `address` AS t3 , `item` AS t4 ,user as t5
         <where>
             t1.`add_id`=t3.`add_id` AND
@@ -222,4 +239,44 @@
         select count from  order_detail where  o_id=#{oId}
     </select>
 
+    <select id="CheckReturn" resultMap="OrderAndDetailMaps">
+        SELECT t1.`o_id`,t3.apply_id ,t5.name as `Uname`,t1.`number`,t3.apply_status,t3.reason,t1.`create_time`,GROUP_CONCAT(t4.`name`,'(',t2.`count`,')') as name
+        FROM  `order` AS t1, `order_detail` AS t2 ,apply_return as t3, `item` AS t4 ,`user` as t5
+        <where>
+            t1.`o_id`=t3.`o_id` AND
+            t1.`o_id`=t2.`o_id` AND
+            t2.`item_id`=t4.`item_id` and
+            t5.`u_id`=t1.`u_id`
+            GROUP BY o_id
+            <if test="sort!=null and sortOrder!=null">
+                ORDER BY #{sort} #{sortOrder}
+            </if>
+            limit #{offset},#{pageSize}
+        </where>
+    </select>
+    <select id="CheckReturnCount" resultType="Integer">
+        select count(*) from  apply_return
+    </select>
+    <select id="SeeAllOrderReturnBackManage" resultMap="OrderAndDetailMaps">
+        SELECT t1.`o_id`,t3.apply_id ,t5.name as `Uname`,t1.`number`,t3.apply_status,t3.reason,t1.`create_time`,GROUP_CONCAT(t4.`name`,'(',t2.`count`,')') as name
+        FROM  `order` AS t1, `order_detail` AS t2 ,apply_return as t3, `item` AS t4 ,`user` as t5
+        <where>
+            t1.`o_id`=t3.`o_id` AND
+            t1.`o_id`=t2.`o_id` AND
+            t2.`item_id`=t4.`item_id` and
+            t5.`u_id`=t1.`u_id` AND
+            <if test="uid!=null and uid!=''">
+                t1.`u_id`=#{uid}
+            </if>
+            GROUP BY o_id
+            <if test="sort!=null and sortOrder!=null">
+                ORDER BY #{sort} #{sortOrder}
+            </if>
+            limit #{offset},#{pageSize}
+        </where>
+    </select>
+    <select id="AllOrderReturnCount" resultType="Integer">
+        select count(*) from  apply_return
+        where o_id=#{oId}
+    </select>
 </mapper>

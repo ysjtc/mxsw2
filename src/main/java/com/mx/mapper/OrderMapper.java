@@ -57,5 +57,21 @@ public interface OrderMapper {
     //查询订单详情表的商品数量
     int queryItemsCountByOrder(@Param("oId") Integer oId);
 
+    //查询所有退单
+    List<Order> CheckReturn(@Param("pageSize")int pageSize,@Param("offset") int offset,@Param("sort") String sort,@Param("sortOrder") String sortOrder);
 
+    //查询退单个数
+    int CheckReturnCount();
+
+    //查询某个用户的全部退单
+    List<Order> SeeAllOrderReturnBackManage(@Param("pageSize")int pageSize,@Param("offset") int offset,@Param("sort") String sort,@Param("sortOrder") String sortOrder,@Param("uid") int uid);
+
+    //查询某个用户的全部退单的个数
+    int AllOrderReturnCount(@Param("oId") int oId);
+
+    //查询单个退单
+    List<Order>  SeeOrderReturn(@Param("number") String number);
+
+    //查询单个退单是否存在
+    int SeeOrderReturnCount(String trade_number);
 }

@@ -40,6 +40,9 @@ public class Order implements Serializable {
     //备注
     private String note;
 
+    //退换货申请表
+    private Apply_return apply_return;
+
     public Order() {
     }
 
@@ -121,10 +124,27 @@ public class Order implements Serializable {
     }
 
     public void setOrder_detail(Order_Detail order_detail) {
+
         this.order_detail = order_detail;
     }
 
-//    前台展示
+    public Apply_return getApply_return() {
+        return apply_return;
+    }
+
+    public void setApply_return(Apply_return apply_return) {
+        this.apply_return = apply_return;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    //    前台展示
     public String TOJSON(){//ipad：2;iphone:1;
         return  "{"+"\""+"oId"+"\":"+"\""+ oId +"\","+
                 "\""+"oName"+"\":"+"\""+oName+"\","+
@@ -142,12 +162,24 @@ public class Order implements Serializable {
         return  "{"+"\""+"oId"+"\":"+"\""+ oId +"\","+
                 "\""+"Number"+"\":"+"\""+number+"\","+
                 "\""+"Name"+"\":"+"\""+user.getName()+"\","+
-                "\""+"ItemName"+"\":"+"\""+itemName.getName()+"("+order_detail.getItemCount()+") \","+
+                "\""+"ItemName"+"\":"+"\""+itemName.getName()+" \","+
                 "\""+"Address"+"\":"+"\""+address.getAddr()+"\","+
                 "\""+"Note"+"\":"+"\""+note+"\","+
                 "\""+"createTime"+"\":"+"\""+createTime+"\","+
                 "\""+"totalPrice"+"\":"+"\""+order_detail.getTotalPrice()+"\","+
                 "\""+"Status"+"\":"+"\""+oStatus+"\""+
+                "}";
+    }
+//    退单
+    public String TOJSONBackManageReturn(){//ipad：2;iphone:1;
+        return  "{"+
+                "\""+"applyId"+"\":"+"\""+apply_return.getApplyId()+"\","+
+                "\""+"number"+"\":"+"\""+number+"\","+
+                "\""+"name"+"\":"+"\""+user.getName()+"\","+
+                "\""+"item"+"\":"+"\""+itemName.getName()+"\","+
+                "\""+"create_time"+"\":"+"\""+createTime+"\","+
+                "\""+"reason"+"\":"+"\""+apply_return.getReason().trim()+"\","+
+                "\""+"status"+"\":"+"\""+apply_return.getApplyStatus()+"\""+
                 "}";
     }
 
@@ -158,12 +190,13 @@ public class Order implements Serializable {
                 ", oName='" + oName + '\'' +
                 ", itemName=" + itemName +
                 ", order_detail=" + order_detail +
-                ", uId=" + user +
+                ", user=" + user +
                 ", address=" + address +
                 ", createTime='" + createTime + '\'' +
                 ", number='" + number + '\'' +
-                ", oStatus=" + oStatus +
+                ", oStatus='" + oStatus + '\'' +
                 ", note='" + note + '\'' +
+                ", apply_return=" + apply_return +
                 '}';
     }
 }

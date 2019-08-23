@@ -38,4 +38,11 @@
     select l_id from logistics
     where o_id=#{oId}
   </select>
+  <select id="checkLogistics" resultMap="LogMaps">
+   SELECT waybill_num,company
+     from logistics
+    <where>
+      o_id=#{oId}
+    </where>
+  </select>
 </mapper>
