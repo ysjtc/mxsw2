@@ -304,4 +304,33 @@ public class OrderFrontManageController {
         }
     }
 
+    //查询用户的退换货
+    @ResponseBody
+    @RequestMapping("/applyOrder")
+    public String applyOrder(@RequestBody String param, HttpSession session){
+        System.out.println(param);
+        //当前登陆的用户id
+        String uname=(String)session.getAttribute("USER_ID");
+        if (uname==null||uname.equals("")){
+            return "{\"result\":false,\"isLogin\":false}";
+        }else {
+            try{
+                int uid=userService.getUserIdByname(uname);
+                String pageSize=String.valueOf(JsonToJsonObject.ToJsonObject(param,"pageSize"));
+                String offset=String.valueOf(JsonToJsonObject.ToJsonObject(param,"offset"));
+                String sort=String.valueOf(JsonToJsonObject.ToJsonObject(param,"sort"));
+                String sortOrder=String.valueOf(JsonToJsonObject.ToJsonObject(param,"sortOrder"));
+                System.out.println(pageSize+offset+sort+sortOrder);
+                String applyOrder=orderService.SeeAllOrderReurnBackManage(Integer.parseInt(pageSize),Integer.parseInt(offset),sort,sortOrder,uid);
+                return applyOrder;
+            }catch (Exception e){
+                e.printStackTrace();
+                //重定向到404
+                return "{\"result\":false}";
+            }
+
+        }
+
+    }
+
 }

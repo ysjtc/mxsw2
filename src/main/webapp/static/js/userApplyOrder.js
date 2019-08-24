@@ -15,7 +15,7 @@ $(document).ready(function() {
             pageNumber: 1, // 首页页码
             sidePagination: 'server', // 设置为服务器端分页
             sortable: true,          //列排序
-            sortName: 'applyId', // 要排序的字段
+            sortName: 'apply_id', // 要排序的字段
             sortOrder: 'asc', // 排序规则
             queryParams:function(params){
                 //alert(JSON.stringify(queryData));
@@ -93,7 +93,7 @@ $(document).ready(function() {
 
         })
     }
-    //查看所有退货申请的接口这是哪个页面的？
-    doTable("");
+    //查看所有退货申请的接口
+    doTable("FrontManageOrder/applyOrder");
 
 });

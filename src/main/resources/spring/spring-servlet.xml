@@ -77,11 +77,13 @@
         <mvc:interceptor>
             <!--拦截url-->
             <mvc:mapping path="/User/**/*"/>
-            <mvc:mapping path="/FrontForward/personalMain"/>
+            <mvc:mapping path="/FrontForward/**/*"/>
             <mvc:exclude-mapping path="/User/**/login"/>
             <mvc:exclude-mapping path="/User/**/register"/>
             <mvc:exclude-mapping path="/User/**/loginMain"/>
             <mvc:exclude-mapping path="/User/**/getAlluser"/>
+            <mvc:exclude-mapping path="/FrontForward/loginMain"/>
+            <mvc:exclude-mapping path="/FrontForward/error"/>
             <!-- 自定义拦截器类 -->
             <bean class="com.mx.interCeptors.LoginInterCeptor"/>
         </mvc:interceptor>

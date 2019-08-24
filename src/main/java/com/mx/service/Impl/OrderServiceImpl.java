@@ -310,7 +310,6 @@ public class OrderServiceImpl implements OrderService {
     public String SeeAllOrderReurnBackManage(int pageSize, int offset, String sort, String sortOrder, int uid) {
         try{
             List<Order> orderlist=orderMapper.SeeAllOrderReturnBackManage(pageSize,offset,sort,sortOrder,uid);
-//        System.out.println("++++++++"+orderlist);
            //某人的全部订单
             List<Order> SBorderlist=orderMapper.SeeAllOrderBackManage(pageSize,offset,sort,sortOrder,uid);
             //所有的退单
@@ -323,13 +322,11 @@ public class OrderServiceImpl implements OrderService {
                    }
                 }
             }
-//            System.out.println("count:::::::::::"+count);
             if (count==0){
                 return "\"result\":false";
             }else {
                 //将查询结果转换成json数组
                 String str = ConvertJson.ConvertOrderBackManage(count, orderlist,"queryOrderReturn");
-//                System.out.println("----" + str);
                 return str;
             }
         }catch (Exception e){

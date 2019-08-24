@@ -298,7 +298,7 @@ public class OrderBackManageController {
     @ResponseBody
     @RequestMapping("/seeAllOrderReturnByuId")
     public String seeAllOrderReturnByuId(@RequestBody String param,HttpSession session){
-        //当前登陆的用户id
+        //当前登陆的管理员id
         if (session.getAttribute("SUPERADMIN_ID")==null||session.getAttribute("SUPERADMIN_ID").equals("")){
             return "{\"result\":false,\"isLogin\":false}";
         }else {
