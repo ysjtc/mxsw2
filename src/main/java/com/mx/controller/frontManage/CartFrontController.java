@@ -38,7 +38,6 @@ public class CartFrontController {
     @ResponseBody
     @RequestMapping("/addItemToCart")
     public String addItemToCart(Cart cart,HttpSession session){
-//        System.out.println("count:"+cart.getCount()+"ItemID::::"+item_id);
         String truejson="{\"result\":true}";
         String falsejson="{\"result\":false}";
         //1.获取uid
@@ -63,9 +62,10 @@ public class CartFrontController {
                     cart.setUser(user);
 //                    cart.setItem(item);
 
-                    System.out.println("cart:"+cart);
+//                    System.out.println("cart:"+cart);
                     //由于数据库中uid和itemid没有作为联合主键，所以这里进行判断是否存在同一个用户对同一个商品重复下单
-                    boolean repeat=cartService.repeatToCart(uid,cart.getItem().getItemId());
+                    boolean repeat=cartService.repeatToCart(uid,cart.getItem().getItemId(),session);
+//                    System.out.println("repeat为："+repeat);
                     if (repeat){
                         boolean addItemToCart=cartService.addItemToCart(cart);
                         if (addItemToCart){
@@ -73,7 +73,22 @@ public class CartFrontController {
                         }else {
                             return falsejson;
                         }
-                    }else return falsejson;
+                    }else {
+                        //如果重复下单，即将商品数量加count
+                        //1-获取商品id
+                        int cartId=Integer.parseInt(String.valueOf(session.getAttribute("RepeatCartId")));
+                        //2-获取商品数量(前台发送的+后台查询的)
+                        int count=cart.getCount()+cartService.queryitemCount(uid,cart.getItem().getItemId());
+//                        System.out.println("cart.getCount()"+cart.getCount()+"count:::::"+count);
+                        //判断数量是否加入成功
+                        boolean edit=cartService.editCount(cartId,count);
+                        session.removeAttribute("RepeatCartId");
+                        if (edit){
+                            return truejson;
+                        }else {
+                            return falsejson;
+                        }
+                    }
                 }catch (Exception e){
                     e.printStackTrace();
                     //重定向到404
@@ -148,10 +163,14 @@ public class CartFrontController {
     //批量删除
     @ResponseBody
     @RequestMapping("/deleteCartItem")
-    public String deleteCartItem(Integer[] cart_id,HttpSession session) {
+    public String deleteCartItem(Integer[] cartId,HttpSession session) {
+        System.out.println(cartId);
+        for (int i=0;i<cartId.length;i++){
+            System.out.println(cartId[i]);
+        }
         String truejson = "{\"result\":true}";
         String falsejson = "{\"result\":false}";
-        System.out.println(cart_id.length);
+        System.out.println(cartId.length);
         //1.获取uid
         String name = (String) session.getAttribute("USER_ID");
         if (name == null || name.equals("")) {
@@ -163,12 +182,14 @@ public class CartFrontController {
                     return falsejson;
                 }
                 boolean delItem=false;
-                for (int i=0;i<cart_id.length;i++){
-                    delItem=cartService.deleteCartItem(cart_id[i]);
+                for (int i=0;i<cartId.length;i++){
+                    delItem=cartService.deleteCartItem(cartId[i]);
                 }
                 if (delItem){
                     return truejson;
-                }else return falsejson;
+                }else {
+                    return falsejson;
+                }
             } catch (Exception e) {
                 e.printStackTrace();
                 //重定向到404

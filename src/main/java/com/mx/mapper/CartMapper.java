@@ -29,4 +29,7 @@ public interface CartMapper {
 
     //由于数据库中uid和itemid没有作为联合主键，所以这里进行判断是否存在同一个用户对同一个商品重复下单
     Cart repeatToCart(@Param("uid") Integer uid,@Param("itemId") Integer itemId);
+
+    //查询某个商品的数量
+    Cart queryitemCount(@Param("uid") Integer uid,@Param("itemId") Integer itemId);
 }

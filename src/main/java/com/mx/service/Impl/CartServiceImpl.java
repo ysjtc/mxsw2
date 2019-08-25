@@ -7,6 +7,7 @@ import com.mx.utils.ConvertJson.ConvertJson;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.http.HttpSession;
 import java.util.List;
 
 /**
@@ -75,20 +76,39 @@ public class CartServiceImpl implements CartService {
     }
 
     @Override
-    public boolean repeatToCart(int uid, Integer item_id) {
+    public boolean repeatToCart(int uid, Integer item_id, HttpSession session) {
         try{
             Cart repeat= cartMapper.repeatToCart(uid,item_id);
-            System.out.println("rep:"+repeat);
+//            System.out.println("rep:"+repeat);
            if (repeat==null){
                //不存在
                return true;
            }else {
                //存在
+                session.setAttribute("RepeatCartId",repeat.getCart_id());
                return false;
            }
         }catch (Exception e){
             //异常(查不到数据)
             return false;
+        }
+    }
+
+    @Override
+    public Integer queryitemCount(int uid,Integer itemId) {
+        try{
+            Cart itemCount= cartMapper.queryitemCount(uid,itemId);
+//            System.out.println("item"+itemCount);
+            if (itemCount!=null){
+                int count=itemCount.getCount();
+//                System.out.println("count:::::::::::::::::::::::::::::"+count);
+                return count;
+            }else {
+               return 0;
+            }
+        }catch (Exception e){
+            //异常
+            return 0;
         }
     }
 }

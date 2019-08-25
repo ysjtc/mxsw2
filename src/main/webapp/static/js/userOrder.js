@@ -190,19 +190,21 @@ $(document).ready(function() {
 		console.log("发送的oid："+data);
 		//ajax发送获取物流信息的请求
 		$.ajax({
-			url : 'aa/bb',
+			url : 'BackManageOrder/checkLogistics',
 			data:data,
 			type : 'POST',
 			success : function(data) {
-				data=JSON.parse(data);
+				//data=JSON.parse(data);
 				if(data['result']){
 					//获取成功后,将数据渲染到模态框并弹出模态框
 					$("#frontLogModal input[name='company']").val(data['company']);
 					$("#frontLogModal input[name='waybillNum']").val(data['waybillNum']);
+					$("#frontLogModal input").attr("disabled","disabled");
 					$("#frontLogModal").modal('toggle');
 				}else{
 					if(data['isLogin']==false){
 						window.location.href="SuperAdmin/login";
+						return;
 					}
 					alert("失败，请重试！");
 				}

@@ -88,4 +88,9 @@
     from cart
     where  user_id=#{uid} and item_id=#{itemId}
   </select>
+  <select id="queryitemCount" resultMap="CartMaps">
+    select count
+    from cart
+    where  user_id=#{uid} and item_id=#{itemId}
+  </select>
 </mapper>
