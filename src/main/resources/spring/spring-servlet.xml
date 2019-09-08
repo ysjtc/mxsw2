@@ -84,6 +84,7 @@
             <mvc:exclude-mapping path="/User/**/getAlluser"/>
             <mvc:exclude-mapping path="/FrontForward/loginMain"/>
             <mvc:exclude-mapping path="/FrontForward/error"/>
+            <mvc:exclude-mapping path="/FrontForward/store"/>
             <!-- 自定义拦截器类 -->
             <bean class="com.mx.interCeptors.LoginInterCeptor"/>
         </mvc:interceptor>
