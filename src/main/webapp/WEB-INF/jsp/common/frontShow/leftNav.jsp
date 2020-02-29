@@ -5,7 +5,7 @@
     <!-- logo -->
     <div class="row">
         <div class="nav-logo">
-            <a href="./../navigation/nav.html"></a>
+            <a href="${pageContext.request.contextPath}/FrontForward/nav"></a>
         </div>
     </div>
     <!-- 上部导航模块 -->
@@ -38,9 +38,9 @@
             </div>
         </div>
         <div class="nav-item">
-            <a href="./../community/main.html">
+            <a href="${pageContext.request.contextPath}/Article/query/myInfo">
                 <span class="glyphicon glyphicon-globe"></span>
-                <span class="nav-section">书友社</span>
+                <span id="club" class="nav-section">书友社</span>
             </a>
             <div class="subnav">
                 <ul>
@@ -71,9 +71,9 @@
             </a>
             <div class="subnav">
                 <ul>
-                    <li><a href="#">我的订单</a></li>
-                    <li><a href="#">我的收藏</a></li>
-                    <li><a href="#">注销登录</a></li>
+                    <li><a href="FrontForward/userOrder">我的订单</a></li>
+                    <li><a href="/FrontForward/userOrder">我的收藏</a></li>
+                    <li><a href="User/loginout">注销登录</a></li>
                 </ul>
             </div>
         </div>

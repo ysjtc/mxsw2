@@ -6,6 +6,7 @@ import org.apache.ibatis.annotations.Param;
 import java.util.List;
 
 public interface UserMapper {
+    int queryMaxName();
     int insert(User record);
 
     int insertSelective(User record);

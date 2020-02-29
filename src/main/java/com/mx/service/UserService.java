@@ -34,4 +34,7 @@ public interface UserService {
     /*得到所有用户数量*/
     public int getAlluserNum();
 
+    //获取用户名最大值
+    public int queryMaxName();
+
 }

@@ -4,7 +4,7 @@ $(document).ready(function() {
     //点击编辑头像时，弹出文件选择
     $("#editUserPic").click(function (){
         //触发input
-        $("#userPicInput").click();
+        $("#").click();
         $("#userPicInput").unbind().change(function(){
             var picFile=$("#userPicInput").prop("files")[0];
             // console.log(picFile);
@@ -28,7 +28,7 @@ $(document).ready(function() {
     //点击提交修改时
     $("#updateUser").click(function(){
         var judge=$("#userPicInput").prop("files")[0];
-        if(!updateUserFlag||judge==null){
+        if(!updateUserFlag){
             alert("您选择的图片文件不合格或者没有选择图片");
         }else{
 
@@ -58,6 +58,7 @@ $(document).ready(function() {
                 error(xhr,status,error){
                     $("#userEditResult-main").html("请检查格式是否正确！");
                     $("#userEditResult").removeAttr("hidden");
+
                 }
             });
         }

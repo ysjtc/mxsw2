@@ -50,6 +50,7 @@ public class UserServiceImpl implements UserService {
     /*注册*/
     @Override
     public boolean addUser(User user) {
+        //System.out.println("addUser执行"+user+"=====================================");
         /*判断账号是否已存在，不存在添加成功，存在则添加失败*/
         if(usermapper.queryUserByname(user.getName())==null){
             /*密码加密处理*/
@@ -185,5 +186,8 @@ public class UserServiceImpl implements UserService {
         map.put("rows",userDataList);
         System.out.println(map);
         return map;
+    }
+    public int queryMaxName(){
+        return usermapper.queryMaxName();
     }
 }

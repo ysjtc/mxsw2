@@ -1,82 +1,121 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.mx.mapper.ArticleMapper">
-  <resultMap id="BaseResultMap" type="com.mx.pojo.Article">
-    <result column="a_id" jdbcType="INTEGER" property="aId" />
-    <result column="title" jdbcType="VARCHAR" property="title" />
-    <result column="page_view" jdbcType="INTEGER" property="pageView" />
-    <result column="u_id" jdbcType="INTEGER" property="uId" />
-    <result column="publish_time" jdbcType="VARCHAR" property="publishTime" />
-    <result column="praise_count" jdbcType="INTEGER" property="praiseCount" />
-    <result column="ac_id" jdbcType="INTEGER" property="acId" />
-  </resultMap>
-  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.mx.pojo.Article">
-    <result column="content" jdbcType="LONGVARCHAR" property="content" />
-  </resultMap>
-  <sql id="Blob_Column_List">
-    content
-  </sql>
-  <insert id="insert" parameterType="com.mx.pojo.Article">
-    insert into article (a_id, title, page_view, 
-      u_id, publish_time, praise_count, 
-      ac_id, content)
-    values (#{aId,jdbcType=INTEGER}, #{title,jdbcType=VARCHAR}, #{pageView,jdbcType=INTEGER}, 
-      #{uId,jdbcType=INTEGER}, #{publishTime,jdbcType=VARCHAR}, #{praiseCount,jdbcType=INTEGER}, 
-      #{acId,jdbcType=INTEGER}, #{content,jdbcType=LONGVARCHAR})
-  </insert>
-  <insert id="insertSelective" parameterType="com.mx.pojo.Article">
-    insert into article
-    <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="aId != null">
-        a_id,
-      </if>
-      <if test="title != null">
-        title,
-      </if>
-      <if test="pageView != null">
-        page_view,
-      </if>
-      <if test="uId != null">
-        u_id,
-      </if>
-      <if test="publishTime != null">
-        publish_time,
-      </if>
-      <if test="praiseCount != null">
-        praise_count,
-      </if>
-      <if test="acId != null">
-        ac_id,
-      </if>
-      <if test="content != null">
-        content,
-      </if>
-    </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides=",">
-      <if test="aId != null">
-        #{aId,jdbcType=INTEGER},
-      </if>
-      <if test="title != null">
-        #{title,jdbcType=VARCHAR},
-      </if>
-      <if test="pageView != null">
-        #{pageView,jdbcType=INTEGER},
-      </if>
-      <if test="uId != null">
-        #{uId,jdbcType=INTEGER},
-      </if>
-      <if test="publishTime != null">
-        #{publishTime,jdbcType=VARCHAR},
-      </if>
-      <if test="praiseCount != null">
-        #{praiseCount,jdbcType=INTEGER},
-      </if>
-      <if test="acId != null">
-        #{acId,jdbcType=INTEGER},
-      </if>
-      <if test="content != null">
-        #{content,jdbcType=LONGVARCHAR},
-      </if>
-    </trim>
-  </insert>
+
+    <!--封装User Article ArticleCategory-->
+    <resultMap id="ArticlesMap" type="com.mx.pojo.Article" >
+        <!--封装Article基本信息-->
+        <id column="a_id" jdbcType="INTEGER"  property="aId" />
+        <result column="title" jdbcType="VARCHAR" property="title"/>
+        <result column="publish_time" jdbcType="VARCHAR" property="publishTime" />
+        <result column="content" jdbcType="LONGVARCHAR" property="content" />
+<!--        LONGVARCHAR  -->
+        <result column="page_view" jdbcType="INTEGER" property="pageView"/>
+        <result column="u_id" jdbcType="INTEGER" property="uId" />
+        <result column="praise_count" jdbcType="INTEGER" property="praiseCount" />
+
+        <!--封装ArticleCategory基本信息-->
+        <association property="article_category" javaType="com.mx.pojo.Article_Category">
+            <id property="acId" jdbcType="INTEGER" column="ac_id"/>
+            <result column="name" jdbcType="VARCHAR" property="ACname"/>
+        </association>
+
+        <!--封装User基本信息-->
+        <association property="user" javaType="com.mx.pojo.User">
+            <id column="u_id" jdbcType="INTEGER" property="uId"/>
+            <result column="u_name" jdbcType="VARCHAR" property="uName"/>
+        </association>
+    </resultMap>
+
+    <select id="queryByTitle" resultMap="ArticlesMap">
+        select u.u_name,a.*,ac.`name` from user u,article a,article_category ac
+        <where>
+            u.u_id=a.u_id and ac.ac_id=a.ac_id
+            <if test="title != null and title != ''">
+                and title like concat('%',#{title},'%')
+            </if>
+        </where>
+    </select>
+
+    <insert id="addArticle">
+        insert into article(title, content, page_view, u_id, praise_count,ac_id) values(#{0},#{1},0,#{2},0,#{3})
+    </insert>
+
+    <!--<select id="queryByTitle" resultMap="ArticlesMap">
+        select
+        t1.`title`,t1.`publish_time`,t2.`name`,t3.`u_name` as uName
+        from inkroom.article as t1,inkroom.article_category as t2,inkroom.user as t3
+        <where>
+            <if test="title != null and title != ''">
+                 title like concat('%',#{title},'%')
+            </if>
+        </where>
+    </select>-->
+
+    <select id="queryArticle" resultMap="ArticlesMap">
+        select
+        t1.`title`,t1.page_view,t1.`a_id`,t1.`content`,t1.`publish_time`,t2.`name`,t3.`u_name` as uName
+        from inkroom.article as t1,inkroom.article_category as t2,inkroom.user as t3
+        <where>
+            <if test="aId != null">
+                a_id = #{aId} and t1.ac_id=t2.ac_id and t3.u_id=t1.u_id
+            </if>
+        </where>
+    </select>
+
+    <select id="queryArticleByuId" resultMap="ArticlesMap">
+        select
+        t1.`title`,t1.`a_id`,t1.praise_count,t1.`publish_time`,t2.`name`,t3.`u_name` as uName
+        from inkroom.article as t1,inkroom.article_category as t2,inkroom.user as t3
+        <where>
+            <if test="uId != null">
+                t1.u_id = #{uId}
+            and t1.`u_id`=t3.`u_id` and t1.ac_id=t2.ac_id
+            </if>
+        </where>
+    </select>
+
+    <delete id="delete">
+      delete from article where a_id = #{aId}
+    </delete>
+    <!-- 我赞过的文章-->
+    <select id="myPraiseArticle" resultMap="ArticlesMap">
+        SELECT article.*,article_category.`name`,`user`.u_name from article,`user`,article_category
+        WHERE a_id in (SELECT article_praise.a_id from article_praise WHERE article_praise.praise_u_id=#{aId})
+        and `user`.u_id=article.u_id and article_category.ac_id=article.ac_id
+    </select>
+    <!-- 按类别搜索-->
+    <select id="queryByctgr" resultMap="ArticlesMap">
+        select u.u_name,a.a_id,a.page_view,a.praise_count,a.title,a.publish_time,ac.`name` from user u,article a,article_category ac
+        <where>
+            u.u_id=a.u_id and ac.ac_id=a.ac_id
+            <if test="acId != null and acId != ''">
+                and ac.ac_id = #{acId}
+            </if>
+        </where>
+    </select>
+    <select id="articlePraise" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+        SELECT count(*) from article_praise where a_id=#{aId}
+    </select>
+    <!--我(u_id)获得真实的赞-->
+    <select id="myPraiseCount" resultType="Integer">
+            SELECT count(*) from article_praise where a_id in (SELECT a_id FROM article where u_id=#{uId})
+    </select>
+    <!--判定该文章是否已由用户点过赞 为空可点-->
+    <select id="ifPraised" resultType="Integer">
+            SELECT a_id from article_praise where a_id=#{aId} and praise_u_id=#{uId}
+    </select>
+
+    <update id="PVRaise" parameterType="Integer">
+            update article set page_view=page_view+1 where a_id=#{aId}
+    </update>
+    <insert id="addAP">
+            insert into article_praise values (#{aId},#{uId})
+    </insert>
+
+<!--    <select id="queryArticle" resultType="com.mx.pojo.Article">
+        select
+        t1.`title`,t1.`content`,t1.`publish_time`,t1.`page_view`,t1.`praise_count`,t1.`u_id`,t2.`u_name`
+        from inkroom.article as t1,inkroom.user as t2,
+    </select>-->
 </mapper>

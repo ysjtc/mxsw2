@@ -9,7 +9,7 @@ import java.io.Serializable;
 public class Article_Category implements Serializable {
     private Integer acId;
 
-    private String name;
+    private String ACname;
 
     private static final long serialVersionUID = 1L;
 
@@ -21,11 +21,19 @@ public class Article_Category implements Serializable {
         this.acId = acId;
     }
 
-    public String getName() {
-        return name;
+    public String getACname() {
+        return ACname;
     }
 
-    public void setName(String name) {
-        this.name = name == null ? null : name.trim();
+    public void setACname(String ACname) {
+        this.ACname = ACname;
+    }
+
+    @Override
+    public String toString() {
+        return "Article_Category{" +
+                "acId=" + acId +
+                ", ACname='" + ACname + '\'' +
+                '}';
     }
 }

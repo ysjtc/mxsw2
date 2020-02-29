@@ -18,6 +18,8 @@
 </head>
 
 <body>
+
+
     <!-- 外层包装开始 -->
     <div class="wrapper">
         <%--引入两个导航栏--%>
@@ -43,7 +45,7 @@
                                 <span class="personal-id">(ID:${userData.name})</span>
                             </h4>
                             <span class="greeting">晚上好</span>
-                            <a class="update" href="#" data-toggle="modal" data-target="#updateInfo">修改个人信息&nbsp;&gt;&nbsp;&gt;&nbsp;</a>
+                            <a class="update" href="#" data-toggle="modal" data-target="#updateInfo">修改个人信息</a>
                         </div>
                     </div>
 

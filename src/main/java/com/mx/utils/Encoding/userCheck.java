@@ -20,7 +20,7 @@ public class userCheck {
     }
 
     public static boolean CheckupdateUser(User userData, MultipartFile file){
-
+        /*
         if(userData.getuName()==null||userData.getuName().equals("")||
                 userData.getTel()==null||userData.getTel().equals("")||
                 userData.getSex()==null||userData.getSex().equals("")||
@@ -28,21 +28,29 @@ public class userCheck {
                 file==null
         ){
             return true;
-        }
-
+        }*/
+       //System.out.println(userData.getEmail()+userData.getTel());
+        boolean flag=true;
         /*检验邮箱*/
-        String regex="(?:(?:[A-Za-z0-9\\-_@!#$%&'*+/=?^`{|}~]|(?:\\\\[\\x00-\\xFF]?)|(?:\"[\\x00-\\xFF]*\"))+(?:\\.(?:(?:[A-Za-z0-9\\-_@!#$%&'*+/=?^`{|}~])|(?:\\\\[\\x00-\\xFF]?)|(?:\"[\\x00-\\xFF]*\"))+)*)@(?:(?:[A-Za-z0-9](?:[A-Za-z0-9-]*[A-Za-z0-9])?\\.)+(?:(?:[A-Za-z0-9]*[A-Za-z][A-Za-z0-9]*)(?:[A-Za-z0-9-]*[A-Za-z0-9])?))";
-        if(!userData.getEmail().matches(regex)) {
-            return true;
+        if(!userData.getEmail().equals(null) && !userData.getEmail().equals("")) {
+            String regex = "(?:(?:[A-Za-z0-9\\-_@!#$%&'*+/=?^`{|}~]|(?:\\\\[\\x00-\\xFF]?)|(?:\"[\\x00-\\xFF]*\"))+(?:\\.(?:(?:[A-Za-z0-9\\-_@!#$%&'*+/=?^`{|}~])|(?:\\\\[\\x00-\\xFF]?)|(?:\"[\\x00-\\xFF]*\"))+)*)@(?:(?:[A-Za-z0-9](?:[A-Za-z0-9-]*[A-Za-z0-9])?\\.)+(?:(?:[A-Za-z0-9]*[A-Za-z][A-Za-z0-9]*)(?:[A-Za-z0-9-]*[A-Za-z0-9])?))";
+            if (!userData.getEmail().matches(regex)) {
+                flag=false;
+            }
+            //System.out.println("邮箱格式错误！");
         }
 
         /*检验电话号码*/
-        String regexNumber = "^1[3|4|5|8][0-9]\\d{8}$";
-        if(userData.getTel().length()!=11||!userData.getTel().matches(regexNumber)){
-            if(userData.getTel().equals("none")) return false;
-            return true;
+        if(!userData.getTel().equals(null) && !userData.getTel().equals("")) {
+            String regexNumber = "^1[3|4|5|8][0-9]\\d{8}$";
+            if (userData.getTel().length() != 11 || !userData.getTel().matches(regexNumber)) {
+                //if(userData.getTel().equals("none")) return false;
+                flag=false;
+            }
+            //System.out.println("电话号码格式错误！");
         }
-        return false;
+        //System.out.println(flag);
+        return flag;
     }
 
     public static boolean CheckAddaddr(Address address){

@@ -70,7 +70,15 @@ public class UserController {
                 session.setAttribute("userData", userData);
                 session.setAttribute("userPic", userPic);
                 session.setAttribute("USER_ID", recorduser.getName());
-                return "frontShow/personal/personalMain";
+                session.setAttribute("uId",recorduser.getuId());
+                //判断beforePath是否有请求的URL，有的话取出来跳转
+                String beforePath=(String) session.getAttribute("beforePath");
+                if(beforePath!=null) {
+                    return "redirect:"+beforePath;
+
+                }else {
+                    return "frontShow/personal/personalMain";
+                }
             } else {
                 model.addAttribute("status","密码或账号输入错误");
                 return "frontShow/personal/login";
@@ -91,10 +99,12 @@ public class UserController {
             return "frontShow/personal/login";
         }else{
             try {
+                System.out.println("success________________++++++++++++++++++++++++");
                 /*随机生成用户名*/
-                int num=userService.getAlluserNum();
+                //int num=userService.getAlluserNum();
+                int num=userService.queryMaxName();
                 user.setName(RandomUser.RandomName(num));
-
+                //System.out.println(num);
                 /*入库前的验证*/
                 if(!userCheck.CheckregisterUser(user)) {
                     /*开始创建用户*/
@@ -141,9 +151,9 @@ public class UserController {
     @PreventRepeat
     public String deleteuser(String name){
         if(userService.deleteUser(name)){
-            return "";
+            return "true";
         }else {
-            return "";
+            return "false";
         }
     }
 
@@ -154,25 +164,26 @@ public class UserController {
             User user,
         HttpServletRequest request,
         HttpSession session,
-        @RequestParam("userPic") MultipartFile file
+        @RequestParam(value = "userPic",required = false) MultipartFile file
         )throws Exception{
             Map map=new HashMap();
-
             user.setName((String)session.getAttribute("USER_ID"));
-            /*入库前的验证*/
-            if(userCheck.CheckupdateUser(user,file)){
-                System.out.println("============");
+        //System.out.println(user);
+        /*入库前的验证*/
+            if(!userCheck.CheckupdateUser(user,file)){
+                //System.out.println("============");
                 map.put("result", false);
                 return map;
             }
             /*用户信息更新*/
                 if (userService.updateUser(user)) {
-                    User_Pic userPic = UserUpload.imgUpload(file, request, user, userService, userPicService);
-                    userPicService.updateUserPic(userPic);
-
+                    if(file!=null){
+                        User_Pic userPic = UserUpload.imgUpload(file, request, user, userService, userPicService);
+                        userPicService.updateUserPic(userPic);
+                        session.setAttribute("userPic",userPic);
+                    }
                     UserData userData=userService.queryUserByname(user.getName());
                     session.setAttribute("userData",userData);
-                    session.setAttribute("userPic",userPic);
                     map.put("result", true);
                     return map;
                 } else {

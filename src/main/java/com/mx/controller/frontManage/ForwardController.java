@@ -4,7 +4,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.io.IOException;
 
 @Controller
 @RequestMapping("/FrontForward")
@@ -56,4 +60,12 @@ public class ForwardController {
         return "frontShow/errorPage/error";
     }
 
+    @RequestMapping("/nav")
+    public String nav(){ return "frontShow/navigation/nav"; }
+
+    @RequestMapping("/club")
+    public void club(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {request.getRequestDispatcher("./../ArticleCategory/queryAll").forward(request,response);  }
+
+    @RequestMapping("/addArticle")
+    public String add(){ return "frontShow/club/addArticle";}
 }

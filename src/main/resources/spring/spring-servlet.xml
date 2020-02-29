@@ -76,6 +76,7 @@
         <!-- 登录验证拦截 -->
         <mvc:interceptor>
             <!--拦截url-->
+            <mvc:mapping path="/Article/**/*"/>
             <mvc:mapping path="/User/**/*"/>
             <mvc:mapping path="/FrontForward/**/*"/>
             <mvc:exclude-mapping path="/User/**/login"/>

@@ -45,7 +45,7 @@
                                 <div class="form-inline" role="form" id="findUser">
                                     <div class="form-group">
                                         <label>用户昵称：</label>
-                                        <input name="uName" type="text" class="form-control">
+                                        <input name="uName" type="text" class="form-control"/>
                                     </div>
                                     &emsp;&emsp;
                                     <div class="form-group">
@@ -217,17 +217,18 @@
         function blackRoom(obj){
             var uName={};
             uName['name']=$(obj).attr("uName");
+            //alert(uName.name);
             // ajax提交删除请求
             if(confirm("确定要拉黑此用户？")){
 
                 //ajax提交删除请求
                 $.ajax({
-                    url:'mm/mm',
-                    data:uName,
+                    url:"<%=request.getContextPath()%>/User/delateUser",
+                    data:uName.name,
                     type:'post',
                     success:function(data){
                         // 要求返回json字符串，键名为result
-                        if(JSON.parse(data).result){
+                        if(data){
                             $("#userQueryIssu-main").html("删除成功！");
                             $("#userQueryIssu").removeAttr("hidden");
                             $('#userQueryIssu').bootstrapTable('removeByUniqueId', uName);

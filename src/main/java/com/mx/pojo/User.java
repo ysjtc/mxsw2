@@ -97,6 +97,8 @@ public class User implements Serializable {
                 ", password='" + password + '\'' +
                 ", email='" + email + '\'' +
                 ", uName='" + uName + '\'' +
+                ", tel='" + tel + '\'' +
+                ", sex='" + sex + '\'' +
                 '}';
     }
 }

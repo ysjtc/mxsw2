@@ -7,7 +7,7 @@ package com.mx.utils.RandomUser;/*
 public class RandomUser {
 
     public static String RandomName(int a){
-        Integer number=100000+a+1;
+        Integer number=a+1;
         String name=number.toString().trim();
         return name;
     }

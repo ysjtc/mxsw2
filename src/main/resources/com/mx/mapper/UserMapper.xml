@@ -66,6 +66,10 @@
     </trim>
   </insert>
 
+  <!--获取用户名最大值-->
+    <select id="queryMaxName" resultType="Integer">
+        select max(name) from user
+    </select>
   <!--通过用户名来查询用户信息-->
   <select id="queryUserByname" parameterType="String" resultType="com.mx.pojo.User">
     select * from user where   name=#{name}
@@ -83,11 +87,13 @@
 
   <!--通过用户名来修改用户信息-->
   <update id="updateUserByname" parameterType="com.mx.pojo.User">
-    update user set
-        u_name=#{uName},
-        sex=#{sex},
-        tel=#{tel},
-        email=#{email}
+    update user
+    <set>
+        <if test="uName!=null and uName!=''">u_name=#{uName},</if>
+        <if test="sex!=null and sex!=''">sex=#{sex},</if>
+        <if test="tel!=null and tel!=''">tel=#{tel},</if>
+        <if test="email!=null and email!=''">email=#{email}</if>
+    </set>
     where name=#{name}
   </update>
 
