@@ -179,28 +179,25 @@
 			user_pic
 		WHERE
 			`user`.u_id = ac_reply.u_id
-		AND `user`.u_id = user_pic.u_id
-		AND ac_reply.a_id = #{0}
-		AND ac_reply.aco_id = #{1}
+            AND `user`.u_id = user_pic.u_id
+            AND ac_reply.a_id = #{0}
+            AND ac_reply.aco_id = #{1}
 	) t2
     WHERE
-	t1.acr_id = t2.acr_id
+	t1.acr_id = t2.acr_id order by reply_time
     </select>
 
     <!--每条评论回复数-->
 
     <!--添加回复-->
     <insert id="addReply" parameterType="Map">
-        INSERT into ac_reply(u_id,a_id,aco_id,to_uid,acr_content) VALUES(#{u_id},#{a_id},#{aco_id}
-            <if test="to_uid==0 and to_uid!=''">
-                ,#{to_uid}
-            </if>,#{acr_content})
+        INSERT into ac_reply(u_id,a_id,aco_id,to_uid,acr_content) VALUES(#{u_id},#{a_id},#{aco_id},#{to_uid},#{acr_content})
     </insert>
-
+    <!--删除文章评论-->
     <delete id="delAC" parameterType="Integer">
         delete from article_comment where aco_id=#{0}
     </delete>
-
+    <!--删除回复-->
     <delete id="delReply" parameterType="Integer">
         delete  from ac_reply where acr_id=#{0}
     </delete>
@@ -246,7 +243,7 @@
             )
         GROUP BY
             aco_id
-    ) t2 ON t1.aco_id = t2.aco_id
+    ) t2 ON t1.aco_id = t2.aco_id order by create_time
    </select>
 
 </mapper>

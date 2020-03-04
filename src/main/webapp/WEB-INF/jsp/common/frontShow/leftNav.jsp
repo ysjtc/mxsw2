@@ -38,7 +38,7 @@
             </div>
         </div>
         <div class="nav-item">
-            <a href="${pageContext.request.contextPath}/Article/query/myInfo">
+            <a href="${pageContext.request.contextPath}/Article/query/conditions">
                 <span class="glyphicon glyphicon-globe"></span>
                 <span id="club" class="nav-section">书友社</span>
             </a>

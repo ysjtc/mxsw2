@@ -37,6 +37,56 @@
         </where>
     </select>
 
+    <!--合并文章的多个条件查询，排序和分页-->
+    <select id="queryByConditions" resultMap="ArticlesMap">
+        select u.u_name,a.*,ac.`name` from user u,article a,article_category ac
+        <where>
+            u.u_id=a.u_id and ac.ac_id=a.ac_id
+            <choose>
+                <when test="uId != null and uId != ''">
+                    and u.u_id=#{uId}
+                </when>
+                <otherwise>
+                    <if test="title != null and title != ''">
+                        and a.title like concat('%',#{title},'%')
+                    </if>
+                    <if test="uName != null and uName != ''">
+                        and u.u_name like concat('%',#{uName},'%')
+                    </if>
+                    <if test="content != null and content != ''">
+                        and a.content like  concat('%',#{content},'%')
+                    </if>
+                    <if test="acId != null and acId != ''">
+                        and ac.ac_id = #{acId}
+                    </if>
+                </otherwise>
+            </choose>
+            <choose>
+                <when test="pageView != null">
+                    order by a.page_view
+                    <if test="sort != null">
+                        desc
+                    </if>
+                </when>
+                <when test="praiseCount != null">
+                    order by a.praise_count
+                    <if test="sort != null">
+                        desc
+                    </if>
+                </when>
+                <otherwise>
+                    order by a.publish_time
+                    <if test="sort != null">
+                        desc
+                    </if>
+                </otherwise>
+            </choose>
+            <if test="pageOff != null and pageSize != null">
+                limit #{pageOff},#{pageSize}
+            </if>
+        </where>
+    </select>
+
     <insert id="addArticle">
         insert into article(title, content, page_view, u_id, praise_count,ac_id) values(#{0},#{1},0,#{2},0,#{3})
     </insert>
