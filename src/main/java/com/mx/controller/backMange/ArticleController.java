@@ -41,16 +41,20 @@ public class ArticleController {
         return "frontShow/club/club";
     }
     @RequestMapping("/query/myInfo")
-    public void queryByUId(HttpSession session,HttpServletResponse response, HttpServletRequest request) throws ServletException, IOException {
-            int uId = Integer.parseInt(session.getAttribute("uId").toString());
-            List<Article> l = articleService.queryArticleByuId(uId);
-            System.out.println(l + "----------------");
-            int p_c = articleService.myPraiseCount(uId);
-            System.out.println(p_c);
-            session.setAttribute("my_p_c", p_c);
-            session.setAttribute("my_a_c", l.size());
-            request.getRequestDispatcher("title").forward(request,response);
-            //System.out.println("/Article/query/title");
+    public void queryByUId(Integer uId,HttpSession session,HttpServletResponse response, HttpServletRequest request) throws ServletException, IOException {
+        if (uId==null){
+             uId = Integer.parseInt(session.getAttribute("uId").toString());
+        }else {
+            session.setAttribute("others","uId");
+        }
+        List<Article> l = articleService.queryArticleByuId(uId);
+        System.out.println(l + "----------------");
+        int p_c = articleService.myPraiseCount(uId);
+        System.out.println(p_c);
+        session.setAttribute("my_p_c", p_c);
+        session.setAttribute("my_a_c", l.size());
+        request.getRequestDispatcher("title").forward(request,response);
+        //System.out.println("/Article/query/title");
     }
 
 
@@ -73,13 +77,13 @@ public class ArticleController {
             req.getRequestDispatcher("/Comment/cmtAndUser").forward(req,res);
         }
     }
-
+    @ResponseBody
     @RequestMapping("/query/uId")          //用户文章页面
-    public String queryArticleByuId(Integer uId,HttpSession session){
+    public List<Article> queryArticleByuId(Integer uId,HttpSession session){
         session.setAttribute("uId",uId);
         List<Article> list = articleService.queryArticleByuId(uId);
         session.setAttribute("article",list);
-        return "frontShow/club/club";
+        return list;
     }
 
     @RequestMapping("/delete")          //删除文章+所删除文章评论
@@ -90,8 +94,10 @@ public class ArticleController {
     }
     @ResponseBody
     @RequestMapping("/query/myPraise")          //我点赞的文章
-    public List<Article> myPraise(String id,HttpSession session){
-        int uId=Integer.parseInt(id);
+    public List<Article> myPraise(Integer uId,HttpSession session){
+        if (uId==null) {
+            uId = Integer.parseInt(session.getAttribute("uId").toString());
+        }
         List<Article> l=articleService.myPraiseArticle(uId);
         session.setAttribute("myPraise",l);
         return l;

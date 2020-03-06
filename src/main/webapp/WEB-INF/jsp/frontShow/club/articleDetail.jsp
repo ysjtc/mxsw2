@@ -161,7 +161,6 @@
                 $(".aComment").submit();
             }
         })
-
             var flag=true;
         $("#addAP").click(function () {
                 $.ajax({

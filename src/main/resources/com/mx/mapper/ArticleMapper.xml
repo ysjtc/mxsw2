@@ -24,6 +24,7 @@
         <association property="user" javaType="com.mx.pojo.User">
             <id column="u_id" jdbcType="INTEGER" property="uId"/>
             <result column="u_name" jdbcType="VARCHAR" property="uName"/>
+            <result column="user_path" jdbcType="VARCHAR" property="password"/>
         </association>
     </resultMap>
 
@@ -167,9 +168,48 @@
     </delete>
     <!-- 我赞过的文章-->
     <select id="myPraiseArticle" resultMap="ArticlesMap">
-        SELECT article.*,article_category.`name`,`user`.u_name from article,`user`,article_category
-        WHERE a_id in (SELECT article_praise.a_id from article_praise WHERE article_praise.praise_u_id=#{aId})
-        and `user`.u_id=article.u_id and article_category.ac_id=article.ac_id
+        SELECT
+            t1.*, t2.praise_count,t3.user_path
+        FROM
+            (
+                SELECT
+                    article.ac_id,article.a_id,article.content,article.page_view,
+                    article.publish_time,article.title,article.u_id,
+                    article_category.`name`,`user`.u_name
+                FROM
+                    article,
+                    `user`,
+                    article_category
+                WHERE
+                    a_id IN (
+                        SELECT
+                            article_praise.a_id
+                        FROM
+                            article_praise
+                        WHERE
+                            article_praise.praise_u_id = #{aId}
+                    )
+                AND `user`.u_id = article.u_id
+                AND article_category.ac_id = article.ac_id
+            ) t1,
+            (
+                SELECT
+                    t1.a_id,
+                    t2.praise_count
+                FROM
+                    article t1
+                LEFT JOIN (
+                    SELECT
+                        a_id,
+                        count(*) AS praise_count
+                    FROM
+                        article_praise
+                    GROUP BY
+                        a_id
+                ) t2 ON t1.a_id = t2.a_id
+            ) t2,user_pic t3
+        WHERE
+            t1.a_id = t2.a_id and t1.u_id=t3.u_id
     </select>
     <!-- 按类别搜索-->
     <select id="queryByctgr" resultMap="ArticlesMap">
@@ -200,6 +240,9 @@
             insert into article_praise values (#{aId},#{uId})
     </insert>
 
+    <delete id="delArticle" parameterType="Integer">
+        delete from article where a_id=#{0}
+    </delete>
 <!--    <select id="queryArticle" resultType="com.mx.pojo.Article">
         select
         t1.`title`,t1.`content`,t1.`publish_time`,t1.`page_view`,t1.`praise_count`,t1.`u_id`,t2.`u_name`

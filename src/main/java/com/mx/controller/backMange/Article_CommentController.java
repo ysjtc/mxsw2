@@ -130,4 +130,22 @@ public class Article_CommentController {
         }
         return flag;
     }
+    @ResponseBody
+    @RequestMapping("/query/myComment")
+    public List<Map<String,Object>> myComment(Integer uId,HttpSession session){
+        if (uId==null){
+            uId=Integer.parseInt(session.getAttribute("uId").toString());
+        }
+        List<Map<String,Object>> l=article_commentService.myComment(uId);
+        return l;
+    }
+
+    @ResponseBody
+    @RequestMapping("/query/myReply")
+    public List<Map<String,Object>> myReply(HttpSession session,Integer uId){
+        if (uId==null){
+            uId=Integer.parseInt(session.getAttribute("uId").toString());
+        }
+        return article_commentService.myReply(uId);
+    }
 }

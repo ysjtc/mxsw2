@@ -68,4 +68,7 @@ public class ForwardController {
 
     @RequestMapping("/addArticle")
     public String add(){ return "frontShow/club/addArticle";}
+
+    @RequestMapping("/mine")
+    public String mine(){return "frontShow/club/mine";}
 }

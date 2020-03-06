@@ -61,6 +61,16 @@ import java.util.Map;
     }
 
     @Override
+    public List<Map<String, Object>> myComment(Integer uId) {
+        return article_commentMapper.myComment(uId);
+    }
+
+    @Override
+    public List<Map<String, Object>> myReply(Integer uId) {
+        return article_commentMapper.myReply(uId);
+    }
+
+    @Override
     public List<Article_Comment> queryCommentByuId(Integer uId) {
         return article_commentMapper.queryCommentByuId(uId);
     }

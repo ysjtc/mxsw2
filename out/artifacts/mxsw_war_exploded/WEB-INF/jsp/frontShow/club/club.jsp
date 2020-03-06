@@ -11,7 +11,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>登录</title>
+    <title>书友社</title>
     <%--引入basePath--%>
     <%@ include file="./../../common/basePath.jsp"%>
     <%--引入前台展示页部分的公共头部--%>

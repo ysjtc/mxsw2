@@ -91,7 +91,7 @@
 <!--    </delete>-->
 
 <!--查询某个人发布的评论及评论所属文章-->
-    <select id="myComment" resultMap="ArticleCommentMap" parameterType="Integer">
+<!--    <select id="myComment" resultMap="ArticleCommentMap" parameterType="Integer">
         SELECT
         article_comment.*,
         article.title
@@ -101,7 +101,7 @@
         WHERE
         article_comment.u_id = #{uId}
         AND article.a_id = article_comment.a_id
-    </select>
+    </select>-->
 
     <!-- 查询指定文章信息及所有评论及评论所属评论者信息-->
     <select id="queryCByA_id" parameterType="Integer" resultMap="ArticleCommentMap">
@@ -246,4 +246,37 @@
     ) t2 ON t1.aco_id = t2.aco_id order by create_time
    </select>
 
+
+    <select id="myComment" parameterType="Integer" resultMap="commentRelative">
+    SELECT
+        article.a_id,
+        article.title,
+        article_comment.aco_id,
+        article_comment.ac_content,
+        article_comment.u_id,
+        `user`.u_name,
+        article_comment.create_time
+    FROM
+        article,
+        `user`,
+        article_comment
+    WHERE
+        article_comment.u_id = #{0}
+    AND article_comment.a_id = article.a_id
+    AND `user`.u_id = article_comment.u_id
+    </select>
+
+    <select id="myReply" parameterType="Integer" resultMap="replyRelative">
+        SELECT
+            t1.*, t2.u_name,
+            t3.user_path
+        FROM
+            ac_reply t1,
+            `user` t2,
+            user_pic t3
+        WHERE
+            to_uid = #{0}
+        AND t1.u_id = t2.u_id
+        AND t1.u_id = t3.u_id
+    </select>
 </mapper>
