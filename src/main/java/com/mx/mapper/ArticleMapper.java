@@ -4,6 +4,7 @@ import com.mx.pojo.Article;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
+import java.util.Map;
 
 public interface ArticleMapper {
 
@@ -34,5 +35,9 @@ public interface ArticleMapper {
     int addAP(@Param("aId") Integer aId,@Param("uId") Integer uId);
 
     int myPraiseCount(@Param("uId") Integer uId);
+
+    List<Map<String,Object>> myArticles(Integer uId);
+
+    Map<String,Object> statistics(Integer uId);
 
 }

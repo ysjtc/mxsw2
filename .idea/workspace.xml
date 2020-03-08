@@ -7,41 +7,28 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="109b61a1-da8e-45aa-a791-44faf81164cf" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/webapp/WEB-INF/jsp/frontShow/club/myArticle.jsp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/webapp/static/css/mine.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/artifacts/mxsw_war_exploded/WEB-INF/classes/com/mx/controller/backMange/ArticleController.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/artifacts/mxsw_war_exploded/WEB-INF/classes/com/mx/controller/backMange/ArticleController.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/artifacts/mxsw_war_exploded/WEB-INF/classes/com/mx/controller/backMange/Article_CommentController.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/artifacts/mxsw_war_exploded/WEB-INF/classes/com/mx/controller/backMange/Article_CommentController.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/artifacts/mxsw_war_exploded/WEB-INF/classes/com/mx/controller/frontManage/ForwardController.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/artifacts/mxsw_war_exploded/WEB-INF/classes/com/mx/controller/frontManage/ForwardController.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/artifacts/mxsw_war_exploded/WEB-INF/classes/com/mx/mapper/ArticleMapper.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/artifacts/mxsw_war_exploded/WEB-INF/classes/com/mx/mapper/ArticleMapper.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/artifacts/mxsw_war_exploded/WEB-INF/classes/com/mx/mapper/ArticleMapper.xml" beforeDir="false" afterPath="$PROJECT_DIR$/out/artifacts/mxsw_war_exploded/WEB-INF/classes/com/mx/mapper/ArticleMapper.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/artifacts/mxsw_war_exploded/WEB-INF/classes/com/mx/mapper/Article_CommentMapper.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/artifacts/mxsw_war_exploded/WEB-INF/classes/com/mx/mapper/Article_CommentMapper.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/artifacts/mxsw_war_exploded/WEB-INF/classes/com/mx/mapper/Article_CommentMapper.xml" beforeDir="false" afterPath="$PROJECT_DIR$/out/artifacts/mxsw_war_exploded/WEB-INF/classes/com/mx/mapper/Article_CommentMapper.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/artifacts/mxsw_war_exploded/WEB-INF/classes/com/mx/service/Article_CommentService.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/artifacts/mxsw_war_exploded/WEB-INF/classes/com/mx/service/Article_CommentService.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/artifacts/mxsw_war_exploded/WEB-INF/classes/com/mx/service/Impl/Article_CommentServiceImpl.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/artifacts/mxsw_war_exploded/WEB-INF/classes/com/mx/service/Impl/Article_CommentServiceImpl.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/artifacts/mxsw_war_exploded/WEB-INF/classes/com/mx/service/ArticleService.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/artifacts/mxsw_war_exploded/WEB-INF/classes/com/mx/service/ArticleService.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/artifacts/mxsw_war_exploded/WEB-INF/classes/com/mx/service/Impl/ArticleServiceImpl.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/artifacts/mxsw_war_exploded/WEB-INF/classes/com/mx/service/Impl/ArticleServiceImpl.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/artifacts/mxsw_war_exploded/WEB-INF/jsp/common/frontShow/leftNav.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/out/artifacts/mxsw_war_exploded/WEB-INF/jsp/common/frontShow/leftNav.jsp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/artifacts/mxsw_war_exploded/WEB-INF/jsp/frontShow/club/articleDetail.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/out/artifacts/mxsw_war_exploded/WEB-INF/jsp/frontShow/club/articleDetail.jsp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/artifacts/mxsw_war_exploded/WEB-INF/jsp/frontShow/club/club.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/out/artifacts/mxsw_war_exploded/WEB-INF/jsp/frontShow/club/club.jsp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/mx/controller/backMange/ArticleController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/mx/controller/backMange/ArticleController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/mx/controller/backMange/Article_CommentController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/mx/controller/backMange/Article_CommentController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/mx/controller/frontManage/ForwardController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/mx/controller/frontManage/ForwardController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/mx/mapper/Article_CommentMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/mx/mapper/Article_CommentMapper.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/mx/service/Article_CommentService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/mx/service/Article_CommentService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/mx/service/Impl/Article_CommentServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/mx/service/Impl/Article_CommentServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/mx/mapper/ArticleMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/mx/mapper/ArticleMapper.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/mx/service/ArticleService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/mx/service/ArticleService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/mx/service/Impl/ArticleServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/mx/service/Impl/ArticleServiceImpl.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/com/mx/mapper/ArticleMapper.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/com/mx/mapper/ArticleMapper.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/com/mx/mapper/Article_CommentMapper.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/com/mx/mapper/Article_CommentMapper.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/webapp/WEB-INF/jsp/common/frontShow/leftNav.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/WEB-INF/jsp/common/frontShow/leftNav.jsp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/webapp/WEB-INF/jsp/frontShow/club/articleDetail.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/WEB-INF/jsp/frontShow/club/articleDetail.jsp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/webapp/WEB-INF/jsp/frontShow/club/club.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/WEB-INF/jsp/frontShow/club/club.jsp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/webapp/WEB-INF/jsp/frontShow/club/mine.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/WEB-INF/jsp/frontShow/club/mine.jsp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/webapp/static/css/mine.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/static/css/mine.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/com/mx/controller/backMange/ArticleController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/mx/controller/backMange/ArticleController.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/mx/controller/backMange/Article_CommentController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/mx/controller/backMange/Article_CommentController.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/mx/controller/frontManage/ForwardController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/mx/controller/frontManage/ForwardController.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/mx/mapper/ArticleMapper.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/mx/mapper/ArticleMapper.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/com/mx/mapper/ArticleMapper.xml" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/mx/mapper/ArticleMapper.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/mx/mapper/Article_CommentMapper.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/mx/mapper/Article_CommentMapper.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/mx/mapper/Article_CommentMapper.xml" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/mx/mapper/Article_CommentMapper.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/mx/service/Article_CommentService.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/mx/service/Article_CommentService.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/mx/service/Impl/Article_CommentServiceImpl.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/mx/service/Impl/Article_CommentServiceImpl.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/mx/service/ArticleService.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/mx/service/ArticleService.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/mx/service/Impl/ArticleServiceImpl.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/mx/service/Impl/ArticleServiceImpl.class" afterDir="false" />
     </list>
+    <list id="7f46ef6f-0b1f-4ec4-af1e-1ad241f2594e" name="Revert &quot;完善曹淦的各个按钮&quot;" comment="Revert &quot;完善曹淦的各个按钮&quot;&#10;&#10;This reverts commit 7f6f803b" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -371,6 +358,7 @@
       <workItem from="1583393948851" duration="38039000" />
       <workItem from="1583460217121" duration="12816000" />
       <workItem from="1583476652598" duration="17933000" />
+      <workItem from="1583632050190" duration="8000" />
     </task>
     <task id="LOCAL-00001" summary="修改后，用这个">
       <created>1561711718753</created>

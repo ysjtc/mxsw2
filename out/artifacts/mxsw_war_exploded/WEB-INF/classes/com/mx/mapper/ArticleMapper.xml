@@ -164,7 +164,7 @@
     </select>
 
     <delete id="delete">
-      delete from article where a_id = #{aId}
+        delete from article where a_id = #{aId}
     </delete>
     <!-- 我赞过的文章-->
     <select id="myPraiseArticle" resultMap="ArticlesMap">
@@ -243,6 +243,87 @@
     <delete id="delArticle" parameterType="Integer">
         delete from article where a_id=#{0}
     </delete>
+
+    <select id="myArticles" resultType="Map" parameterType="Integer">
+        SELECT
+            t1.*, IFNULL(t2.summary,0) AS summary
+        FROM
+            (
+                SELECT
+                    t1.*, IFNULL(t2.pc,0) AS praise_count
+                FROM
+                    (
+                        SELECT
+                            a.a_id,
+                            a.title,
+                            a.content,
+                            a.u_id,
+                            a.page_view,
+                            a.publish_time
+                        FROM
+                            article a
+                    ) t1,
+                    (
+                        SELECT
+                            t1.a_id,
+                            t2.pc
+                        FROM
+                            article t1
+                        LEFT JOIN (
+                            SELECT
+                                a_id,
+                                count(*) AS pc
+                            FROM
+                                article_praise
+                            GROUP BY
+                                a_id
+                        ) t2 ON t1.a_id = t2.a_id
+                    ) t2
+                WHERE
+                    t1.a_id = t2.a_id
+                AND t1.u_id = #{0}
+            ) t1
+        LEFT JOIN (
+            SELECT
+                a_id,
+                SUM(c) AS summary
+            FROM
+                (
+                    SELECT
+                        t1.a_id,
+                        COUNT(*) AS c
+                    FROM
+                        article_comment t1
+                    GROUP BY
+                        a_id
+                    UNION
+                        SELECT
+                            t2.a_id,
+                            count(*) AS c
+                        FROM
+                            ac_reply t2
+                        GROUP BY
+                            a_id
+                ) t3
+            GROUP BY
+                a_id
+        ) t2 ON t1.a_id = t2.a_id
+    </select>
+
+    <select id="articleCount" parameterType="Integer" resultType="Integer">
+        select count(*) from article where u_id=#{0}
+    </select>
+    <select id="iPraise" parameterType="Integer" resultType="Integer">
+        select count(*) from article_praise where u_id=#{0}
+    </select>
+    <select id="statistics" parameterType="Integer" resultType="Map">
+        SELECT t1.a_c,t2.ilike,t3.c_c,t4.ced_c,t5.red_c FROM
+        (SELECT COUNT(*) as a_c from article WHERE u_id=#{0})t1,
+        (SELECT COUNT(*) as ilike from article_praise WHERE praise_u_id=#{0}) t2,
+        (SELECT COUNT(*) as c_c from article_comment WHERE u_id=#{0}) t3,
+        (SELECT COUNT(*) as ced_c from article_comment WHERE a_id in (SELECT a_id from article WHERE u_id=#{0})) t4,
+        (SELECT COUNT(*) as red_c from ac_reply WHERE to_uid=#{0} or aco_id in (SELECT aco_id from article_comment WHERE u_id=#{0})) t5
+    </select>
 <!--    <select id="queryArticle" resultType="com.mx.pojo.Article">
         select
         t1.`title`,t1.`content`,t1.`publish_time`,t1.`page_view`,t1.`praise_count`,t1.`u_id`,t2.`u_name`

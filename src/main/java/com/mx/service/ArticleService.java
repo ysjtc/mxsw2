@@ -3,6 +3,7 @@ package com.mx.service;
 import com.mx.pojo.Article;
 
 import java.util.List;
+import java.util.Map;
 
 
 public interface ArticleService {
@@ -34,4 +35,8 @@ public interface ArticleService {
     int addAP(Integer aId,Integer uId);
 
     int myPraiseCount(Integer uId);
+
+    List<Map<String,Object>> myArticles(Integer uId);
+
+    Map<String,Object> statistics(Integer uId);
 }

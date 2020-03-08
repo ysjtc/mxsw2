@@ -41,20 +41,18 @@ public class ArticleController {
         return "frontShow/club/club";
     }
     @RequestMapping("/query/myInfo")
-    public void queryByUId(Integer uId,HttpSession session,HttpServletResponse response, HttpServletRequest request) throws ServletException, IOException {
+    public String queryByUId(Integer uId,HttpSession session,HttpServletResponse response, HttpServletRequest request) throws ServletException, IOException {
         if (uId==null){
              uId = Integer.parseInt(session.getAttribute("uId").toString());
         }else {
             session.setAttribute("others","uId");
         }
-        List<Article> l = articleService.queryArticleByuId(uId);
-        System.out.println(l + "----------------");
+        Map<String,Object> statistics=articleService.statistics(uId);
+        session.setAttribute("statistics",statistics);
         int p_c = articleService.myPraiseCount(uId);
         System.out.println(p_c);
         session.setAttribute("my_p_c", p_c);
-        session.setAttribute("my_a_c", l.size());
-        request.getRequestDispatcher("title").forward(request,response);
-        //System.out.println("/Article/query/title");
+        return "frontShow/club/mine";
     }
 
 
@@ -71,7 +69,7 @@ public class ArticleController {
             session.setAttribute("articleDetail",list);
             session.setAttribute("article_praise",articleService.articlePraise(aId));
             //String s=list.getContent();
-            //s.replace("\n","<br/>").replace(" ","&nbsp;&nbsp;");
+            //s.replace("\r\n","<br/>").replace(" ","&nbsp;&nbsp;");
             //list.setContent(s);
             req.setAttribute("aId",aId);
             req.getRequestDispatcher("/Comment/cmtAndUser").forward(req,res);
@@ -85,12 +83,11 @@ public class ArticleController {
         session.setAttribute("article",list);
         return list;
     }
-
+    @ResponseBody
     @RequestMapping("/delete")          //删除文章+所删除文章评论
-    public String delete(Integer aId,HttpSession session){
+    public boolean delete(Integer aId,HttpSession session){
         boolean suc = articleService.delete(aId);
-        session.setAttribute("deleteFlag",suc);
-        return "uArticle";
+        return suc;
     }
     @ResponseBody
     @RequestMapping("/query/myPraise")          //我点赞的文章
@@ -238,6 +235,15 @@ public class ArticleController {
             request.setAttribute("size",pageSize);
             return "frontShow/club/club";
         }
+    }
+
+    @ResponseBody
+    @RequestMapping("/query/myArticles")
+    public List<Map<String,Object>> myArticles(HttpSession session,Integer uId){
+        if (uId==null){
+            uId=Integer.parseInt(session.getAttribute("uId").toString());
+        }
+        return articleService.myArticles(uId);
     }
 
 }

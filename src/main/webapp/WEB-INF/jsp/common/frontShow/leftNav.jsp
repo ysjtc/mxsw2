@@ -44,7 +44,7 @@
             </a>
             <div class="subnav">
                 <ul>
-                    <li><a href="FrontForward/mine">我的</a></li>
+                    <li><a href="Article/query/myInfo">我的</a></li>
                     <li><a href="#">热门专题</a></li>
                     <li><a href="#">活动专题</a></li>
                 </ul>

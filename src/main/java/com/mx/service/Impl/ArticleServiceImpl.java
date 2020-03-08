@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class ArticleServiceImpl implements ArticleService {
@@ -60,8 +61,6 @@ public class ArticleServiceImpl implements ArticleService {
 
     @Override
     public boolean delete(Integer aId) {
-        //调用两次Mapper
-        article_commentMapper.delete(aId);
         int row = articleMapper.delete(aId);
         return row == 1 ? true : false;
     }
@@ -112,5 +111,15 @@ public class ArticleServiceImpl implements ArticleService {
     @Override
     public int myPraiseCount(Integer uId) {
         return articleMapper.myPraiseCount(uId);
+    }
+
+    @Override
+    public List<Map<String, Object>> myArticles(Integer uId) {
+        return articleMapper.myArticles(uId);
+    }
+
+    @Override
+    public Map<String, Object> statistics(Integer uId) {
+        return articleMapper.statistics(uId);
     }
 }
